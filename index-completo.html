@@ -32,18 +32,23 @@
             
             /* Reglas para asegurar que el texto sea visible en modo oscuro */
             .tema-detalle div[style*="background-color: #eafaf1"],
-            .tema-detalle div[style*="background-color: #f9f9f9"] {
+            .tema-detalle div[style*="background-color: #f9f9f9"],
+            .tema-detalle div[style*="flex: 1; background-color: #f9f9f9"] {
                 background-color: rgba(30, 41, 59, 0.7) !important;
                 color: var(--text) !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
             }
             
-            .tema-detalle h5[style*="color: #27ae60"] {
+            .tema-detalle h5[style*="color: #27ae60"],
+            .tema-detalle h5[style*="color: #16a085"],
+            .tema-detalle h5[style*="text-align: center; color: #27ae60"] {
                 color: #4ade80 !important;
             }
             
             .tema-detalle p, 
             .tema-detalle li,
-            .tema-detalle ul {
+            .tema-detalle ul,
+            .tema-detalle div[style*="flex: 1; background-color: #f9f9f9"] p {
                 color: var(--text) !important;
             }
             
