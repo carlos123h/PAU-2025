@@ -74,6 +74,13 @@
             transform: translateY(-2px);
         }
 
+        .periodic-table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
         .periodic-table {
             display: grid;
             grid-template-columns: repeat(18, 1fr);
@@ -81,6 +88,7 @@
             background: #ddd;
             padding: 10px;
             border-radius: 8px;
+            min-width: 900px; /* Asegura un ancho mínimo para que sea scrollable en móvil */
         }
 
         .element {
@@ -161,9 +169,48 @@
             color: var(--text);
         }
 
+        .mobile-instructions {
+            display: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #333;
+        }
+
         @media (max-width: 768px) {
             .periodic-table {
-                grid-template-columns: repeat(9, 1fr);
+                grid-template-columns: repeat(6, 1fr);
+                font-size: 0.8em;
+                overflow-x: auto;
+                max-width: 100%;
+            }
+            
+            .element {
+                padding: 3px;
+            }
+            
+            .element-number {
+                font-size: 0.6rem;
+            }
+            
+            .element-symbol {
+                font-size: 1rem;
+            }
+            
+            .element-name {
+                font-size: 0.5rem;
+            }
+            
+            .group-btn {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+
+            .mobile-instructions {
+                display: block;
             }
         }
     </style>
@@ -194,8 +241,14 @@
             <button class="group-btn" data-group="actinide">Actínidos</button>
         </div>
 
-        <div class="periodic-table" id="periodic-table">
-            <!-- Los elementos se generarán dinámicamente con JavaScript -->
+        <div class="mobile-instructions">
+            <p>Desliza horizontalmente para ver todos los elementos. Toca un elemento para ver más detalles.</p>
+        </div>
+
+        <div class="periodic-table-container">
+            <div class="periodic-table" id="periodic-table">
+                <!-- Los elementos se generarán dinámicamente con JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -210,7 +263,121 @@
             { number: 1, symbol: 'H', name: 'Hidrógeno', group: 'nonmetal', mass: '1.008' },
             { number: 2, symbol: 'He', name: 'Helio', group: 'noble-gas', mass: '4.003' },
             { number: 3, symbol: 'Li', name: 'Litio', group: 'alkali', mass: '6.941' },
-            // ... más elementos aquí
+            { number: 4, symbol: 'Be', name: 'Berilio', group: 'alkaline-earth', mass: '9.012' },
+            { number: 5, symbol: 'B', name: 'Boro', group: 'metalloid', mass: '10.811' },
+            { number: 6, symbol: 'C', name: 'Carbono', group: 'nonmetal', mass: '12.011' },
+            { number: 7, symbol: 'N', name: 'Nitrógeno', group: 'nonmetal', mass: '14.007' },
+            { number: 8, symbol: 'O', name: 'Oxígeno', group: 'nonmetal', mass: '15.999' },
+            { number: 9, symbol: 'F', name: 'Flúor', group: 'halogen', mass: '18.998' },
+            { number: 10, symbol: 'Ne', name: 'Neón', group: 'noble-gas', mass: '20.180' },
+            { number: 11, symbol: 'Na', name: 'Sodio', group: 'alkali', mass: '22.990' },
+            { number: 12, symbol: 'Mg', name: 'Magnesio', group: 'alkaline-earth', mass: '24.305' },
+            { number: 13, symbol: 'Al', name: 'Aluminio', group: 'post-transition', mass: '26.982' },
+            { number: 14, symbol: 'Si', name: 'Silicio', group: 'metalloid', mass: '28.086' },
+            { number: 15, symbol: 'P', name: 'Fósforo', group: 'nonmetal', mass: '30.974' },
+            { number: 16, symbol: 'S', name: 'Azufre', group: 'nonmetal', mass: '32.065' },
+            { number: 17, symbol: 'Cl', name: 'Cloro', group: 'halogen', mass: '35.453' },
+            { number: 18, symbol: 'Ar', name: 'Argón', group: 'noble-gas', mass: '39.948' },
+            { number: 19, symbol: 'K', name: 'Potasio', group: 'alkali', mass: '39.098' },
+            { number: 20, symbol: 'Ca', name: 'Calcio', group: 'alkaline-earth', mass: '40.078' },
+            { number: 21, symbol: 'Sc', name: 'Escandio', group: 'transition', mass: '44.956' },
+            { number: 22, symbol: 'Ti', name: 'Titanio', group: 'transition', mass: '47.867' },
+            { number: 23, symbol: 'V', name: 'Vanadio', group: 'transition', mass: '50.942' },
+            { number: 24, symbol: 'Cr', name: 'Cromo', group: 'transition', mass: '51.996' },
+            { number: 25, symbol: 'Mn', name: 'Manganeso', group: 'transition', mass: '54.938' },
+            { number: 26, symbol: 'Fe', name: 'Hierro', group: 'transition', mass: '55.845' },
+            { number: 27, symbol: 'Co', name: 'Cobalto', group: 'transition', mass: '58.933' },
+            { number: 28, symbol: 'Ni', name: 'Níquel', group: 'transition', mass: '58.693' },
+            { number: 29, symbol: 'Cu', name: 'Cobre', group: 'transition', mass: '63.546' },
+            { number: 30, symbol: 'Zn', name: 'Zinc', group: 'transition', mass: '65.38' },
+            { number: 31, symbol: 'Ga', name: 'Galio', group: 'post-transition', mass: '69.723' },
+            { number: 32, symbol: 'Ge', name: 'Germanio', group: 'metalloid', mass: '72.64' },
+            { number: 33, symbol: 'As', name: 'Arsénico', group: 'metalloid', mass: '74.922' },
+            { number: 34, symbol: 'Se', name: 'Selenio', group: 'nonmetal', mass: '78.96' },
+            { number: 35, symbol: 'Br', name: 'Bromo', group: 'halogen', mass: '79.904' },
+            { number: 36, symbol: 'Kr', name: 'Kriptón', group: 'noble-gas', mass: '83.798' },
+            { number: 37, symbol: 'Rb', name: 'Rubidio', group: 'alkali', mass: '85.468' },
+            { number: 38, symbol: 'Sr', name: 'Estroncio', group: 'alkaline-earth', mass: '87.62' },
+            { number: 39, symbol: 'Y', name: 'Itrio', group: 'transition', mass: '88.906' },
+            { number: 40, symbol: 'Zr', name: 'Circonio', group: 'transition', mass: '91.224' },
+            { number: 41, symbol: 'Nb', name: 'Niobio', group: 'transition', mass: '92.906' },
+            { number: 42, symbol: 'Mo', name: 'Molibdeno', group: 'transition', mass: '95.96' },
+            { number: 43, symbol: 'Tc', name: 'Tecnecio', group: 'transition', mass: '98' },
+            { number: 44, symbol: 'Ru', name: 'Rutenio', group: 'transition', mass: '101.07' },
+            { number: 45, symbol: 'Rh', name: 'Rodio', group: 'transition', mass: '102.91' },
+            { number: 46, symbol: 'Pd', name: 'Paladio', group: 'transition', mass: '106.42' },
+            { number: 47, symbol: 'Ag', name: 'Plata', group: 'transition', mass: '107.87' },
+            { number: 48, symbol: 'Cd', name: 'Cadmio', group: 'transition', mass: '112.41' },
+            { number: 49, symbol: 'In', name: 'Indio', group: 'post-transition', mass: '114.82' },
+            { number: 50, symbol: 'Sn', name: 'Estaño', group: 'post-transition', mass: '118.71' },
+            { number: 51, symbol: 'Sb', name: 'Antimonio', group: 'metalloid', mass: '121.76' },
+            { number: 52, symbol: 'Te', name: 'Telurio', group: 'metalloid', mass: '127.60' },
+            { number: 53, symbol: 'I', name: 'Yodo', group: 'halogen', mass: '126.90' },
+            { number: 54, symbol: 'Xe', name: 'Xenón', group: 'noble-gas', mass: '131.29' },
+            { number: 55, symbol: 'Cs', name: 'Cesio', group: 'alkali', mass: '132.91' },
+            { number: 56, symbol: 'Ba', name: 'Bario', group: 'alkaline-earth', mass: '137.33' },
+            { number: 57, symbol: 'La', name: 'Lantano', group: 'lanthanide', mass: '138.91' },
+            { number: 58, symbol: 'Ce', name: 'Cerio', group: 'lanthanide', mass: '140.12' },
+            { number: 59, symbol: 'Pr', name: 'Praseodimio', group: 'lanthanide', mass: '140.91' },
+            { number: 60, symbol: 'Nd', name: 'Neodimio', group: 'lanthanide', mass: '144.24' },
+            { number: 61, symbol: 'Pm', name: 'Prometio', group: 'lanthanide', mass: '145' },
+            { number: 62, symbol: 'Sm', name: 'Samario', group: 'lanthanide', mass: '150.36' },
+            { number: 63, symbol: 'Eu', name: 'Europio', group: 'lanthanide', mass: '151.96' },
+            { number: 64, symbol: 'Gd', name: 'Gadolinio', group: 'lanthanide', mass: '157.25' },
+            { number: 65, symbol: 'Tb', name: 'Terbio', group: 'lanthanide', mass: '158.93' },
+            { number: 66, symbol: 'Dy', name: 'Disprosio', group: 'lanthanide', mass: '162.50' },
+            { number: 67, symbol: 'Ho', name: 'Holmio', group: 'lanthanide', mass: '164.93' },
+            { number: 68, symbol: 'Er', name: 'Erbio', group: 'lanthanide', mass: '167.26' },
+            { number: 69, symbol: 'Tm', name: 'Tulio', group: 'lanthanide', mass: '168.93' },
+            { number: 70, symbol: 'Yb', name: 'Iterbio', group: 'lanthanide', mass: '173.05' },
+            { number: 71, symbol: 'Lu', name: 'Lutecio', group: 'lanthanide', mass: '174.97' },
+            { number: 72, symbol: 'Hf', name: 'Hafnio', group: 'transition', mass: '178.49' },
+            { number: 73, symbol: 'Ta', name: 'Tántalo', group: 'transition', mass: '180.95' },
+            { number: 74, symbol: 'W', name: 'Wolframio', group: 'transition', mass: '183.84' },
+            { number: 75, symbol: 'Re', name: 'Renio', group: 'transition', mass: '186.21' },
+            { number: 76, symbol: 'Os', name: 'Osmio', group: 'transition', mass: '190.23' },
+            { number: 77, symbol: 'Ir', name: 'Iridio', group: 'transition', mass: '192.22' },
+            { number: 78, symbol: 'Pt', name: 'Platino', group: 'transition', mass: '195.08' },
+            { number: 79, symbol: 'Au', name: 'Oro', group: 'transition', mass: '196.97' },
+            { number: 80, symbol: 'Hg', name: 'Mercurio', group: 'transition', mass: '200.59' },
+            { number: 81, symbol: 'Tl', name: 'Talio', group: 'post-transition', mass: '204.38' },
+            { number: 82, symbol: 'Pb', name: 'Plomo', group: 'post-transition', mass: '207.2' },
+            { number: 83, symbol: 'Bi', name: 'Bismuto', group: 'post-transition', mass: '208.98' },
+            { number: 84, symbol: 'Po', name: 'Polonio', group: 'post-transition', mass: '209' },
+            { number: 85, symbol: 'At', name: 'Astato', group: 'halogen', mass: '210' },
+            { number: 86, symbol: 'Rn', name: 'Radón', group: 'noble-gas', mass: '222' },
+            { number: 87, symbol: 'Fr', name: 'Francio', group: 'alkali', mass: '223' },
+            { number: 88, symbol: 'Ra', name: 'Radio', group: 'alkaline-earth', mass: '226' },
+            { number: 89, symbol: 'Ac', name: 'Actinio', group: 'actinide', mass: '227' },
+            { number: 90, symbol: 'Th', name: 'Torio', group: 'actinide', mass: '232.04' },
+            { number: 91, symbol: 'Pa', name: 'Protactinio', group: 'actinide', mass: '231.04' },
+            { number: 92, symbol: 'U', name: 'Uranio', group: 'actinide', mass: '238.03' },
+            { number: 93, symbol: 'Np', name: 'Neptunio', group: 'actinide', mass: '237' },
+            { number: 94, symbol: 'Pu', name: 'Plutonio', group: 'actinide', mass: '244' },
+            { number: 95, symbol: 'Am', name: 'Americio', group: 'actinide', mass: '243' },
+            { number: 96, symbol: 'Cm', name: 'Curio', group: 'actinide', mass: '247' },
+            { number: 97, symbol: 'Bk', name: 'Berkelio', group: 'actinide', mass: '247' },
+            { number: 98, symbol: 'Cf', name: 'Californio', group: 'actinide', mass: '251' },
+            { number: 99, symbol: 'Es', name: 'Einstenio', group: 'actinide', mass: '252' },
+            { number: 100, symbol: 'Fm', name: 'Fermio', group: 'actinide', mass: '257' },
+            { number: 101, symbol: 'Md', name: 'Mendelevio', group: 'actinide', mass: '258' },
+            { number: 102, symbol: 'No', name: 'Nobelio', group: 'actinide', mass: '259' },
+            { number: 103, symbol: 'Lr', name: 'Lawrencio', group: 'actinide', mass: '262' },
+            { number: 104, symbol: 'Rf', name: 'Rutherfordio', group: 'transition', mass: '267' },
+            { number: 105, symbol: 'Db', name: 'Dubnio', group: 'transition', mass: '268' },
+            { number: 106, symbol: 'Sg', name: 'Seaborgio', group: 'transition', mass: '271' },
+            { number: 107, symbol: 'Bh', name: 'Bohrio', group: 'transition', mass: '272' },
+            { number: 108, symbol: 'Hs', name: 'Hasio', group: 'transition', mass: '270' },
+            { number: 109, symbol: 'Mt', name: 'Meitnerio', group: 'transition', mass: '276' },
+            { number: 110, symbol: 'Ds', name: 'Darmstadtio', group: 'transition', mass: '281' },
+            { number: 111, symbol: 'Rg', name: 'Roentgenio', group: 'transition', mass: '280' },
+            { number: 112, symbol: 'Cn', name: 'Copernicio', group: 'transition', mass: '285' },
+            { number: 113, symbol: 'Nh', name: 'Nihonio', group: 'post-transition', mass: '284' },
+            { number: 114, symbol: 'Fl', name: 'Flerovio', group: 'post-transition', mass: '289' },
+            { number: 115, symbol: 'Mc', name: 'Moscovio', group: 'post-transition', mass: '288' },
+            { number: 116, symbol: 'Lv', name: 'Livermorio', group: 'post-transition', mass: '293' },
+            { number: 117, symbol: 'Ts', name: 'Teneso', group: 'halogen', mass: '294' },
+            { number: 118, symbol: 'Og', name: 'Oganesón', group: 'noble-gas', mass: '294' }
         ];
 
         const periodicTable = document.getElementById('periodic-table');
@@ -248,15 +415,119 @@
         function filterElements(searchTerm = '', group = '') {
             periodicTable.innerHTML = '';
             
-            elements.forEach(element => {
-                const matchesSearch = element.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    element.symbol.toLowerCase().includes(searchTerm.toLowerCase());
-                const matchesGroup = !group || element.group === group;
+            // Crear un contenedor principal para la tabla periódica
+            const isMobile = window.innerWidth <= 768;
+            
+            // Si hay un término de búsqueda o filtro de grupo, mostramos solo los elementos filtrados
+            if (searchTerm || group) {
+                elements.forEach(element => {
+                    const matchesSearch = element.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                       element.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                       element.number.toString().includes(searchTerm);
+                    const matchesGroup = !group || element.group === group;
+                    
+                    if (matchesSearch && matchesGroup) {
+                        periodicTable.appendChild(createElement(element));
+                    }
+                });
+            } else {
+                // Si no hay filtros, mostramos la tabla periódica completa con la estructura apropiada
                 
-                if (matchesSearch && matchesGroup) {
-                    periodicTable.appendChild(createElement(element));
+                // Datos para crear la estructura de la tabla periódica
+                const tableStructure = [
+                    { p: 1, start: 1, end: 1 }, { p: 1, start: 18, end: 18 },
+                    { p: 2, start: 1, end: 2 }, { p: 2, start: 13, end: 18 },
+                    { p: 3, start: 1, end: 2 }, { p: 3, start: 13, end: 18 },
+                    { p: 4, start: 1, end: 18 },
+                    { p: 5, start: 1, end: 18 },
+                    { p: 6, start: 1, end: 18 },
+                    { p: 7, start: 1, end: 18 },
+                    { p: 8, start: 0, end: 0 }, // Espacio
+                    { p: 9, start: 4, end: 17 },  // Lantánidos
+                    { p: 10, start: 4, end: 17 }  // Actínidos
+                ];
+                
+                // Mapa para almacenar la posición de cada elemento
+                const elementMap = new Map();
+                elements.forEach(el => {
+                    let period, group;
+                    
+                    // Asignar posiciones para elementos estándar
+                    if (el.number <= 56 || (el.number >= 72 && el.number <= 88) || el.number >= 104) {
+                        if (el.number === 1) { period = 1; group = 1; }
+                        else if (el.number === 2) { period = 1; group = 18; }
+                        else if (el.number >= 3 && el.number <= 4) { period = 2; group = el.number - 2; }
+                        else if (el.number >= 5 && el.number <= 10) { period = 2; group = el.number + 8; }
+                        else if (el.number >= 11 && el.number <= 12) { period = 3; group = el.number - 10; }
+                        else if (el.number >= 13 && el.number <= 18) { period = 3; group = el.number; }
+                        else if (el.number >= 19 && el.number <= 36) { period = 4; group = ((el.number - 19) % 18) + 1; }
+                        else if (el.number >= 37 && el.number <= 54) { period = 5; group = ((el.number - 37) % 18) + 1; }
+                        else if (el.number >= 55 && el.number <= 56) { period = 6; group = ((el.number - 55) % 18) + 1; }
+                        else if (el.number >= 72 && el.number <= 86) { period = 6; group = ((el.number - 54) % 18) + 1; }
+                        else if (el.number >= 87 && el.number <= 88) { period = 7; group = ((el.number - 87) % 18) + 1; }
+                        else if (el.number >= 104 && el.number <= 118) { period = 7; group = ((el.number - 86) % 18) + 1; }
+                    }
+                    // Asignar posiciones para lantánidos y actínidos
+                    else if (el.number >= 57 && el.number <= 71) {
+                        period = 9;
+                        group = (el.number - 57) + 4;
+                    }
+                    else if (el.number >= 89 && el.number <= 103) {
+                        period = 10;
+                        group = (el.number - 89) + 4;
+                    }
+                    
+                    if (period && group) {
+                        elementMap.set(el.number, { element: el, period, group });
+                    }
+                });
+                
+                // Crear la estructura vacía de la tabla
+                const maxPeriod = 10;
+                const maxGroup = 18;
+                
+                for (let p = 1; p <= maxPeriod; p++) {
+                    for (let g = 1; g <= maxGroup; g++) {
+                        let shouldCreateCell = false;
+                        
+                        // Verificar si esta celda debe ser parte de la tabla
+                        for (const range of tableStructure) {
+                            if (p === range.p && g >= range.start && g <= range.end) {
+                                shouldCreateCell = true;
+                                break;
+                            }
+                        }
+                        
+                        if (shouldCreateCell) {
+                            // Buscar si hay un elemento en esta posición
+                            let found = false;
+                            elementMap.forEach((data) => {
+                                if (data.period === p && data.group === g) {
+                                    const elementDiv = createElement(data.element);
+                                    elementDiv.style.gridRow = p;
+                                    elementDiv.style.gridColumn = g;
+                                    periodicTable.appendChild(elementDiv);
+                                    found = true;
+                                }
+                            });
+                            
+                            // Si no hay elemento, crear una celda vacía
+                            if (!found) {
+                                const emptyDiv = document.createElement('div');
+                                emptyDiv.className = 'element empty';
+                                emptyDiv.style.gridRow = p;
+                                emptyDiv.style.gridColumn = g;
+                                periodicTable.appendChild(emptyDiv);
+                            }
+                        }
+                    }
                 }
-            });
+            }
+            
+            // Si estamos en móvil, aseguramos que se pueda navegar horizontalmente
+            if (isMobile) {
+                document.querySelector('.periodic-table-container').scrollLeft = 0;
+            }
         }
 
         searchInput.addEventListener('input', (e) => {
@@ -276,6 +547,29 @@
 
         // Inicializar la tabla
         filterElements();
+        
+        // Detectar cambios en el tamaño de la ventana para ajustar la tabla
+        window.addEventListener('resize', () => {
+            filterElements(searchInput.value);
+        });
+        
+        // Añadir evento para volver a cargar todos los elementos
+        document.addEventListener('DOMContentLoaded', () => {
+            // Botón para volver a mostrar todos los elementos
+            const resetButton = document.createElement('button');
+            resetButton.className = 'group-btn';
+            resetButton.textContent = 'Todos los elementos';
+            resetButton.style.backgroundColor = '#1e293b';
+            resetButton.style.color = 'white';
+            resetButton.addEventListener('click', () => {
+                searchInput.value = '';
+                filterElements();
+            });
+            
+            // Inserta el botón al principio de la sección de grupos
+            const groupsContainer = document.querySelector('.groups');
+            groupsContainer.insertBefore(resetButton, groupsContainer.firstChild);
+        });
     </script>
 </body>
 </html> 
