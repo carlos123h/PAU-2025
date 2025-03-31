@@ -3,573 +3,999 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla Periódica Interactiva - PAU Valencia 2025</title>
+    <title>Tabla Periódica Interactiva - EstudioPAU</title>
     <style>
-        :root {
-            --alkali: #ff6b6b;
-            --alkaline-earth: #ffd93d;
-            --transition: #6c5ce7;
-            --post-transition: #a8e6cf;
-            --metalloid: #ff8b94;
-            --nonmetal: #95e1d3;
-            --halogen: #b8e986;
-            --noble-gas: #ffd3a5;
-            --lanthanide: #ff9f43;
-            --actinide: #ff6b6b;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text: #1e293b;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background: var(--background);
-            color: var(--text);
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
         h1 {
-            text-align: center;
-            color: var(--text);
-            margin-bottom: 30px;
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
         }
-
-        .search-container {
+        
+        h2 {
+            font-size: 20px;
             margin-bottom: 20px;
-            text-align: center;
+            color: #666;
         }
-
-        #search {
-            padding: 10px;
-            width: 200px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-
-        .groups {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        
+        .instrucciones {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
         }
-
-        .group-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: transform 0.2s;
-        }
-
-        .group-btn:hover {
-            transform: translateY(-2px);
-        }
-
+        
         .periodic-table-container {
             overflow-x: auto;
+            margin: 0 -10px;
+            padding: 0 10px;
             -webkit-overflow-scrolling: touch;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
         }
-
+        
         .periodic-table {
             display: grid;
             grid-template-columns: repeat(18, 1fr);
             gap: 2px;
-            background: #ddd;
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 900px; /* Asegura un ancho mínimo para que sea scrollable en móvil */
+            margin: 30px 0;
+            position: relative;
+            min-width: 900px; /* Asegura que sea scrollable en móvil */
         }
-
+        
         .element {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
             cursor: pointer;
             transition: transform 0.2s;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            text-align: center;
-            color: white;
+            position: relative;
+            min-height: 50px;
         }
-
+        
         .element:hover {
             transform: scale(1.1);
-            z-index: 1;
+            z-index: 10;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
         }
-
-        .element-number {
-            font-size: 0.7rem;
-            opacity: 0.8;
+        
+        .element p {
+            font-size: 12px;
+            margin: 2px 0;
         }
-
-        .element-symbol {
-            font-size: 1.2rem;
+        
+        .element .symbol {
+            font-size: 20px;
             font-weight: bold;
         }
-
-        .element-name {
-            font-size: 0.6rem;
-            margin-top: 2px;
-        }
-
-        .empty {
-            background: transparent;
-        }
-
-        .details {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: none;
-            z-index: 1000;
-            max-width: 400px;
-            width: 90%;
-        }
-
-        .details.active {
-            display: block;
-        }
-
-        .details h2 {
-            margin-top: 0;
-            color: var(--text);
-        }
-
-        .details p {
-            margin: 10px 0;
-        }
-
-        .close-btn {
+        
+        .element .number {
+            font-size: 10px;
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text);
+            top: 2px;
+            left: 2px;
         }
-
+        
+        .element .name {
+            font-size: 9px;
+        }
+        
+        .alkali-metals { background-color: #ff9999; }
+        .alkaline-earth { background-color: #ffcc99; }
+        .transition-metals { background-color: #ffff99; }
+        .post-transition { background-color: #ccffcc; }
+        .metalloids { background-color: #ccffff; }
+        .nonmetals { background-color: #99ccff; }
+        .halogens { background-color: #cc99ff; }
+        .noble-gases { background-color: #ff99ff; }
+        .lanthanides { background-color: #eeeeee; }
+        .actinides { background-color: #dddddd; }
+        
+        .element-details {
+            display: none;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .element-details h3 {
+            color: #333;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .element-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .property {
+            padding: 8px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .property-name {
+            font-weight: bold;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .property-value {
+            color: #333;
+            font-size: 15px;
+        }
+        
+        .element-placeholder {
+            grid-column: auto;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        
+        .back-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+        
+        .leyenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .leyenda-item {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
+        .leyenda-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        .f-block-label {
+            grid-column: 1 / span 2;
+            padding: 10px;
+            text-align: right;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .f-block-container {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+        }
+        
         .mobile-instructions {
             display: none;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            background-color: #e8f4fc;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 14px;
             text-align: center;
-            color: #333;
+            border: 1px solid #bfe0f3;
         }
-
+        
         @media (max-width: 768px) {
-            .periodic-table {
-                grid-template-columns: repeat(6, 1fr);
-                font-size: 0.8em;
+            .container {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            h2 {
+                font-size: 16px;
+            }
+            
+            .periodic-table-container {
+                margin: 0 -10px;
+                padding: 0 10px;
                 overflow-x: auto;
-                max-width: 100%;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+            
+            .periodic-table {
+                font-size: 10px;
+                grid-template-columns: repeat(18, minmax(40px, 1fr));
+                gap: 1px;
             }
             
             .element {
-                padding: 3px;
+                padding: 4px;
+                min-height: 40px;
             }
             
-            .element-number {
-                font-size: 0.6rem;
+            .element .symbol {
+                font-size: 14px;
             }
             
-            .element-symbol {
-                font-size: 1rem;
+            .element .number {
+                font-size: 8px;
             }
             
-            .element-name {
-                font-size: 0.5rem;
+            .element .name {
+                font-size: 7px;
             }
             
-            .group-btn {
-                padding: 6px 10px;
-                font-size: 0.8em;
+            .leyenda {
+                padding: 10px;
+                flex-direction: column;
+                align-items: flex-start;
             }
-
+            
+            .leyenda-item {
+                margin-bottom: 6px;
+                font-size: 12px;
+            }
+            
+            .property {
+                padding: 6px;
+            }
+            
             .mobile-instructions {
                 display: block;
+            }
+            
+            .element-properties {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Modo oscuro */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a;
+                color: #e0e0e0;
+            }
+            
+            .container {
+                background-color: #2a2a2a;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+            
+            h1, h2 {
+                color: #e0e0e0;
+            }
+            
+            .instrucciones, .leyenda {
+                background-color: #333;
+                color: #e0e0e0;
+            }
+            
+            .element-details {
+                background-color: #333;
+                color: #e0e0e0;
+            }
+            
+            .element-details h3 {
+                color: #e0e0e0;
+                border-bottom-color: #444;
+            }
+            
+            .property {
+                background-color: #3a3a3a;
+                color: #e0e0e0;
+            }
+            
+            .property-name {
+                color: #a0a0a0;
+            }
+            
+            .property-value {
+                color: #e0e0e0;
+            }
+            
+            .footer {
+                color: #888;
+                border-top-color: #444;
+            }
+            
+            .back-button {
+                background-color: #2176bd;
+            }
+            
+            .back-button:hover {
+                background-color: #1a5c8e;
+            }
+            
+            .mobile-instructions {
+                background-color: #3a3a3a;
+                border-color: #555;
+                color: #e0e0e0;
+            }
+            
+            /* Preservar colores de elementos */
+            .alkali-metals { background-color: #ff7a7a; }
+            .alkaline-earth { background-color: #ffbb7a; }
+            .transition-metals { background-color: #ffff7a; }
+            .post-transition { background-color: #aaffaa; }
+            .metalloids { background-color: #aaffff; }
+            .nonmetals { background-color: #7abbff; }
+            .halogens { background-color: #bb7aff; }
+            .noble-gases { background-color: #ff7aff; }
+            .lanthanides { background-color: #cccccc; }
+            .actinides { background-color: #bbbbbb; }
+            
+            .element .name, .element .symbol, .element .number {
+                color: #222;
+            }
+            
+            .f-block-container {
+                border-top-color: #444;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Tabla Periódica Interactiva</h1>
+        <header>
+            <h1>Tabla Periódica Interactiva</h1>
+            <h2>Recurso para PAU Química - Comunidad Valenciana 2025</h2>
+        </header>
         
-        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-            <a href="../../index-completo.html" style="display: inline-block; padding: 8px 16px; background: #1e293b; color: white; text-decoration: none; border-radius: 6px; transition: all 0.2s;">Volver al menú principal</a>
-            <a href="javascript:history.back()" style="display: inline-block; padding: 8px 16px; background: #1e293b; color: white; text-decoration: none; border-radius: 6px; transition: all 0.2s;">Volver atrás</a>
+        <div class="instrucciones">
+            <p>Haz clic en cualquier elemento para ver información detallada relevante para la PAU. Esta tabla periódica te ayudará a preparar los ejercicios de estructura atómica, propiedades químicas y enlaces.</p>
         </div>
         
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Buscar elemento...">
-        </div>
-
-        <div class="groups">
-            <button class="group-btn" data-group="alkali">Alcalinos</button>
-            <button class="group-btn" data-group="alkaline-earth">Alcalinotérreos</button>
-            <button class="group-btn" data-group="transition">Metales de Transición</button>
-            <button class="group-btn" data-group="post-transition">Post-Transición</button>
-            <button class="group-btn" data-group="metalloid">Metaloides</button>
-            <button class="group-btn" data-group="nonmetal">No Metales</button>
-            <button class="group-btn" data-group="halogen">Halógenos</button>
-            <button class="group-btn" data-group="noble-gas">Gases Nobles</button>
-            <button class="group-btn" data-group="lanthanide">Lantánidos</button>
-            <button class="group-btn" data-group="actinide">Actínidos</button>
-        </div>
-
+        <button class="back-button" onclick="window.location.href='../../index.html'">Volver a la página principal</button>
+        
         <div class="mobile-instructions">
-            <p>Desliza horizontalmente para ver todos los elementos. Toca un elemento para ver más detalles.</p>
+            <p><strong>Instrucciones para móviles:</strong> Desliza horizontalmente para ver todos los elementos. Toca un elemento para ver sus detalles.</p>
         </div>
-
+        
+        <div class="leyenda">
+            <div class="leyenda-item"><div class="leyenda-color alkali-metals"></div> Metales alcalinos</div>
+            <div class="leyenda-item"><div class="leyenda-color alkaline-earth"></div> Metales alcalinotérreos</div>
+            <div class="leyenda-item"><div class="leyenda-color transition-metals"></div> Metales de transición</div>
+            <div class="leyenda-item"><div class="leyenda-color post-transition"></div> Metales del bloque p</div>
+            <div class="leyenda-item"><div class="leyenda-color metalloids"></div> Metaloides</div>
+            <div class="leyenda-item"><div class="leyenda-color nonmetals"></div> No metales</div>
+            <div class="leyenda-item"><div class="leyenda-color halogens"></div> Halógenos</div>
+            <div class="leyenda-item"><div class="leyenda-color noble-gases"></div> Gases nobles</div>
+            <div class="leyenda-item"><div class="leyenda-color lanthanides"></div> Lantánidos</div>
+            <div class="leyenda-item"><div class="leyenda-color actinides"></div> Actínidos</div>
+        </div>
+        
         <div class="periodic-table-container">
-            <div class="periodic-table" id="periodic-table">
-                <!-- Los elementos se generarán dinámicamente con JavaScript -->
+            <div class="periodic-table" id="periodicTable">
+                <!-- La tabla periódica se generará con JavaScript -->
             </div>
         </div>
+        
+        <div class="element-details" id="elementDetails">
+            <h3 id="elementName">Elemento</h3>
+            <div class="element-properties" id="elementProperties">
+                <!-- Propiedades del elemento seleccionado -->
+            </div>
+            <button class="back-button" onclick="hideElementDetails()">Volver a la tabla</button>
+        </div>
+        
+        <div class="footer">
+            <p>EstudioPAU Valencia 2025 - Tabla Periódica Interactiva</p>
+            <p>Recurso diseñado para estudiantes de Química de la PAU</p>
+        </div>
     </div>
-
-    <div class="details" id="element-details">
-        <button class="close-btn">&times;</button>
-        <h2 id="element-title"></h2>
-        <p id="element-info"></p>
-    </div>
-
+    
     <script>
-        const elements = [
-            { number: 1, symbol: 'H', name: 'Hidrógeno', group: 'nonmetal', mass: '1.008' },
-            { number: 2, symbol: 'He', name: 'Helio', group: 'noble-gas', mass: '4.003' },
-            { number: 3, symbol: 'Li', name: 'Litio', group: 'alkali', mass: '6.941' },
-            { number: 4, symbol: 'Be', name: 'Berilio', group: 'alkaline-earth', mass: '9.012' },
-            { number: 5, symbol: 'B', name: 'Boro', group: 'metalloid', mass: '10.811' },
-            { number: 6, symbol: 'C', name: 'Carbono', group: 'nonmetal', mass: '12.011' },
-            { number: 7, symbol: 'N', name: 'Nitrógeno', group: 'nonmetal', mass: '14.007' },
-            { number: 8, symbol: 'O', name: 'Oxígeno', group: 'nonmetal', mass: '15.999' },
-            { number: 9, symbol: 'F', name: 'Flúor', group: 'halogen', mass: '18.998' },
-            { number: 10, symbol: 'Ne', name: 'Neón', group: 'noble-gas', mass: '20.180' },
-            { number: 11, symbol: 'Na', name: 'Sodio', group: 'alkali', mass: '22.990' },
-            { number: 12, symbol: 'Mg', name: 'Magnesio', group: 'alkaline-earth', mass: '24.305' },
-            { number: 13, symbol: 'Al', name: 'Aluminio', group: 'post-transition', mass: '26.982' },
-            { number: 14, symbol: 'Si', name: 'Silicio', group: 'metalloid', mass: '28.086' },
-            { number: 15, symbol: 'P', name: 'Fósforo', group: 'nonmetal', mass: '30.974' },
-            { number: 16, symbol: 'S', name: 'Azufre', group: 'nonmetal', mass: '32.065' },
-            { number: 17, symbol: 'Cl', name: 'Cloro', group: 'halogen', mass: '35.453' },
-            { number: 18, symbol: 'Ar', name: 'Argón', group: 'noble-gas', mass: '39.948' },
-            { number: 19, symbol: 'K', name: 'Potasio', group: 'alkali', mass: '39.098' },
-            { number: 20, symbol: 'Ca', name: 'Calcio', group: 'alkaline-earth', mass: '40.078' },
-            { number: 21, symbol: 'Sc', name: 'Escandio', group: 'transition', mass: '44.956' },
-            { number: 22, symbol: 'Ti', name: 'Titanio', group: 'transition', mass: '47.867' },
-            { number: 23, symbol: 'V', name: 'Vanadio', group: 'transition', mass: '50.942' },
-            { number: 24, symbol: 'Cr', name: 'Cromo', group: 'transition', mass: '51.996' },
-            { number: 25, symbol: 'Mn', name: 'Manganeso', group: 'transition', mass: '54.938' },
-            { number: 26, symbol: 'Fe', name: 'Hierro', group: 'transition', mass: '55.845' },
-            { number: 27, symbol: 'Co', name: 'Cobalto', group: 'transition', mass: '58.933' },
-            { number: 28, symbol: 'Ni', name: 'Níquel', group: 'transition', mass: '58.693' },
-            { number: 29, symbol: 'Cu', name: 'Cobre', group: 'transition', mass: '63.546' },
-            { number: 30, symbol: 'Zn', name: 'Zinc', group: 'transition', mass: '65.38' },
-            { number: 31, symbol: 'Ga', name: 'Galio', group: 'post-transition', mass: '69.723' },
-            { number: 32, symbol: 'Ge', name: 'Germanio', group: 'metalloid', mass: '72.64' },
-            { number: 33, symbol: 'As', name: 'Arsénico', group: 'metalloid', mass: '74.922' },
-            { number: 34, symbol: 'Se', name: 'Selenio', group: 'nonmetal', mass: '78.96' },
-            { number: 35, symbol: 'Br', name: 'Bromo', group: 'halogen', mass: '79.904' },
-            { number: 36, symbol: 'Kr', name: 'Kriptón', group: 'noble-gas', mass: '83.798' },
-            { number: 37, symbol: 'Rb', name: 'Rubidio', group: 'alkali', mass: '85.468' },
-            { number: 38, symbol: 'Sr', name: 'Estroncio', group: 'alkaline-earth', mass: '87.62' },
-            { number: 39, symbol: 'Y', name: 'Itrio', group: 'transition', mass: '88.906' },
-            { number: 40, symbol: 'Zr', name: 'Circonio', group: 'transition', mass: '91.224' },
-            { number: 41, symbol: 'Nb', name: 'Niobio', group: 'transition', mass: '92.906' },
-            { number: 42, symbol: 'Mo', name: 'Molibdeno', group: 'transition', mass: '95.96' },
-            { number: 43, symbol: 'Tc', name: 'Tecnecio', group: 'transition', mass: '98' },
-            { number: 44, symbol: 'Ru', name: 'Rutenio', group: 'transition', mass: '101.07' },
-            { number: 45, symbol: 'Rh', name: 'Rodio', group: 'transition', mass: '102.91' },
-            { number: 46, symbol: 'Pd', name: 'Paladio', group: 'transition', mass: '106.42' },
-            { number: 47, symbol: 'Ag', name: 'Plata', group: 'transition', mass: '107.87' },
-            { number: 48, symbol: 'Cd', name: 'Cadmio', group: 'transition', mass: '112.41' },
-            { number: 49, symbol: 'In', name: 'Indio', group: 'post-transition', mass: '114.82' },
-            { number: 50, symbol: 'Sn', name: 'Estaño', group: 'post-transition', mass: '118.71' },
-            { number: 51, symbol: 'Sb', name: 'Antimonio', group: 'metalloid', mass: '121.76' },
-            { number: 52, symbol: 'Te', name: 'Telurio', group: 'metalloid', mass: '127.60' },
-            { number: 53, symbol: 'I', name: 'Yodo', group: 'halogen', mass: '126.90' },
-            { number: 54, symbol: 'Xe', name: 'Xenón', group: 'noble-gas', mass: '131.29' },
-            { number: 55, symbol: 'Cs', name: 'Cesio', group: 'alkali', mass: '132.91' },
-            { number: 56, symbol: 'Ba', name: 'Bario', group: 'alkaline-earth', mass: '137.33' },
-            { number: 57, symbol: 'La', name: 'Lantano', group: 'lanthanide', mass: '138.91' },
-            { number: 58, symbol: 'Ce', name: 'Cerio', group: 'lanthanide', mass: '140.12' },
-            { number: 59, symbol: 'Pr', name: 'Praseodimio', group: 'lanthanide', mass: '140.91' },
-            { number: 60, symbol: 'Nd', name: 'Neodimio', group: 'lanthanide', mass: '144.24' },
-            { number: 61, symbol: 'Pm', name: 'Prometio', group: 'lanthanide', mass: '145' },
-            { number: 62, symbol: 'Sm', name: 'Samario', group: 'lanthanide', mass: '150.36' },
-            { number: 63, symbol: 'Eu', name: 'Europio', group: 'lanthanide', mass: '151.96' },
-            { number: 64, symbol: 'Gd', name: 'Gadolinio', group: 'lanthanide', mass: '157.25' },
-            { number: 65, symbol: 'Tb', name: 'Terbio', group: 'lanthanide', mass: '158.93' },
-            { number: 66, symbol: 'Dy', name: 'Disprosio', group: 'lanthanide', mass: '162.50' },
-            { number: 67, symbol: 'Ho', name: 'Holmio', group: 'lanthanide', mass: '164.93' },
-            { number: 68, symbol: 'Er', name: 'Erbio', group: 'lanthanide', mass: '167.26' },
-            { number: 69, symbol: 'Tm', name: 'Tulio', group: 'lanthanide', mass: '168.93' },
-            { number: 70, symbol: 'Yb', name: 'Iterbio', group: 'lanthanide', mass: '173.05' },
-            { number: 71, symbol: 'Lu', name: 'Lutecio', group: 'lanthanide', mass: '174.97' },
-            { number: 72, symbol: 'Hf', name: 'Hafnio', group: 'transition', mass: '178.49' },
-            { number: 73, symbol: 'Ta', name: 'Tántalo', group: 'transition', mass: '180.95' },
-            { number: 74, symbol: 'W', name: 'Wolframio', group: 'transition', mass: '183.84' },
-            { number: 75, symbol: 'Re', name: 'Renio', group: 'transition', mass: '186.21' },
-            { number: 76, symbol: 'Os', name: 'Osmio', group: 'transition', mass: '190.23' },
-            { number: 77, symbol: 'Ir', name: 'Iridio', group: 'transition', mass: '192.22' },
-            { number: 78, symbol: 'Pt', name: 'Platino', group: 'transition', mass: '195.08' },
-            { number: 79, symbol: 'Au', name: 'Oro', group: 'transition', mass: '196.97' },
-            { number: 80, symbol: 'Hg', name: 'Mercurio', group: 'transition', mass: '200.59' },
-            { number: 81, symbol: 'Tl', name: 'Talio', group: 'post-transition', mass: '204.38' },
-            { number: 82, symbol: 'Pb', name: 'Plomo', group: 'post-transition', mass: '207.2' },
-            { number: 83, symbol: 'Bi', name: 'Bismuto', group: 'post-transition', mass: '208.98' },
-            { number: 84, symbol: 'Po', name: 'Polonio', group: 'post-transition', mass: '209' },
-            { number: 85, symbol: 'At', name: 'Astato', group: 'halogen', mass: '210' },
-            { number: 86, symbol: 'Rn', name: 'Radón', group: 'noble-gas', mass: '222' },
-            { number: 87, symbol: 'Fr', name: 'Francio', group: 'alkali', mass: '223' },
-            { number: 88, symbol: 'Ra', name: 'Radio', group: 'alkaline-earth', mass: '226' },
-            { number: 89, symbol: 'Ac', name: 'Actinio', group: 'actinide', mass: '227' },
-            { number: 90, symbol: 'Th', name: 'Torio', group: 'actinide', mass: '232.04' },
-            { number: 91, symbol: 'Pa', name: 'Protactinio', group: 'actinide', mass: '231.04' },
-            { number: 92, symbol: 'U', name: 'Uranio', group: 'actinide', mass: '238.03' },
-            { number: 93, symbol: 'Np', name: 'Neptunio', group: 'actinide', mass: '237' },
-            { number: 94, symbol: 'Pu', name: 'Plutonio', group: 'actinide', mass: '244' },
-            { number: 95, symbol: 'Am', name: 'Americio', group: 'actinide', mass: '243' },
-            { number: 96, symbol: 'Cm', name: 'Curio', group: 'actinide', mass: '247' },
-            { number: 97, symbol: 'Bk', name: 'Berkelio', group: 'actinide', mass: '247' },
-            { number: 98, symbol: 'Cf', name: 'Californio', group: 'actinide', mass: '251' },
-            { number: 99, symbol: 'Es', name: 'Einstenio', group: 'actinide', mass: '252' },
-            { number: 100, symbol: 'Fm', name: 'Fermio', group: 'actinide', mass: '257' },
-            { number: 101, symbol: 'Md', name: 'Mendelevio', group: 'actinide', mass: '258' },
-            { number: 102, symbol: 'No', name: 'Nobelio', group: 'actinide', mass: '259' },
-            { number: 103, symbol: 'Lr', name: 'Lawrencio', group: 'actinide', mass: '262' },
-            { number: 104, symbol: 'Rf', name: 'Rutherfordio', group: 'transition', mass: '267' },
-            { number: 105, symbol: 'Db', name: 'Dubnio', group: 'transition', mass: '268' },
-            { number: 106, symbol: 'Sg', name: 'Seaborgio', group: 'transition', mass: '271' },
-            { number: 107, symbol: 'Bh', name: 'Bohrio', group: 'transition', mass: '272' },
-            { number: 108, symbol: 'Hs', name: 'Hasio', group: 'transition', mass: '270' },
-            { number: 109, symbol: 'Mt', name: 'Meitnerio', group: 'transition', mass: '276' },
-            { number: 110, symbol: 'Ds', name: 'Darmstadtio', group: 'transition', mass: '281' },
-            { number: 111, symbol: 'Rg', name: 'Roentgenio', group: 'transition', mass: '280' },
-            { number: 112, symbol: 'Cn', name: 'Copernicio', group: 'transition', mass: '285' },
-            { number: 113, symbol: 'Nh', name: 'Nihonio', group: 'post-transition', mass: '284' },
-            { number: 114, symbol: 'Fl', name: 'Flerovio', group: 'post-transition', mass: '289' },
-            { number: 115, symbol: 'Mc', name: 'Moscovio', group: 'post-transition', mass: '288' },
-            { number: 116, symbol: 'Lv', name: 'Livermorio', group: 'post-transition', mass: '293' },
-            { number: 117, symbol: 'Ts', name: 'Teneso', group: 'halogen', mass: '294' },
-            { number: 118, symbol: 'Og', name: 'Oganesón', group: 'noble-gas', mass: '294' }
-        ];
+        // Función para generar todos los elementos de la tabla periódica
+        function generateElementsData() {
+            // Mantener los primeros 20 elementos detallados originales
+            const detailedElements = [
+                { number: 1, symbol: 'H', name: 'Hidrógeno', category: 'nonmetals', group: 1, period: 1, 
+                  electronegativity: 2.20, atomicMass: 1.008, electronConfiguration: '1s¹', 
+                  description: 'Gas incoloro, insípido e inodoro. Es el elemento más abundante del universo.' },
+                { number: 2, symbol: 'He', name: 'Helio', category: 'noble-gases', group: 18, period: 1,
+                  electronegativity: '-', atomicMass: 4.0026, electronConfiguration: '1s²',
+                  description: 'Gas noble inerte, incoloro e inodoro. Segundo elemento más abundante del universo.' },
+                { number: 3, symbol: 'Li', name: 'Litio', category: 'alkali-metals', group: 1, period: 2,
+                  electronegativity: 0.98, atomicMass: 6.94, electronConfiguration: '[He] 2s¹',
+                  description: 'Metal alcalino blando, de color blanco plata. Altamente reactivo.' },
+                { number: 4, symbol: 'Be', name: 'Berilio', category: 'alkaline-earth', group: 2, period: 2,
+                  electronegativity: 1.57, atomicMass: 9.0122, electronConfiguration: '[He] 2s²',
+                  description: 'Metal alcalinotérreo, duro pero quebradizo.' },
+                { number: 5, symbol: 'B', name: 'Boro', category: 'metalloids', group: 13, period: 2,
+                  electronegativity: 2.04, atomicMass: 10.81, electronConfiguration: '[He] 2s² 2p¹',
+                  description: 'Semimetal con propiedades de semiconductor.' },
+                { number: 6, symbol: 'C', name: 'Carbono', category: 'nonmetals', group: 14, period: 2,
+                  electronegativity: 2.55, atomicMass: 12.01, electronConfiguration: '[He] 2s² 2p²',
+                  description: 'No metal con capacidad única para formar cadenas largas (química orgánica).' },
+                { number: 7, symbol: 'N', name: 'Nitrógeno', category: 'nonmetals', group: 15, period: 2,
+                  electronegativity: 3.04, atomicMass: 14.01, electronConfiguration: '[He] 2s² 2p³',
+                  description: 'No metal, gas incoloro, inodoro e insípido. Forma aproximadamente el 78% del aire.' },
+                { number: 8, symbol: 'O', name: 'Oxígeno', category: 'nonmetals', group: 16, period: 2,
+                  electronegativity: 3.44, atomicMass: 16.00, electronConfiguration: '[He] 2s² 2p⁴',
+                  description: 'No metal, gas incoloro, inodoro e insípido. Forma aproximadamente el 21% del aire.' },
+                { number: 9, symbol: 'F', name: 'Flúor', category: 'halogens', group: 17, period: 2,
+                  electronegativity: 3.98, atomicMass: 19.00, electronConfiguration: '[He] 2s² 2p⁵',
+                  description: 'Halógeno, gas amarillento pálido. El elemento más electronegativo.' },
+                { number: 10, symbol: 'Ne', name: 'Neón', category: 'noble-gases', group: 18, period: 2,
+                  electronegativity: '-', atomicMass: 20.18, electronConfiguration: '[He] 2s² 2p⁶',
+                  description: 'Gas noble inerte, incoloro. Utilizado en luces de neón.' },
+                { number: 11, symbol: 'Na', name: 'Sodio', category: 'alkali-metals', group: 1, period: 3,
+                  electronegativity: 0.93, atomicMass: 22.99, electronConfiguration: '[Ne] 3s¹',
+                  description: 'Metal alcalino blando, plateado. Muy reactivo con agua y oxígeno.' },
+                { number: 12, symbol: 'Mg', name: 'Magnesio', category: 'alkaline-earth', group: 2, period: 3,
+                  electronegativity: 1.31, atomicMass: 24.31, electronConfiguration: '[Ne] 3s²',
+                  description: 'Metal alcalinotérreo ligero, brillante y plateado.' },
+                { number: 13, symbol: 'Al', name: 'Aluminio', category: 'post-transition', group: 13, period: 3,
+                  electronegativity: 1.61, atomicMass: 26.98, electronConfiguration: '[Ne] 3s² 3p¹',
+                  description: 'Metal ligero, plateado y no ferromagnético. Muy abundante en la corteza terrestre.' },
+                { number: 14, symbol: 'Si', name: 'Silicio', category: 'metalloids', group: 14, period: 3,
+                  electronegativity: 1.90, atomicMass: 28.09, electronConfiguration: '[Ne] 3s² 3p²',
+                  description: 'Semimetal brillante con apariencia metálica azulada grisácea. Segundo elemento más abundante en la corteza terrestre.' },
+                { number: 15, symbol: 'P', name: 'Fósforo', category: 'nonmetals', group: 15, period: 3,
+                  electronegativity: 2.19, atomicMass: 30.97, electronConfiguration: '[Ne] 3s² 3p³',
+                  description: 'No metal que puede existir en varias formas alotrópicas. Componente esencial de los seres vivos.' },
+                { number: 16, symbol: 'S', name: 'Azufre', category: 'nonmetals', group: 16, period: 3,
+                  electronegativity: 2.58, atomicMass: 32.07, electronConfiguration: '[Ne] 3s² 3p⁴',
+                  description: 'No metal de color amarillo. Componente de aminoácidos y muchos compuestos orgánicos.' },
+                { number: 17, symbol: 'Cl', name: 'Cloro', category: 'halogens', group: 17, period: 3,
+                  electronegativity: 3.16, atomicMass: 35.45, electronConfiguration: '[Ne] 3s² 3p⁵',
+                  description: 'Halógeno, gas de color amarillo-verdoso. Muy utilizado como desinfectante.' },
+                { number: 18, symbol: 'Ar', name: 'Argón', category: 'noble-gases', group: 18, period: 3,
+                  electronegativity: '-', atomicMass: 39.95, electronConfiguration: '[Ne] 3s² 3p⁶',
+                  description: 'Gas noble inerte, incoloro. Constituye aproximadamente el 0.93% del aire.' },
+                { number: 19, symbol: 'K', name: 'Potasio', category: 'alkali-metals', group: 1, period: 4,
+                  electronegativity: 0.82, atomicMass: 39.10, electronConfiguration: '[Ar] 4s¹',
+                  description: 'Metal alcalino blando, plateado y brillante. Muy reactivo.' },
+                { number: 20, symbol: 'Ca', name: 'Calcio', category: 'alkaline-earth', group: 2, period: 4,
+                  electronegativity: 1.00, atomicMass: 40.08, electronConfiguration: '[Ar] 4s²',
+                  description: 'Metal alcalinotérreo, suave y grisáceo. Quinto elemento más abundante en la corteza terrestre.' }
+            ];
 
-        const periodicTable = document.getElementById('periodic-table');
-        const searchInput = document.getElementById('search');
-        const groupButtons = document.querySelectorAll('.group-btn');
-        const details = document.getElementById('element-details');
-        const closeBtn = document.querySelector('.close-btn');
+            // Datos de los elementos restantes (21-118)
+            const additionalElements = [
+                // Elementos del bloque d (metales de transición)
+                { number: 21, symbol: 'Sc', name: 'Escandio', category: 'transition-metals', group: 3, period: 4,
+                  electronegativity: 1.36, atomicMass: 44.956, electronConfiguration: '[Ar] 3d¹ 4s²',
+                  description: 'Metal de transición plateado que se oxida en aire. Utilizado en aleaciones para aeronáutica y deportes.' },
+                { number: 22, symbol: 'Ti', name: 'Titanio', category: 'transition-metals', group: 4, period: 4,
+                  electronegativity: 1.54, atomicMass: 47.867, electronConfiguration: '[Ar] 3d² 4s²',
+                  description: 'Metal de transición ligero, fuerte y resistente a la corrosión. Muy utilizado en aleaciones para industria aeroespacial y prótesis.' },
+                { number: 23, symbol: 'V', name: 'Vanadio', category: 'transition-metals', group: 5, period: 4,
+                  electronegativity: 1.63, atomicMass: 50.942, electronConfiguration: '[Ar] 3d³ 4s²',
+                  description: 'Metal dúctil, maleable y resistente a la corrosión. Usado principalmente como aditivo en aceros de alta resistencia.' },
+                { number: 24, symbol: 'Cr', name: 'Cromo', category: 'transition-metals', group: 6, period: 4,
+                  electronegativity: 1.66, atomicMass: 51.996, electronConfiguration: '[Ar] 3d⁵ 4s¹',
+                  description: 'Metal duro, brillante y de color gris plateado. Utilizado en galvanoplastia y para fabricar acero inoxidable.' },
+                { number: 25, symbol: 'Mn', name: 'Manganeso', category: 'transition-metals', group: 7, period: 4,
+                  electronegativity: 1.55, atomicMass: 54.938, electronConfiguration: '[Ar] 3d⁵ 4s²',
+                  description: 'Metal quebradizo de color gris plateado. Esencial en la fabricación de acero y como parte de enzimas en los seres vivos.' },
+                { number: 26, symbol: 'Fe', name: 'Hierro', category: 'transition-metals', group: 8, period: 4,
+                  electronegativity: 1.83, atomicMass: 55.845, electronConfiguration: '[Ar] 3d⁶ 4s²',
+                  description: 'Metal maleable de color gris plateado. Es el elemento más abundante en la Tierra y esencial para casi todas las formas de vida.' },
+                { number: 27, symbol: 'Co', name: 'Cobalto', category: 'transition-metals', group: 9, period: 4,
+                  electronegativity: 1.88, atomicMass: 58.933, electronConfiguration: '[Ar] 3d⁷ 4s²',
+                  description: 'Metal ferromagnético de color plateado azulado. Componente esencial de la vitamina B12 y muy utilizado en aleaciones.' },
+                { number: 28, symbol: 'Ni', name: 'Níquel', category: 'transition-metals', group: 10, period: 4,
+                  electronegativity: 1.91, atomicMass: 58.693, electronConfiguration: '[Ar] 3d⁸ 4s²',
+                  description: 'Metal plateado con ligero tono dorado. Resistente a la corrosión y utilizado en monedas, baterías y como catalizador.' },
+                { number: 29, symbol: 'Cu', name: 'Cobre', category: 'transition-metals', group: 11, period: 4,
+                  electronegativity: 1.90, atomicMass: 63.546, electronConfiguration: '[Ar] 3d¹⁰ 4s¹',
+                  description: 'Metal de color rojizo y brillo metálico. Excelente conductor eléctrico y térmico, muy utilizado en cables y componentes electrónicos.' },
+                { number: 30, symbol: 'Zn', name: 'Zinc', category: 'transition-metals', group: 12, period: 4,
+                  electronegativity: 1.65, atomicMass: 65.38, electronConfiguration: '[Ar] 3d¹⁰ 4s²',
+                  description: 'Metal de color azul pálido y brillante. Utilizado para galvanizar hierro y en aleaciones como el latón.' },
+                
+                // Bloque p (periodo 4)
+                { number: 31, symbol: 'Ga', name: 'Galio', category: 'post-transition', group: 13, period: 4,
+                  electronegativity: 1.81, atomicMass: 69.723, electronConfiguration: '[Ar] 3d¹⁰ 4s² 4p¹',
+                  description: 'Metal de color plateado azulado que puede ser líquido cerca de temperatura ambiente. Usado en semiconductores y LED.' },
+                { number: 32, symbol: 'Ge', name: 'Germanio', category: 'metalloids', group: 14, period: 4,
+                  electronegativity: 2.01, atomicMass: 72.630, electronConfiguration: '[Ar] 3d¹⁰ 4s² 4p²',
+                  description: 'Metaloide cristalino, duro y quebradizo de color gris plateado. Utilizado en electrónica como semiconductor.' },
+                { number: 33, symbol: 'As', name: 'Arsénico', category: 'metalloids', group: 15, period: 4,
+                  electronegativity: 2.18, atomicMass: 74.922, electronConfiguration: '[Ar] 3d¹⁰ 4s² 4p³',
+                  description: 'Metaloide de color gris metálico. Tóxico para muchos organismos, pero también usado en algunos tratamientos médicos.' },
+                { number: 34, symbol: 'Se', name: 'Selenio', category: 'nonmetals', group: 16, period: 4,
+                  electronegativity: 2.55, atomicMass: 78.971, electronConfiguration: '[Ar] 3d¹⁰ 4s² 4p⁴',
+                  description: 'No metal que existe en varias formas alotrópicas. Importante en nutrición y utilizado en celdas solares y fotocopiadoras.' },
+                { number: 35, symbol: 'Br', name: 'Bromo', category: 'halogens', group: 17, period: 4,
+                  electronegativity: 2.96, atomicMass: 79.904, electronConfiguration: '[Ar] 3d¹⁰ 4s² 4p⁵',
+                  description: 'Halógeno que a temperatura ambiente es un líquido rojo oscuro. Utilizado en retardantes de llama y medicamentos.' },
+                { number: 36, symbol: 'Kr', name: 'Kriptón', category: 'noble-gases', group: 18, period: 4,
+                  electronegativity: 3.00, atomicMass: 83.798, electronConfiguration: '[Ar] 3d¹⁰ 4s² 4p⁶',
+                  description: 'Gas noble incoloro, inodoro e inerte. Usado en lámparas, anestesia y propulsión espacial.' },
+                
+                // Periodo 5 (metales alcalinos y alcalinotérreos)
+                { number: 37, symbol: 'Rb', name: 'Rubidio', category: 'alkali-metals', group: 1, period: 5,
+                  electronegativity: 0.82, atomicMass: 85.468, electronConfiguration: '[Kr] 5s¹',
+                  description: 'Metal alcalino plateado muy reactivo. Utilizado en células fotoeléctricas y como marcador en estudios de medicina.' },
+                { number: 38, symbol: 'Sr', name: 'Estroncio', category: 'alkaline-earth', group: 2, period: 5,
+                  electronegativity: 0.95, atomicMass: 87.62, electronConfiguration: '[Kr] 5s²',
+                  description: 'Metal alcalinotérreo suave y plateado. Sus compuestos producen color rojo en fuegos artificiales y señales de emergencia.' },
+                { number: 39, symbol: 'Y', name: 'Itrio', category: 'transition-metals', group: 3, period: 5,
+                  electronegativity: 1.22, atomicMass: 88.906, electronConfiguration: '[Kr] 4d¹ 5s²',
+                  description: 'Metal de transición plateado, resistente a la corrosión. Utilizado en LEDs y láseres.' },
+                { number: 40, symbol: 'Zr', name: 'Circonio', category: 'transition-metals', group: 4, period: 5,
+                  electronegativity: 1.33, atomicMass: 91.224, electronConfiguration: '[Kr] 4d² 5s²',
+                  description: 'Metal resistente a la corrosión. Utilizado en reactores nucleares, aleaciones y cerámica.' },
+                { number: 41, symbol: 'Nb', name: 'Niobio', category: 'transition-metals', group: 5, period: 5,
+                  electronegativity: 1.6, atomicMass: 92.906, electronConfiguration: '[Kr] 4d⁴ 5s¹',
+                  description: 'Metal dúctil, resistente a la corrosión y con alto punto de fusión. Usado en aleaciones especiales y superconductores.' },
+                { number: 42, symbol: 'Mo', name: 'Molibdeno', category: 'transition-metals', group: 6, period: 5,
+                  electronegativity: 2.16, atomicMass: 95.95, electronConfiguration: '[Kr] 4d⁵ 5s¹',
+                  description: 'Metal plateado con alto punto de fusión. Importante en aleaciones de acero y como oligoelemento en sistemas biológicos.' },
+                { number: 43, symbol: 'Tc', name: 'Tecnecio', category: 'transition-metals', group: 7, period: 5,
+                  electronegativity: 1.9, atomicMass: 98, electronConfiguration: '[Kr] 4d⁵ 5s²',
+                  description: 'Elemento radiactivo, primer elemento sintético. Usado en medicina nuclear para diagnóstico por imágenes.' },
+                { number: 44, symbol: 'Ru', name: 'Rutenio', category: 'transition-metals', group: 8, period: 5,
+                  electronegativity: 2.2, atomicMass: 101.07, electronConfiguration: '[Kr] 4d⁷ 5s¹',
+                  description: 'Metal duro y quebradizo de color blanco plateado. Utilizado como catalizador y en aleaciones resistentes.' },
+                { number: 45, symbol: 'Rh', name: 'Rodio', category: 'transition-metals', group: 9, period: 5,
+                  electronegativity: 2.28, atomicMass: 102.91, electronConfiguration: '[Kr] 4d⁸ 5s¹',
+                  description: 'Metal noble, plateado y resistente a la corrosión. Utilizado como catalizador y en joyería.' },
+                { number: 46, symbol: 'Pd', name: 'Paladio', category: 'transition-metals', group: 10, period: 5,
+                  electronegativity: 2.20, atomicMass: 106.42, electronConfiguration: '[Kr] 4d¹⁰',
+                  description: 'Metal noble plateado usado en convertidores catalíticos, joyería y electrónica.' },
+                { number: 47, symbol: 'Ag', name: 'Plata', category: 'transition-metals', group: 11, period: 5,
+                  electronegativity: 1.93, atomicMass: 107.87, electronConfiguration: '[Kr] 4d¹⁰ 5s¹',
+                  description: 'Metal noble blanco brillante. Mejor conductor de electricidad y calor. Usado en joyería, fotografía y electrónica.' },
+                { number: 48, symbol: 'Cd', name: 'Cadmio', category: 'transition-metals', group: 12, period: 5,
+                  electronegativity: 1.69, atomicMass: 112.41, electronConfiguration: '[Kr] 4d¹⁰ 5s²',
+                  description: 'Metal blando de color plateado azulado. Tóxico, usado en baterías recargables y pigmentos.' },
+                { number: 49, symbol: 'In', name: 'Indio', category: 'post-transition', group: 13, period: 5,
+                  electronegativity: 1.78, atomicMass: 114.82, electronConfiguration: '[Kr] 4d¹⁰ 5s² 5p¹',
+                  description: 'Metal blando y plateado. Utilizado en pantallas táctiles, soldaduras y semiconductores.' },
+                { number: 50, symbol: 'Sn', name: 'Estaño', category: 'post-transition', group: 14, period: 5,
+                  electronegativity: 1.96, atomicMass: 118.71, electronConfiguration: '[Kr] 4d¹⁰ 5s² 5p²',
+                  description: 'Metal plateado maleable. Utilizado en soldaduras, recubrimientos y aleaciones como el bronce.' },
+                { number: 51, symbol: 'Sb', name: 'Antimonio', category: 'metalloids', group: 15, period: 5,
+                  electronegativity: 2.05, atomicMass: 121.76, electronConfiguration: '[Kr] 4d¹⁰ 5s² 5p³',
+                  description: 'Metaloide brillante y plateado. Utilizado en semiconductores, baterías y retardantes de llama.' },
+                { number: 52, symbol: 'Te', name: 'Telurio', category: 'metalloids', group: 16, period: 5,
+                  electronegativity: 2.1, atomicMass: 127.60, electronConfiguration: '[Kr] 4d¹⁰ 5s² 5p⁴',
+                  description: 'Metaloide quebradizo y de brillo plateado. Utilizado en aleaciones y en la fabricación de dispositivos electrónicos.' },
+                { number: 53, symbol: 'I', name: 'Yodo', category: 'halogens', group: 17, period: 5,
+                  electronegativity: 2.66, atomicMass: 126.90, electronConfiguration: '[Kr] 4d¹⁰ 5s² 5p⁵',
+                  description: 'Halógeno violeta-negro sólido a temperatura ambiente. Esencial para la función tiroidea y usado como antiséptico.' },
+                { number: 54, symbol: 'Xe', name: 'Xenón', category: 'noble-gases', group: 18, period: 5,
+                  electronegativity: 2.6, atomicMass: 131.29, electronConfiguration: '[Kr] 4d¹⁰ 5s² 5p⁶',
+                  description: 'Gas noble incoloro, inodoro y pesado. Utilizado en lámparas, anestesia y propulsión espacial.' },
+                
+                // Periodo 6
+                { number: 55, symbol: 'Cs', name: 'Cesio', category: 'alkali-metals', group: 1, period: 6,
+                  electronegativity: 0.79, atomicMass: 132.91, electronConfiguration: '[Xe] 6s¹',
+                  description: 'Metal alcalino dorado, suave y de bajo punto de fusión. Usado en relojes atómicos y como catalizador.' },
+                { number: 56, symbol: 'Ba', name: 'Bario', category: 'alkaline-earth', group: 2, period: 6,
+                  electronegativity: 0.89, atomicMass: 137.33, electronConfiguration: '[Xe] 6s²',
+                  description: 'Metal alcalinotérreo plateado. Sus compuestos producen color verde en fuegos artificiales y se usa como medio de contraste en radiografías.' },
+                
+                // Lantánidos (bloque f)
+                { number: 57, symbol: 'La', name: 'Lantano', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.10, atomicMass: 138.91, electronConfiguration: '[Xe] 5d¹ 6s²',
+                  description: 'Elemento de tierras raras, metálico, brillante y maleable. Utilizado en lentes de cámaras y baterías híbridas.' },
+                { number: 58, symbol: 'Ce', name: 'Cerio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.12, atomicMass: 140.12, electronConfiguration: '[Xe] 4f¹ 5d¹ 6s²',
+                  description: 'Elemento de tierras raras, gris plateado. Utilizado en catalizadores, pulido de vidrios y aleaciones.' },
+                { number: 59, symbol: 'Pr', name: 'Praseodimio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.13, atomicMass: 140.91, electronConfiguration: '[Xe] 4f³ 6s²',
+                  description: 'Metal de tierras raras, suave y plateado. Utilizado en imanes, vidrios especiales y como catalizador.' },
+                { number: 60, symbol: 'Nd', name: 'Neodimio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.14, atomicMass: 144.24, electronConfiguration: '[Xe] 4f⁴ 6s²',
+                  description: 'Metal de tierras raras, plateado. Forma parte de imanes potentes usados en motores y generadores.' },
+                { number: 61, symbol: 'Pm', name: 'Prometio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.13, atomicMass: 145, electronConfiguration: '[Xe] 4f⁵ 6s²',
+                  description: 'Metal radiactivo sintético. Se utiliza en baterías nucleares miniatura y como fuente de rayos X.' },
+                { number: 62, symbol: 'Sm', name: 'Samario', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.17, atomicMass: 150.36, electronConfiguration: '[Xe] 4f⁶ 6s²',
+                  description: 'Metal de tierras raras plateado. Utilizado en imanes, catalizadores y aplicaciones nucleares.' },
+                { number: 63, symbol: 'Eu', name: 'Europio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.2, atomicMass: 151.96, electronConfiguration: '[Xe] 4f⁷ 6s²',
+                  description: 'Metal de tierras raras plateado. Sus compuestos son utilizados como fósforos rojos en televisores y lámparas.' },
+                { number: 64, symbol: 'Gd', name: 'Gadolinio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.20, atomicMass: 157.25, electronConfiguration: '[Xe] 4f⁷ 5d¹ 6s²',
+                  description: 'Metal plateado, ferromagnético. Utilizado en agentes de contraste para resonancias magnéticas y en barras de control nuclear.' },
+                { number: 65, symbol: 'Tb', name: 'Terbio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.2, atomicMass: 158.93, electronConfiguration: '[Xe] 4f⁹ 6s²',
+                  description: 'Metal de tierras raras, plateado. Usado en fósforos verdes para pantallas y como estabilizador en celdas de combustible.' },
+                { number: 66, symbol: 'Dy', name: 'Disprosio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.22, atomicMass: 162.50, electronConfiguration: '[Xe] 4f¹⁰ 6s²',
+                  description: 'Metal plateado, maleable. Componente de imanes para motores de vehículos híbridos y discos duros.' },
+                { number: 67, symbol: 'Ho', name: 'Holmio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.23, atomicMass: 164.93, electronConfiguration: '[Xe] 4f¹¹ 6s²',
+                  description: 'Metal de tierras raras, plateado. Posee propiedades magnéticas extraordinarias y se usa en imanes y láseres.' },
+                { number: 68, symbol: 'Er', name: 'Erbio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.24, atomicMass: 167.26, electronConfiguration: '[Xe] 4f¹² 6s²',
+                  description: 'Metal plateado, maleable. Utilizado en fibras ópticas para amplificación de señales y en láseres médicos.' },
+                { number: 69, symbol: 'Tm', name: 'Tulio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.25, atomicMass: 168.93, electronConfiguration: '[Xe] 4f¹³ 6s²',
+                  description: 'Metal plateado, el lantánido menos abundante. Utilizado en equipos de rayos X portátiles y láseres.' },
+                { number: 70, symbol: 'Yb', name: 'Iterbio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.1, atomicMass: 173.05, electronConfiguration: '[Xe] 4f¹⁴ 6s²',
+                  description: 'Metal plateado, blando. Utilizado en aleaciones especiales, electrónica y como dopante en láseres.' },
+                { number: 71, symbol: 'Lu', name: 'Lutecio', category: 'lanthanides', group: 3, period: 6,
+                  electronegativity: 1.27, atomicMass: 174.97, electronConfiguration: '[Xe] 4f¹⁴ 5d¹ 6s²',
+                  description: 'Metal plateado, considerado a veces como el primer elemento de la serie 6d. Usado en catalizadores petroleros y tomografía PET.' },
+                
+                // Continuación periodo 6
+                { number: 72, symbol: 'Hf', name: 'Hafnio', category: 'transition-metals', group: 4, period: 6,
+                  electronegativity: 1.3, atomicMass: 178.49, electronConfiguration: '[Xe] 4f¹⁴ 5d² 6s²',
+                  description: 'Metal plateado resistente a la corrosión. Utilizado en aleaciones de alta temperatura y barras de control en reactores nucleares.' },
+                { number: 73, symbol: 'Ta', name: 'Tantalio', category: 'transition-metals', group: 5, period: 6,
+                  electronegativity: 1.5, atomicMass: 180.95, electronConfiguration: '[Xe] 4f¹⁴ 5d³ 6s²',
+                  description: 'Metal gris azulado, duro y muy resistente a la corrosión. Usado en equipos electrónicos y prótesis médicas.' },
+                { number: 74, symbol: 'W', name: 'Wolframio', category: 'transition-metals', group: 6, period: 6,
+                  electronegativity: 2.36, atomicMass: 183.84, electronConfiguration: '[Xe] 4f¹⁴ 5d⁴ 6s²',
+                  description: 'Metal grisáceo con el punto de fusión más alto. Conocido también como tungsteno, se usa en filamentos de bombillas e instrumentos de corte.' },
+                { number: 75, symbol: 'Re', name: 'Renio', category: 'transition-metals', group: 7, period: 6,
+                  electronegativity: 1.9, atomicMass: 186.21, electronConfiguration: '[Xe] 4f¹⁴ 5d⁵ 6s²',
+                  description: 'Metal plateado con alto punto de fusión. Utilizado en catalizadores de alto rendimiento y termoelementos.' },
+                { number: 76, symbol: 'Os', name: 'Osmio', category: 'transition-metals', group: 8, period: 6,
+                  electronegativity: 2.2, atomicMass: 190.23, electronConfiguration: '[Xe] 4f¹⁴ 5d⁶ 6s²',
+                  description: 'Metal azulado muy duro, el más denso de todos los elementos. Utilizado en aleaciones de alta dureza y puntas de plumas estilográficas.' },
+                { number: 77, symbol: 'Ir', name: 'Iridio', category: 'transition-metals', group: 9, period: 6,
+                  electronegativity: 2.2, atomicMass: 192.22, electronConfiguration: '[Xe] 4f¹⁴ 5d⁷ 6s²',
+                  description: 'Metal blanco plateado, muy duro y denso. Resistente a la corrosión, utilizado en electrodos de bujías y crisoles químicos.' },
+                { number: 78, symbol: 'Pt', name: 'Platino', category: 'transition-metals', group: 10, period: 6,
+                  electronegativity: 2.28, atomicMass: 195.08, electronConfiguration: '[Xe] 4f¹⁴ 5d⁹ 6s¹',
+                  description: 'Metal precioso plateado, denso y maleable. Utilizado en joyería, catalizadores de automóviles y aplicaciones médicas.' },
+                { number: 79, symbol: 'Au', name: 'Oro', category: 'transition-metals', group: 11, period: 6,
+                  electronegativity: 2.54, atomicMass: 196.97, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s¹',
+                  description: 'Metal precioso amarillo, denso y maleable. Excelente conductor eléctrico, usado en joyería, electrónica y reservas monetarias.' },
+                { number: 80, symbol: 'Hg', name: 'Mercurio', category: 'transition-metals', group: 12, period: 6,
+                  electronegativity: 2.00, atomicMass: 200.59, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s²',
+                  description: 'Metal líquido a temperatura ambiente. Utilizado en termómetros, amalgamas dentales y procesos industriales.' },
+                { number: 81, symbol: 'Tl', name: 'Talio', category: 'post-transition', group: 13, period: 6,
+                  electronegativity: 1.62, atomicMass: 204.38, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹',
+                  description: 'Metal blando de color gris azulado. Altamente tóxico, utilizado en detectores infrarrojos y células fotoeléctricas.' },
+                { number: 82, symbol: 'Pb', name: 'Plomo', category: 'post-transition', group: 14, period: 6,
+                  electronegativity: 1.87, atomicMass: 207.2, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²',
+                  description: 'Metal blando, denso y maleable de color gris azulado. Utilizado en baterías, municiones y como protección contra radiación.' },
+                { number: 83, symbol: 'Bi', name: 'Bismuto', category: 'post-transition', group: 15, period: 6,
+                  electronegativity: 2.02, atomicMass: 208.98, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³',
+                  description: 'Metal frágil de color blanco plateado con tonos rosados. Utilizado en aleaciones de bajo punto de fusión y medicamentos.' },
+                { number: 84, symbol: 'Po', name: 'Polonio', category: 'post-transition', group: 16, period: 6,
+                  electronegativity: 2.0, atomicMass: 209, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴',
+                  description: 'Elemento radiactivo, metálico y raro. Utilizado en fuentes de neutrones y eliminación de electricidad estática.' },
+                { number: 85, symbol: 'At', name: 'Astato', category: 'halogens', group: 17, period: 6,
+                  electronegativity: 2.2, atomicMass: 210, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵',
+                  description: 'Elemento radiactivo extremadamente raro. Halógeno más pesado, probablemente de aspecto metálico.' },
+                { number: 86, symbol: 'Rn', name: 'Radón', category: 'noble-gases', group: 18, period: 6,
+                  electronegativity: 2.2, atomicMass: 222, electronConfiguration: '[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶',
+                  description: 'Gas noble radiactivo, incoloro y sin olor. Producto de la desintegración del radio, puede acumularse en edificios.' },
+                
+                // Periodo 7
+                { number: 87, symbol: 'Fr', name: 'Francio', category: 'alkali-metals', group: 1, period: 7,
+                  electronegativity: 0.7, atomicMass: 223, electronConfiguration: '[Rn] 7s¹',
+                  description: 'Metal alcalino radiactivo extremadamente raro. Es el segundo elemento menos estable de todos los que se encuentran en la naturaleza.' },
+                { number: 88, symbol: 'Ra', name: 'Radio', category: 'alkaline-earth', group: 2, period: 7,
+                  electronegativity: 0.9, atomicMass: 226, electronConfiguration: '[Rn] 7s²',
+                  description: 'Metal alcalinotérreo radiactivo, emite luz azulada en la oscuridad. Usado históricamente en tratamientos médicos y pinturas luminosas.' },
+                
+                // Actínidos (bloque f)
+                { number: 89, symbol: 'Ac', name: 'Actinio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.1, atomicMass: 227, electronConfiguration: '[Rn] 6d¹ 7s²',
+                  description: 'Metal radiactivo plateado que brilla en la oscuridad con luz azulada. Da nombre a la serie de los actínidos.' },
+                { number: 90, symbol: 'Th', name: 'Torio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 232.04, electronConfiguration: '[Rn] 6d² 7s²',
+                  description: 'Metal radiactivo plateado. Potencial combustible nuclear alternativo al uranio, utilizado en linternas de gas y electrónica.' },
+                { number: 91, symbol: 'Pa', name: 'Protactinio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.5, atomicMass: 231.04, electronConfiguration: '[Rn] 5f² 6d¹ 7s²',
+                  description: 'Metal radiactivo, plateado y brillante. Extremadamente tóxico y difícil de manipular debido a su alta radiactividad.' },
+                { number: 92, symbol: 'U', name: 'Uranio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.38, atomicMass: 238.03, electronConfiguration: '[Rn] 5f³ 6d¹ 7s²',
+                  description: 'Metal radiactivo pesado, plateado. Principal combustible para reactores nucleares y armas nucleares.' },
+                { number: 93, symbol: 'Np', name: 'Neptunio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.36, atomicMass: 237, electronConfiguration: '[Rn] 5f⁴ 6d¹ 7s²',
+                  description: 'Metal radiactivo plateado. Primer elemento transuránico, se utiliza en detectores de neutrones.' },
+                { number: 94, symbol: 'Pu', name: 'Plutonio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.28, atomicMass: 244, electronConfiguration: '[Rn] 5f⁶ 7s²',
+                  description: 'Metal radiactivo plateado. Utilizado en armas nucleares y reactores como combustible.' },
+                { number: 95, symbol: 'Am', name: 'Americio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 243, electronConfiguration: '[Rn] 5f⁷ 7s²',
+                  description: 'Metal radiactivo plateado. Utilizado en detectores de humo y como fuente de rayos gamma.' },
+                { number: 96, symbol: 'Cm', name: 'Curio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 247, electronConfiguration: '[Rn] 5f⁷ 6d¹ 7s²',
+                  description: 'Metal radiactivo plateado. Utilizado como fuente de energía en generadores termoeléctricos para sondas espaciales.' },
+                { number: 97, symbol: 'Bk', name: 'Berkelio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 247, electronConfiguration: '[Rn] 5f⁹ 7s²',
+                  description: 'Metal radiactivo plateado. Nombrado en honor a Berkeley, California, se utiliza principalmente en investigación científica.' },
+                { number: 98, symbol: 'Cf', name: 'Californio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 251, electronConfiguration: '[Rn] 5f¹⁰ 7s²',
+                  description: 'Metal radiactivo plateado. Es un fuerte emisor de neutrones, utilizado en detectores de metales y medicina.' },
+                { number: 99, symbol: 'Es', name: 'Einstenio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 252, electronConfiguration: '[Rn] 5f¹¹ 7s²',
+                  description: 'Metal radiactivo sintético, nombrado en honor a Albert Einstein. Solo se ha producido en cantidades muy pequeñas.' },
+                { number: 100, symbol: 'Fm', name: 'Fermio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 257, electronConfiguration: '[Rn] 5f¹² 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Enrico Fermi. Solo se ha producido en cantidades muy pequeñas.' },
+                { number: 101, symbol: 'Md', name: 'Mendelevio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 258, electronConfiguration: '[Rn] 5f¹³ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Dmitri Mendeléyev. De vida muy corta, solo tiene interés científico.' },
+                { number: 102, symbol: 'No', name: 'Nobelio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 259, electronConfiguration: '[Rn] 5f¹⁴ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Alfred Nobel. Producido solo en laboratorio en cantidades ínfimas.' },
+                { number: 103, symbol: 'Lr', name: 'Lawrencio', category: 'actinides', group: 3, period: 7,
+                  electronegativity: 1.3, atomicMass: 266, electronConfiguration: '[Rn] 5f¹⁴ 7s² 7p¹',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Ernest Lawrence. Último elemento de la serie de los actínidos.' },
+                
+                // Continuación periodo 7
+                { number: 104, symbol: 'Rf', name: 'Rutherfordio', category: 'transition-metals', group: 4, period: 7,
+                  electronegativity: '-', atomicMass: 267, electronConfiguration: '[Rn] 5f¹⁴ 6d² 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Ernest Rutherford. Primer elemento de la serie de los transactínidos.' },
+                { number: 105, symbol: 'Db', name: 'Dubnio', category: 'transition-metals', group: 5, period: 7,
+                  electronegativity: '-', atomicMass: 268, electronConfiguration: '[Rn] 5f¹⁴ 6d³ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado por la ciudad rusa de Dubna. Se sintetizó por primera vez en 1967-1970.' },
+                { number: 106, symbol: 'Sg', name: 'Seaborgio', category: 'transition-metals', group: 6, period: 7,
+                  electronegativity: '-', atomicMass: 269, electronConfiguration: '[Rn] 5f¹⁴ 6d⁴ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Glenn T. Seaborg. Descubierto simultáneamente por científicos soviéticos y americanos.' },
+                { number: 107, symbol: 'Bh', name: 'Bohrio', category: 'transition-metals', group: 7, period: 7,
+                  electronegativity: '-', atomicMass: 270, electronConfiguration: '[Rn] 5f¹⁴ 6d⁵ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Niels Bohr. Descubierto en 1981 en Alemania.' },
+                { number: 108, symbol: 'Hs', name: 'Hassio', category: 'transition-metals', group: 8, period: 7,
+                  electronegativity: '-', atomicMass: 277, electronConfiguration: '[Rn] 5f¹⁴ 6d⁶ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado por el estado alemán de Hesse. Descubierto en 1984 por un equipo alemán.' },
+                { number: 109, symbol: 'Mt', name: 'Meitnerio', category: 'transition-metals', group: 9, period: 7,
+                  electronegativity: '-', atomicMass: 278, electronConfiguration: '[Rn] 5f¹⁴ 6d⁷ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Lise Meitner. Descubierto en 1982 por un equipo alemán.' },
+                { number: 110, symbol: 'Ds', name: 'Darmstadtio', category: 'transition-metals', group: 10, period: 7,
+                  electronegativity: '-', atomicMass: 281, electronConfiguration: '[Rn] 5f¹⁴ 6d⁸ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado por la ciudad alemana de Darmstadt. Sintetizado por primera vez en 1994.' },
+                { number: 111, symbol: 'Rg', name: 'Roentgenio', category: 'transition-metals', group: 11, period: 7,
+                  electronegativity: '-', atomicMass: 282, electronConfiguration: '[Rn] 5f¹⁴ 6d⁹ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Wilhelm Röntgen. Descubierto en 1994 en Alemania.' },
+                { number: 112, symbol: 'Cn', name: 'Copernicio', category: 'transition-metals', group: 12, period: 7,
+                  electronegativity: '-', atomicMass: 285, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s²',
+                  description: 'Elemento sintético radiactivo, nombrado en honor a Nicolás Copérnico. Confirmado en 2009 por la IUPAC.' },
+                { number: 113, symbol: 'Nh', name: 'Nihonio', category: 'post-transition', group: 13, period: 7,
+                  electronegativity: '-', atomicMass: 286, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹',
+                  description: 'Elemento sintético radiactivo, nombrado por Japón (Nihon). Descubierto por científicos japoneses en 2004-2012.' },
+                { number: 114, symbol: 'Fl', name: 'Flerovio', category: 'post-transition', group: 14, period: 7,
+                  electronegativity: '-', atomicMass: 289, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²',
+                  description: 'Elemento sintético radiactivo, nombrado por el Laboratorio Flerov en Rusia. Descubierto en 1998 por científicos rusos y americanos.' },
+                { number: 115, symbol: 'Mc', name: 'Moscovio', category: 'post-transition', group: 15, period: 7,
+                  electronegativity: '-', atomicMass: 290, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³',
+                  description: 'Elemento sintético radiactivo, nombrado por la ciudad de Moscú. Descubierto en 2003 por científicos rusos y americanos.' },
+                { number: 116, symbol: 'Lv', name: 'Livermorio', category: 'post-transition', group: 16, period: 7,
+                  electronegativity: '-', atomicMass: 293, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴',
+                  description: 'Elemento sintético radiactivo, nombrado por el Laboratorio Lawrence Livermore. Descubierto en 2000 por científicos rusos y americanos.' },
+                { number: 117, symbol: 'Ts', name: 'Teneso', category: 'halogens', group: 17, period: 7,
+                  electronegativity: '-', atomicMass: 294, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵',
+                  description: 'Elemento sintético radiactivo, nombrado por el estado de Tennessee. Descubierto en 2010 por una colaboración internacional.' },
+                { number: 118, symbol: 'Og', name: 'Oganesón', category: 'noble-gases', group: 18, period: 7,
+                  electronegativity: '-', atomicMass: 294, electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶',
+                  description: 'Elemento sintético radiactivo, nombrado en honor al físico Yuri Oganessian. El elemento más pesado confirmado en la tabla periódica.' }
+            ];
 
-        function createElement(element) {
-            const div = document.createElement('div');
-            div.className = `element ${element.group}`;
-            div.innerHTML = `
-                <div class="element-number">${element.number}</div>
-                <div class="element-symbol">${element.symbol}</div>
-                <div class="element-name">${element.name}</div>
-            `;
-            div.onclick = () => showDetails(element);
-            return div;
+            // Combinar elementos detallados y adicionales
+            return [...detailedElements, ...additionalElements];
         }
 
-        function showDetails(element) {
-            const title = document.getElementById('element-title');
-            const info = document.getElementById('element-info');
+        // Usar la función para obtener todos los elementos
+        const elements = generateElementsData();
+        
+        // Función para generar la tabla periódica
+        function generatePeriodicTable() {
+            const periodicTable = document.getElementById('periodicTable');
             
-            title.textContent = `${element.name} (${element.symbol})`;
-            info.innerHTML = `
-                <p><strong>Número atómico:</strong> ${element.number}</p>
-                <p><strong>Masa atómica:</strong> ${element.mass} u</p>
-                <p><strong>Grupo:</strong> ${element.group}</p>
-            `;
-            
-            details.classList.add('active');
-        }
-
-        function filterElements(searchTerm = '', group = '') {
+            // Limpiar la tabla
             periodicTable.innerHTML = '';
             
-            // Crear un contenedor principal para la tabla periódica
-            const isMobile = window.innerWidth <= 768;
+            // Crear estructura de la tabla periódica
+            const placeholders = [
+                // [periodo, grupo inicial, grupo final] para espacios en blanco
+                [1, 2, 17], // Periodo 1: espacio entre H y He
+                [6, 4, 2], // Lantánidos
+                [7, 4, 2]  // Actínidos
+            ];
             
-            // Si hay un término de búsqueda o filtro de grupo, mostramos solo los elementos filtrados
-            if (searchTerm || group) {
-                elements.forEach(element => {
-                    const matchesSearch = element.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                       element.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                       element.number.toString().includes(searchTerm);
-                    const matchesGroup = !group || element.group === group;
+            // Agregar elementos a la tabla
+            elements.forEach(element => {
+                // Comprobar si debe mostrarse en su posición normal
+                let shouldDisplay = true;
+                
+                // Ajustes para los elementos de los bloques f
+                if ((element.number >= 57 && element.number <= 71) || 
+                    (element.number >= 89 && element.number <= 103)) {
+                    shouldDisplay = false;
+                }
+                
+                if (shouldDisplay) {
+                    // Crear elemento
+                    const elementDiv = document.createElement('div');
+                    elementDiv.className = `element ${element.category}`;
+                    elementDiv.style.gridColumn = element.group;
+                    elementDiv.style.gridRow = element.period;
+                    elementDiv.innerHTML = `
+                        <p class="number">${element.number}</p>
+                        <p class="symbol">${element.symbol}</p>
+                        <p class="name">${element.name}</p>
+                    `;
+                    elementDiv.onclick = () => showElementDetails(element);
+                    periodicTable.appendChild(elementDiv);
+                }
+            });
+            
+            // Agregar placeholders para espacios vacíos
+            placeholders.forEach(ph => {
+                const [period, startGroup, endGroup] = ph;
+                for (let group = startGroup; group <= endGroup; group++) {
+                    const placeholderDiv = document.createElement('div');
+                    placeholderDiv.className = 'element-placeholder';
+                    placeholderDiv.style.gridColumn = group;
+                    placeholderDiv.style.gridRow = period;
+                    periodicTable.appendChild(placeholderDiv);
+                }
+            });
+            
+            // Añadir indicadores para los bloques f
+            const landLabel = document.createElement('div');
+            landLabel.className = 'f-block-label';
+            landLabel.textContent = 'Lantánidos';
+            landLabel.style.gridRow = '8';
+            periodicTable.appendChild(landLabel);
+            
+            const actLabel = document.createElement('div');
+            actLabel.className = 'f-block-label';
+            actLabel.textContent = 'Actínidos';
+            actLabel.style.gridRow = '9';
+            periodicTable.appendChild(actLabel);
+            
+            // Crear div contenedor para los bloques f
+            const fBlockContainer = document.createElement('div');
+            fBlockContainer.className = 'f-block-container';
+            periodicTable.appendChild(fBlockContainer);
+            
+            // Agregar bloques de lantánidos y actínidos en parte inferior
+            const addBlockF = (startNumber, period, rowOffset) => {
+                for (let i = 0; i < 15; i++) {
+                    const elementNumber = startNumber + i;
+                    const element = elements.find(el => el.number === elementNumber);
                     
-                    if (matchesSearch && matchesGroup) {
-                        periodicTable.appendChild(createElement(element));
-                    }
-                });
-            } else {
-                // Si no hay filtros, mostramos la tabla periódica completa con la estructura apropiada
-                
-                // Datos para crear la estructura de la tabla periódica
-                const tableStructure = [
-                    { p: 1, start: 1, end: 1 }, { p: 1, start: 18, end: 18 },
-                    { p: 2, start: 1, end: 2 }, { p: 2, start: 13, end: 18 },
-                    { p: 3, start: 1, end: 2 }, { p: 3, start: 13, end: 18 },
-                    { p: 4, start: 1, end: 18 },
-                    { p: 5, start: 1, end: 18 },
-                    { p: 6, start: 1, end: 18 },
-                    { p: 7, start: 1, end: 18 },
-                    { p: 8, start: 0, end: 0 }, // Espacio
-                    { p: 9, start: 4, end: 17 },  // Lantánidos
-                    { p: 10, start: 4, end: 17 }  // Actínidos
-                ];
-                
-                // Mapa para almacenar la posición de cada elemento
-                const elementMap = new Map();
-                elements.forEach(el => {
-                    let period, group;
-                    
-                    // Asignar posiciones para elementos estándar
-                    if (el.number <= 56 || (el.number >= 72 && el.number <= 88) || el.number >= 104) {
-                        if (el.number === 1) { period = 1; group = 1; }
-                        else if (el.number === 2) { period = 1; group = 18; }
-                        else if (el.number >= 3 && el.number <= 4) { period = 2; group = el.number - 2; }
-                        else if (el.number >= 5 && el.number <= 10) { period = 2; group = el.number + 8; }
-                        else if (el.number >= 11 && el.number <= 12) { period = 3; group = el.number - 10; }
-                        else if (el.number >= 13 && el.number <= 18) { period = 3; group = el.number; }
-                        else if (el.number >= 19 && el.number <= 36) { period = 4; group = ((el.number - 19) % 18) + 1; }
-                        else if (el.number >= 37 && el.number <= 54) { period = 5; group = ((el.number - 37) % 18) + 1; }
-                        else if (el.number >= 55 && el.number <= 56) { period = 6; group = ((el.number - 55) % 18) + 1; }
-                        else if (el.number >= 72 && el.number <= 86) { period = 6; group = ((el.number - 54) % 18) + 1; }
-                        else if (el.number >= 87 && el.number <= 88) { period = 7; group = ((el.number - 87) % 18) + 1; }
-                        else if (el.number >= 104 && el.number <= 118) { period = 7; group = ((el.number - 86) % 18) + 1; }
-                    }
-                    // Asignar posiciones para lantánidos y actínidos
-                    else if (el.number >= 57 && el.number <= 71) {
-                        period = 9;
-                        group = (el.number - 57) + 4;
-                    }
-                    else if (el.number >= 89 && el.number <= 103) {
-                        period = 10;
-                        group = (el.number - 89) + 4;
-                    }
-                    
-                    if (period && group) {
-                        elementMap.set(el.number, { element: el, period, group });
-                    }
-                });
-                
-                // Crear la estructura vacía de la tabla
-                const maxPeriod = 10;
-                const maxGroup = 18;
-                
-                for (let p = 1; p <= maxPeriod; p++) {
-                    for (let g = 1; g <= maxGroup; g++) {
-                        let shouldCreateCell = false;
-                        
-                        // Verificar si esta celda debe ser parte de la tabla
-                        for (const range of tableStructure) {
-                            if (p === range.p && g >= range.start && g <= range.end) {
-                                shouldCreateCell = true;
-                                break;
-                            }
-                        }
-                        
-                        if (shouldCreateCell) {
-                            // Buscar si hay un elemento en esta posición
-                            let found = false;
-                            elementMap.forEach((data) => {
-                                if (data.period === p && data.group === g) {
-                                    const elementDiv = createElement(data.element);
-                                    elementDiv.style.gridRow = p;
-                                    elementDiv.style.gridColumn = g;
-                                    periodicTable.appendChild(elementDiv);
-                                    found = true;
-                                }
-                            });
-                            
-                            // Si no hay elemento, crear una celda vacía
-                            if (!found) {
-                                const emptyDiv = document.createElement('div');
-                                emptyDiv.className = 'element empty';
-                                emptyDiv.style.gridRow = p;
-                                emptyDiv.style.gridColumn = g;
-                                periodicTable.appendChild(emptyDiv);
-                            }
-                        }
+                    if (element) {
+                        const elementDiv = document.createElement('div');
+                        elementDiv.className = `element ${element.category}`;
+                        elementDiv.style.gridColumn = i + 3; // Posición en fila separada
+                        elementDiv.style.gridRow = period + rowOffset; // 2 filas debajo
+                        elementDiv.innerHTML = `
+                            <p class="number">${element.number}</p>
+                            <p class="symbol">${element.symbol}</p>
+                            <p class="name">${element.name}</p>
+                        `;
+                        elementDiv.onclick = () => showElementDetails(element);
+                        periodicTable.appendChild(elementDiv);
                     }
                 }
-            }
+            };
             
-            // Si estamos en móvil, aseguramos que se pueda navegar horizontalmente
-            if (isMobile) {
-                document.querySelector('.periodic-table-container').scrollLeft = 0;
-            }
+            // Añadir lantánidos (57-71) y actínidos (89-103)
+            addBlockF(57, 6, 2); // Lantánidos
+            addBlockF(89, 7, 3); // Actínidos
         }
-
-        searchInput.addEventListener('input', (e) => {
-            filterElements(e.target.value);
-        });
-
-        groupButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const group = button.dataset.group;
-                filterElements('', group);
-            });
-        });
-
-        closeBtn.addEventListener('click', () => {
-            details.classList.remove('active');
-        });
-
-        // Inicializar la tabla
-        filterElements();
         
-        // Detectar cambios en el tamaño de la ventana para ajustar la tabla
-        window.addEventListener('resize', () => {
-            filterElements(searchInput.value);
-        });
-        
-        // Añadir evento para volver a cargar todos los elementos
-        document.addEventListener('DOMContentLoaded', () => {
-            // Botón para volver a mostrar todos los elementos
-            const resetButton = document.createElement('button');
-            resetButton.className = 'group-btn';
-            resetButton.textContent = 'Todos los elementos';
-            resetButton.style.backgroundColor = '#1e293b';
-            resetButton.style.color = 'white';
-            resetButton.addEventListener('click', () => {
-                searchInput.value = '';
-                filterElements();
+        // Función para mostrar detalles de un elemento
+        function showElementDetails(element) {
+            const elementDetails = document.getElementById('elementDetails');
+            const elementName = document.getElementById('elementName');
+            const elementProperties = document.getElementById('elementProperties');
+            
+            elementName.textContent = `${element.number}. ${element.name} (${element.symbol})`;
+            
+            // Propiedades a mostrar
+            const properties = [
+                { name: 'Número atómico', value: element.number },
+                { name: 'Símbolo', value: element.symbol },
+                { name: 'Nombre', value: element.name },
+                { name: 'Categoría', value: getCategoryName(element.category) },
+                { name: 'Grupo', value: element.group },
+                { name: 'Periodo', value: element.period },
+                { name: 'Electronegatividad', value: element.electronegativity },
+                { name: 'Masa atómica', value: element.atomicMass },
+                { name: 'Configuración electrónica', value: element.electronConfiguration },
+                { name: 'Descripción', value: element.description }
+            ];
+            
+            // Limpiar propiedades anteriores
+            elementProperties.innerHTML = '';
+            
+            // Añadir propiedades
+            properties.forEach(prop => {
+                const propertyDiv = document.createElement('div');
+                propertyDiv.className = 'property';
+                propertyDiv.innerHTML = `
+                    <div class="property-name">${prop.name}:</div>
+                    <div class="property-value">${prop.value}</div>
+                `;
+                elementProperties.appendChild(propertyDiv);
             });
             
-            // Inserta el botón al principio de la sección de grupos
-            const groupsContainer = document.querySelector('.groups');
-            groupsContainer.insertBefore(resetButton, groupsContainer.firstChild);
-        });
+            // Mostrar detalles
+            elementDetails.style.display = 'block';
+            document.getElementById('periodicTable').style.display = 'none';
+        }
+        
+        // Función para ocultar detalles del elemento
+        function hideElementDetails() {
+            document.getElementById('elementDetails').style.display = 'none';
+            document.getElementById('periodicTable').style.display = 'grid';
+        }
+        
+        // Función para obtener el nombre de la categoría
+        function getCategoryName(category) {
+            const categories = {
+                'alkali-metals': 'Metales alcalinos',
+                'alkaline-earth': 'Metales alcalinotérreos',
+                'transition-metals': 'Metales de transición',
+                'post-transition': 'Metales del bloque p',
+                'metalloids': 'Metaloides',
+                'nonmetals': 'No metales',
+                'halogens': 'Halógenos',
+                'noble-gases': 'Gases nobles',
+                'lanthanides': 'Lantánidos',
+                'actinides': 'Actínidos'
+            };
+            
+            return categories[category] || category;
+        }
+        
+        // Generar la tabla periódica al cargar la página
+        window.onload = generatePeriodicTable;
     </script>
 </body>
 </html> 
