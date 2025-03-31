@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstudioPAU Valencia 2025</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            /* Nueva paleta de colores más moderna */
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --secondary-dark: #db2777;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --spacing: 16px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #0f172a;
+                --surface: #1e293b;
+                --text: #f1f5f9;
+                --text-light: #94a3b8;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing);
+        }
+        
+        header {
+            text-align: center;
+            padding: calc(var(--spacing) * 2);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--radius);
+            margin-bottom: var(--spacing);
+            box-shadow: var(--shadow);
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.5rem; opacity: 0.9; }
+
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing);
+            margin: var(--spacing) 0;
+        }
+        
+        .subject-card {
+            padding: calc(var(--spacing) * 2);
+            border-radius: var(--radius);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .biologia { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+        .quimica { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
+
+        .recursos-section {
+            background: var(--surface);
+            padding: var(--spacing);
+            border-radius: var(--radius);
+            margin: var(--spacing) 0;
+            box-shadow: var(--shadow);
+        }
+
+        .recursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing);
+            margin-top: var(--spacing);
+        }
+
+        .recurso-card {
+            background: var(--background);
+            padding: var(--spacing);
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.3s ease;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .recurso-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        
+        .tema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing);
+            margin-top: var(--spacing);
+        }
+        
+        .tema-card {
+            background: var(--surface);
+            padding: var(--spacing);
+            border-radius: var(--radius);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .tema-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .tema-quimica {
+            border-left-color: var(--secondary);
+        }
+        
+        .navigation {
+            display: flex;
+            gap: var(--spacing);
+            margin-top: var(--spacing);
+        }
+        
+        .navigation-top {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .nav-button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .btn-top:hover {
+            opacity: 1;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .navigation-top {
+                background-color: rgba(30, 41, 59, 0.9);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .navigation { flex-direction: column; }
+            button { width: 100%; }
+            
+            .navigation-top {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 8px;
+            }
+            
+            .nav-button-group {
+                display: flex;
+                width: 100%;
+                margin-top: 8px;
+            }
+            
+            .nav-button-group button {
+                flex: 1;
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+            
+            .btn-back {
+                width: 100%;
+            }
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            background: var(--text-light);
+        }
+        
+        .btn-quimica {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .tema-content {
+            background: var(--surface);
+            padding: var(--spacing);
+            border-radius: var(--radius);
+            margin-top: var(--spacing);
+            box-shadow: var(--shadow);
+        }
+
+        /* Animación simple de entrada */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.2) 50%,
+                rgba(255,255,255,0) 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EstudioPAU Valencia 2025</h1>
+            <h2>Biología y Química</h2>
+        </header>
+        
+        <div id="main-menu" class="main-menu">
+            <div class="subject-card biologia" onclick="mostrarSeccion('biologia')">
+                <h3>Biología</h3>
+            </div>
+            <div class="subject-card quimica" onclick="mostrarSeccion('quimica')">
+                <h3>Química</h3>
+            </div>
+        </div>
+        
+        <div id="seccion-biologia" class="fade-in" style="display: none;">
+            <h2>Temas de Biología</h2>
+            <button class="btn-back" onclick="volverAlMenu()">Volver</button>
+            
+            <div class="recursos-section">
+                <h3>Recursos de Biología</h3>
+                <div class="recursos-grid">
+                    <a href="recursos/resumenes/biologia/resumen_biologia.html" class="recurso-card">
+                        <h3>Resúmenes</h3>
+                        <p>Accede a resúmenes detallados de cada tema</p>
+                    </a>
+                    <a href="recursos/simuladores/biologia/examen_pau.html" class="recurso-card">
+                        <h3>Simulador PAU</h3>
+                        <p>Practica con exámenes anteriores</p>
+                    </a>
+                    <a href="recursos/interactivos/biologia/quiz-biologia.html" class="recurso-card">
+                        <h3>Quiz</h3>
+                        <p>Pon a prueba tus conocimientos</p>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="tema-grid">
+                <div class="tema-card" onclick="cargarTema('biologia', 1)">
+                    <h3>Tema 1</h3>
+                    <p>Bioelementos y Biomoléculas</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 2)">
+                    <h3>Tema 2</h3>
+                    <p>La Célula</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 3)">
+                    <h3>Tema 3</h3>
+                    <p>Membrana y Transporte</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 4)">
+                    <h3>Tema 4</h3>
+                    <p>Metabolismo Celular</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 5)">
+                    <h3>Tema 5</h3>
+                    <p>Fotosíntesis</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 6)">
+                    <h3>Tema 6</h3>
+                    <p>Genética Molecular</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 7)">
+                    <h3>Tema 7</h3>
+                    <p>División Celular</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 8)">
+                    <h3>Tema 8</h3>
+                    <p>Genética Mendeliana</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 9)">
+                    <h3>Tema 9</h3>
+                    <p>Microbiología</p>
+                </div>
+                <div class="tema-card" onclick="cargarTema('biologia', 10)">
+                    <h3>Tema 10</h3>
+                    <p>Inmunología</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="seccion-quimica" class="fade-in" style="display: none;">
+            <h2>Temas de Química</h2>
+            <button class="btn-back" onclick="volverAlMenu()">Volver</button>
+            
+            <div class="recursos-section">
+                <h3>Recursos de Química</h3>
+                <div class="recursos-grid">
+                    <a href="recursos/resumenes/quimica/resumen_quimica.html" class="recurso-card">
+                        <h3>Resúmenes</h3>
+                        <p>Accede a resúmenes detallados de cada tema</p>
+                    </a>
+                    <a href="recursos/simuladores/quimica/examen_pau.html" class="recurso-card">
+                        <h3>Simulador PAU</h3>
+                        <p>Practica con exámenes anteriores</p>
+                    </a>
+                    <a href="recursos/interactivos/tabla_periodica.html" class="recurso-card">
+                        <h3>Tabla Periódica</h3>
+                        <p>Explora los elementos químicos</p>
+                    </a>
+                    <a href="recursos/interactivos/quiz.html" class="recurso-card">
+                        <h3>Quiz</h3>
+                        <p>Pon a prueba tus conocimientos</p>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="tema-grid">
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 1)">
+                    <h3>Tema 1</h3>
+                    <p>Estructura Atómica</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 2)">
+                    <h3>Tema 2</h3>
+                    <p>Formulación Inorgánica</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 3)">
+                    <h3>Tema 3</h3>
+                    <p>Enlace Químico</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 4)">
+                    <h3>Tema 4</h3>
+                    <p>Termodinámica Química</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 5)">
+                    <h3>Tema 5</h3>
+                    <p>Cinética Química</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 6)">
+                    <h3>Tema 6</h3>
+                    <p>Equilibrio Químico</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 7)">
+                    <h3>Tema 7</h3>
+                    <p>Ácidos y Bases</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 8)">
+                    <h3>Tema 8</h3>
+                    <p>Reacciones Redox</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 9)">
+                    <h3>Tema 9</h3>
+                    <p>Electroquímica</p>
+                </div>
+                <div class="tema-card tema-quimica" onclick="cargarTema('quimica', 10)">
+                    <h3>Tema 10</h3>
+                    <p>Química Orgánica</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="detalle-tema" class="fade-in" style="display: none;">
+            <h2 id="tema-titulo"></h2>
+            
+            <!-- Navegación superior -->
+            <div class="navigation navigation-top">
+                <button class="btn-back" onclick="volverATemas()"><i class="fas fa-arrow-left"></i> Volver</button>
+                <div class="nav-button-group">
+                    <button onclick="navegarTema('anterior')"><i class="fas fa-chevron-left"></i> Anterior</button>
+                    <button onclick="navegarTema('siguiente')">Siguiente <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div id="tema-contenido" class="tema-content"></div>
+            
+            <!-- Navegación inferior (ya existente) -->
+            <div class="navigation">
+                <button class="btn-back" onclick="volverATemas()"><i class="fas fa-arrow-left"></i> Volver</button>
+                <button onclick="navegarTema('anterior')"><i class="fas fa-chevron-left"></i> Anterior</button>
+                <button onclick="navegarTema('siguiente')">Siguiente <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        
+        <!-- Botón para volver al inicio de la página (movido fuera del div detalle-tema) -->
+        <button class="btn-top" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+    </div>
+    
+    <script>
+        let materiaActual = '';
+        let temaActual = 0;
+        
+        // Función para desplazarse al inicio de la página
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Manejar eventos de navegación del navegador
+        window.addEventListener('popstate', function(event) {
+            if (event.state) {
+                const estado = event.state;
+                
+                // Ocultar todas las secciones
+                document.getElementById('main-menu').style.display = 'none';
+                document.getElementById('seccion-biologia').style.display = 'none';
+                document.getElementById('seccion-quimica').style.display = 'none';
+                document.getElementById('detalle-tema').style.display = 'none';
+                
+                // Mostrar la sección según el estado
+                if (estado.vista === 'menu') {
+                    document.getElementById('main-menu').style.display = 'grid';
+                } else if (estado.vista === 'materia') {
+                    document.getElementById('seccion-' + estado.materia).style.display = 'block';
+                    materiaActual = estado.materia;
+                } else if (estado.vista === 'tema') {
+                    document.getElementById('detalle-tema').style.display = 'block';
+                    materiaActual = estado.materia;
+                    temaActual = estado.tema;
+                    // Cargar el contenido del tema sin añadir nueva entrada al historial
+                    cargarContenidoTema(estado.materia, estado.tema, false);
+                }
+            } else {
+                // Si no hay estado, volver al menú principal
+                document.getElementById('main-menu').style.display = 'grid';
+                document.getElementById('seccion-biologia').style.display = 'none';
+                document.getElementById('seccion-quimica').style.display = 'none';
+                document.getElementById('detalle-tema').style.display = 'none';
+            }
+        });
+        
+        // Al cargar la página, guardar el estado inicial
+        window.history.replaceState({vista: 'menu'}, 'Menú Principal', '#menu');
+        
+        function mostrarSeccion(materia) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('seccion-' + materia).style.display = 'block';
+            materiaActual = materia;
+            
+            // Añadir al historial
+            window.history.pushState(
+                {vista: 'materia', materia: materia}, 
+                'Temas de ' + materia.charAt(0).toUpperCase() + materia.slice(1), 
+                '#' + materia
+            );
+        }
+        
+        function volverAlMenu() {
+            document.getElementById('main-menu').style.display = 'grid';
+            document.getElementById('seccion-biologia').style.display = 'none';
+            document.getElementById('seccion-quimica').style.display = 'none';
+            document.getElementById('detalle-tema').style.display = 'none';
+            
+            // Añadir al historial
+            window.history.pushState(
+                {vista: 'menu'}, 
+                'Menú Principal', 
+                '#menu'
+            );
+        }
+        
+        function volverATemas() {
+            document.getElementById('seccion-' + materiaActual).style.display = 'block';
+            document.getElementById('detalle-tema').style.display = 'none';
+            
+            // Añadir al historial
+            window.history.pushState(
+                {vista: 'materia', materia: materiaActual}, 
+                'Temas de ' + materiaActual.charAt(0).toUpperCase() + materiaActual.slice(1), 
+                '#' + materiaActual
+            );
+        }
+
+        function mostrarSolucion(id) {
+            const solucion = document.getElementById(id);
+            if (solucion.style.display === "none") {
+                solucion.style.display = "block";
+            } else {
+                solucion.style.display = "none";
+            }
+        }
+
+        function cargarTema(materia, id) {
+            console.log(`Intentando cargar tema ${id} de ${materia}`);
+            document.getElementById('seccion-' + materia).style.display = 'none';
+            const detalle = document.getElementById('detalle-tema');
+            detalle.style.display = 'block';
+            materiaActual = materia;
+            temaActual = id;
+            
+            // Añadir al historial
+            window.history.pushState(
+                {vista: 'tema', materia: materia, tema: id}, 
+                `${materia.charAt(0).toUpperCase() + materia.slice(1)} - Tema ${id}`, 
+                `#${materia}/tema${id}`
+            );
+            
+            // Cargar el contenido
+            cargarContenidoTema(materia, id, false);
+        }
+        
+        function cargarContenidoTema(materia, id, agregarHistorial = true) {
+            // Actualizar el título
+            document.getElementById('tema-titulo').textContent = `${materia.charAt(0).toUpperCase() + materia.slice(1)} - Tema ${id}`;
+            
+            // Añadir clase de carga
+            const contenidoTema = document.getElementById('tema-contenido');
+            contenidoTema.classList.add('loading');
+            
+            // Cargar el contenido desde el archivo HTML
+            const ruta = `contenido/${materia}/tema${id}.html`;
+            console.log('Intentando cargar:', ruta);
+            
+            fetch(ruta)
+                .then(response => {
+                    console.log('Respuesta del servidor:', response.status, response.statusText);
+                    if (!response.ok) {
+                        throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    console.log('Contenido recibido, longitud:', html.length);
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    
+                    // Extraer el contenido del tema-detalle
+                    const contenidoTemaHTML = tempDiv.querySelector('.tema-detalle');
+                    if (contenidoTemaHTML) {
+                        contenidoTema.innerHTML = contenidoTemaHTML.innerHTML;
+                        console.log('Contenido insertado correctamente');
+                        
+                        // Añadir al historial si es necesario
+                        if (agregarHistorial) {
+                            window.history.pushState(
+                                {vista: 'tema', materia: materia, tema: id}, 
+                                `${materia.charAt(0).toUpperCase() + materia.slice(1)} - Tema ${id}`, 
+                                `#${materia}/tema${id}`
+                            );
+                        }
+                    } else {
+                        throw new Error('No se encontró el contenido del tema');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar el tema:', error);
+                    contenidoTema.innerHTML = `
+                        <div class="error-mensaje">
+                            <h3>Error al cargar el contenido</h3>
+                            <p>Detalles del error: ${error.message}</p>
+                            <p>Por favor, inténtalo de nuevo más tarde.</p>
+                        </div>
+                    `;
+                })
+                .finally(() => {
+                    contenidoTema.classList.remove('loading');
+                });
+        }
+
+        function navegarTema(direccion) {
+            const temas = {
+                'biologia': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                'quimica': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            };
+            
+            const temasDisponibles = temas[materiaActual];
+            const indiceActual = temasDisponibles.indexOf(temaActual);
+            let nuevoIndice;
+            
+            if (direccion === 'anterior') {
+                nuevoIndice = (indiceActual - 1 + temasDisponibles.length) % temasDisponibles.length;
+            } else {
+                nuevoIndice = (indiceActual + 1) % temasDisponibles.length;
+            }
+            
+            const nuevoTema = temasDisponibles[nuevoIndice];
+            temaActual = nuevoTema;
+            
+            // Cargar el contenido y añadir al historial
+            cargarContenidoTema(materiaActual, nuevoTema, true);
+        }
+    </script>
+</body>
+</html> 

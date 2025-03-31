@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resúmenes de Biología PAU - EstudioPAU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .instrucciones {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .tema-card {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .tema-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tema-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .tema-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+        }
+        
+        .tema-description {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .download-button:hover {
+            background-color: #388E3C;
+        }
+        
+        .tema-tag {
+            display: inline-block;
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        
+        .tema-tags {
+            margin-bottom: 15px;
+        }
+        
+        .back-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #388E3C;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 25px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: #000;
+        }
+        
+        /* Estilo para el contenido del resumen */
+        .resumen-content {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .resumen-content h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .resumen-content p {
+            margin-bottom: 15px;
+        }
+        
+        .resumen-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .resumen-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .resumen-content th, .resumen-content td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .resumen-content th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resúmenes de Biología</h1>
+            <h2>Material de estudio PAU - Comunidad Valenciana 2025</h2>
+        </header>
+        
+        <div class="instrucciones">
+            <p>Aquí encontrarás resúmenes de todos los temas de Biología para la PAU. Haz clic en "Ver resumen" para visualizar el contenido de cada tema. Estos resúmenes contienen los conceptos clave, procesos biológicos importantes y ejemplos que te ayudarán a prepararte para el examen.</p>
+        </div>
+        
+        <a href="../../../index.html" class="back-button">Volver a la página principal</a>
+        
+        <div class="temas-container">
+            <!-- Tema 1 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 1: Bioelementos y Biomoléculas</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Bioelementos</span>
+                    <span class="tema-tag">Agua</span>
+                    <span class="tema-tag">Sales minerales</span>
+                </div>
+                <p class="tema-description">Resumen de los bioelementos primarios y secundarios, propiedades del agua y sus funciones biológicas, sales minerales y su importancia en los sistemas biológicos. Incluye ejemplos y aplicaciones en la PAU.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(1); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 2 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 2: Glúcidos</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Monosacáridos</span>
+                    <span class="tema-tag">Disacáridos</span>
+                    <span class="tema-tag">Polisacáridos</span>
+                </div>
+                <p class="tema-description">Resumen de la estructura, clasificación y funciones de los glúcidos. Incluye monosacáridos importantes, enlace O-glucosídico, disacáridos de interés biológico, y polisacáridos de reserva y estructurales.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(2); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 3 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 3: Lípidos</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Ácidos grasos</span>
+                    <span class="tema-tag">Triglicéridos</span>
+                    <span class="tema-tag">Fosfolípidos</span>
+                    <span class="tema-tag">Esteroides</span>
+                </div>
+                <p class="tema-description">Clasificación y estructura de los lípidos, propiedades y funciones biológicas. Incluye ácidos grasos, triglicéridos, fosfolípidos, glucolípidos, ceras, esteroides y terpenos.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(3); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 4 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 4: Proteínas</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Aminoácidos</span>
+                    <span class="tema-tag">Enlace peptídico</span>
+                    <span class="tema-tag">Estructura proteica</span>
+                    <span class="tema-tag">Desnaturalización</span>
+                </div>
+                <p class="tema-description">Estructura y propiedades de los aminoácidos, enlace peptídico, niveles estructurales de las proteínas, clasificación y funciones biológicas. Incluye ejemplos de enzimas y su mecanismo de acción.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(4); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 5 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 5: Ácidos Nucleicos</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">ADN</span>
+                    <span class="tema-tag">ARN</span>
+                    <span class="tema-tag">Nucleótidos</span>
+                </div>
+                <p class="tema-description">Estructura de los nucleótidos, tipos de ácidos nucleicos (ADN y ARN), estructura del ADN, tipos de ARN y sus funciones. Incluye el dogma central de la biología molecular y el código genético.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(5); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 6 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 6: La Célula</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Teoría celular</span>
+                    <span class="tema-tag">Célula procariota</span>
+                    <span class="tema-tag">Célula eucariota</span>
+                </div>
+                <p class="tema-description">Estudio de la teoría celular, modelos de organización celular, estructura y función de la célula procariota y eucariota. Incluye orgánulos celulares y su función en el metabolismo celular.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(6); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 7 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 7: Membrana Plasmática y Transporte</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Modelo de mosaico fluido</span>
+                    <span class="tema-tag">Transporte pasivo</span>
+                    <span class="tema-tag">Transporte activo</span>
+                </div>
+                <p class="tema-description">Estructura y composición de la membrana plasmática, modelo del mosaico fluido, funciones de la membrana, tipos de transporte a través de la membrana y comunicación celular.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(7); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 8 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 8: Metabolismo Celular</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Catabolismo</span>
+                    <span class="tema-tag">Anabolismo</span>
+                    <span class="tema-tag">ATP</span>
+                </div>
+                <p class="tema-description">Conceptos fundamentales del metabolismo, enzimas y coenzimas, catabolismo (respiración celular y fermentación) y anabolismo (fotosíntesis). Incluye las rutas metabólicas más importantes.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(8); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 9 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 9: División Celular</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Ciclo celular</span>
+                    <span class="tema-tag">Mitosis</span>
+                    <span class="tema-tag">Meiosis</span>
+                </div>
+                <p class="tema-description">Estudio del ciclo celular, mitosis y meiosis. Incluye las fases de cada proceso, importancia biológica y diferencias entre ambos tipos de división celular. Contempla también la citocinesis en células animales y vegetales.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(9); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 10 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 10: Genética Molecular</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Replicación</span>
+                    <span class="tema-tag">Transcripción</span>
+                    <span class="tema-tag">Traducción</span>
+                </div>
+                <p class="tema-description">Procesos de replicación, transcripción y traducción del ADN. Incluye la regulación de la expresión génica, mutaciones genéticas y sus consecuencias. Enfoque especial en el código genético y su universalidad.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(10); return false;">Ver resumen</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para mostrar resúmenes -->
+    <div id="resumenModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+            <div id="resumenContent" class="resumen-content">
+                <!-- El contenido del resumen se cargará aquí -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Desactivar clic derecho para evitar descargas
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.closest('.modal-content')) {
+                e.preventDefault();
+            }
+        });
+        
+        // Función para mostrar el modal con el resumen
+        function mostrarResumen(temaId) {
+            const modal = document.getElementById('resumenModal');
+            const contenido = document.getElementById('resumenContent');
+            
+            // Cargar contenido según el tema
+            let resumenHTML = '';
+            
+            switch(temaId) {
+                case 1:
+                    resumenHTML = `
+                        <h2>Tema 1: Bioelementos y Biomoléculas</h2>
+                        <h3>1.1 Bioelementos</h3>
+                        <p>Los bioelementos son los elementos químicos que forman parte de los seres vivos. Se clasifican en:</p>
+                        <ul>
+                            <li><strong>Primarios:</strong> C, H, O, N, P, S (constituyen el 96% de la materia viva)</li>
+                            <li><strong>Secundarios:</strong> Ca, K, Na, Cl, Mg, Fe</li>
+                            <li><strong>Oligoelementos:</strong> Mn, Cu, Zn, I, F, etc. (presentes en cantidades muy pequeñas)</li>
+                        </ul>
+                        
+                        <h3>1.2 El agua</h3>
+                        <p>El agua es la biomolécula más abundante en los seres vivos. Sus propiedades derivan de su estructura molecular y de los enlaces de hidrógeno:</p>
+                        <ul>
+                            <li>Elevada cohesión molecular</li>
+                            <li>Alto calor específico</li>
+                            <li>Elevado calor de vaporización</li>
+                            <li>Gran capacidad disolvente</li>
+                            <li>Densidad anómala del hielo</li>
+                        </ul>
+                        <p><strong>Funciones biológicas:</strong> disolvente, transporte, termorregulación, lubricante, reactivo metabólico</p>
+                        
+                        <h3>1.3 Sales minerales</h3>
+                        <p>Presentes en los organismos en forma de:</p>
+                        <ul>
+                            <li><strong>Precipitadas:</strong> estructuras sólidas (huesos, conchas, etc.)</li>
+                            <li><strong>Disueltas:</strong> iones que participan en funciones fisiológicas</li>
+                        </ul>
+                        <p><strong>Funciones:</strong> regulación del pH (sistemas tampón), regulación osmótica, acción catalítica, conducción nerviosa, contracción muscular</p>
+                    `;
+                    break;
+                case 2:
+                    resumenHTML = `
+                        <h2>Tema 2: Glúcidos</h2>
+                        <h3>2.1 Monosacáridos</h3>
+                        <p>Los monosacáridos son azúcares simples que no se hidrolizan. Algunos ejemplos son la glucosa, fructosa y galactosa.</p>
+                        
+                        <h3>2.2 Disacáridos</h3>
+                        <p>Los disacáridos son azúcares formados por la unión de dos monosacáridos. Algunos ejemplos son la sacarosa, la lactosa y la maltoza.</p>
+                        
+                        <h3>2.3 Polisacáridos</h3>
+                        <p>Los polisacáridos son azúcares formados por la unión de múltiples monosacáridos. Algunos ejemplos son la celulosa, la glucógeno y la amilosa.</p>
+                    `;
+                    break;
+                case 3:
+                    resumenHTML = `
+                        <h2>Tema 3: Lípidos</h2>
+                        <h3>3.1 Ácidos grasos</h3>
+                        <p>Los ácidos grasos son ácidos carboxílicos de cadena larga. Pueden ser saturados, insaturados o poliinsaturados.</p>
+                        
+                        <h3>3.2 Triglicéridos</h3>
+                        <p>Los triglicéridos son ésteres de ácidos grasos y glicerol. Son los principales componentes de la grasa corporal y de la dieta.</p>
+                        
+                        <h3>3.3 Fosfolípidos</h3>
+                        <p>Los fosfolípidos son ésteres de ácidos grasos y glicerol con fosfato. Son importantes componentes de la membrana celular.</p>
+                        
+                        <h3>3.4 Esteroides</h3>
+                        <p>Los esteroides son compuestos orgánicos que incluyen anillos de carbono y oxígeno. Son importantes en la estructura y función de las células.</p>
+                    `;
+                    break;
+                case 4:
+                    resumenHTML = `
+                        <h2>Tema 4: Proteínas</h2>
+                        <h3>4.1 Aminoácidos</h3>
+                        <p>Los aminoácidos son compuestos orgánicos que contienen un grupo amino (-NH2) y un grupo carboxilo (-COOH). Se clasifican en 20 tipos diferentes.</p>
+                        
+                        <h3>4.2 Enlace peptídico</h3>
+                        <p>El enlace peptídico es el enlace que une los aminoácidos en una proteína. Se forma entre el grupo carboxilo de un aminoácido y el grupo amino del siguiente.</p>
+                        
+                        <h3>4.3 Estructura proteica</h3>
+                        <p>La estructura proteica se refiere a la disposición tridimensional de una proteína. Puede ser primaria, secundaria, terciaria o cuaternaria.</p>
+                        
+                        <h3>4.4 Desnaturalización</h3>
+                        <p>La desnaturalización es el proceso por el cual una proteína pierde su estructura tridimensional y su función biológica. Puede ser causado por cambios en el pH, temperatura o concentración de sales.</p>
+                    `;
+                    break;
+                case 5:
+                    resumenHTML = `
+                        <h2>Tema 5: Ácidos Nucleicos</h2>
+                        <h3>5.1 ADN</h3>
+                        <p>El ADN (ácido desoxirribonucleico) es una molécula que contiene la información genética. Se compone de dos cadenas de nucleótidos.</p>
+                        
+                        <h3>5.2 ARN</h3>
+                        <p>El ARN (ácido ribonucleico) es una molécula que transporta la información genética. Puede ser ARNm, ARNr o ARNt.</p>
+                        
+                        <h3>5.3 Nucleótidos</h3>
+                        <p>Los nucleótidos son los bloques de construcción del ADN y el ARN. Se componen de una base nitrogenada, un resto de desoxirribosa y un grupo fosfato.</p>
+                    `;
+                    break;
+                case 6:
+                    resumenHTML = `
+                        <h2>Tema 6: La Célula</h2>
+                        <h3>6.1 Teoría celular</h3>
+                        <p>La teoría celular es la idea de que todas las células proceden de otras células ya existentes. La célula es la unidad estructural y funcional de los seres vivos.</p>
+                        
+                        <h3>6.2 Célula procariota</h3>
+                        <p>Las células procariotas no tienen una envoltura nuclear y su ADN está disperso en el citoplasma. Algunos ejemplos son las bacterias y los arqueas.</p>
+                        
+                        <h3>6.3 Célula eucariota</h3>
+                        <p>Las células eucariotas tienen una envoltura nuclear rodeada por una membrana celular. Algunos ejemplos son las células animales, vegetales y hongos.</p>
+                    `;
+                    break;
+                case 7:
+                    resumenHTML = `
+                        <h2>Tema 7: Membrana Plasmática y Transporte</h2>
+                        <h3>7.1 Modelo de mosaico fluido</h3>
+                        <p>La membrana plasmática es una estructura lipídica que forma una barrera entre el citoplasma y el medio externo.</p>
+                        
+                        <h3>7.2 Transporte pasivo</h3>
+                        <p>El transporte pasivo es el movimiento de moléculas a través de la membrana celular sin gasto de energía. Puede ser simple o facilitado.</p>
+                        
+                        <h3>7.3 Transporte activo</h3>
+                        <p>El transporte activo es el movimiento de moléculas a través de la membrana celular gastando energía. Puede ser primario o secundario.</p>
+                    `;
+                    break;
+                case 8:
+                    resumenHTML = `
+                        <h2>Tema 8: Metabolismo Celular</h2>
+                        <h3>8.1 Catabolismo</h3>
+                        <p>El catabolismo es el proceso de descomposición de moléculas orgánicas grandes en moléculas más pequeñas.</p>
+                        
+                        <h3>8.2 Anabolismo</h3>
+                        <p>El anabolismo es el proceso de síntesis de moléculas orgánicas grandes a partir de moléculas más pequeñas.</p>
+                        
+                        <h3>8.3 ATP</h3>
+                        <p>El ATP (adenosín trifosfato) es una molécula que almacena y transporta energía química. Se utiliza en la síntesis de moléculas y en la contracción muscular.</p>
+                    `;
+                    break;
+                case 9:
+                    resumenHTML = `
+                        <h2>Tema 9: División Celular</h2>
+                        <h3>9.1 Ciclo celular</h3>
+                        <p>El ciclo celular es el proceso de división celular que ocurre en todas las células eucariotas.</p>
+                        
+                        <h3>9.2 Mitosis</h3>
+                        <p>La mitosis es el proceso de división celular en el que una célula se divide en dos células idénticas.</p>
+                        
+                        <h3>9.3 Meiosis</h3>
+                        <p>La meiosis es el proceso de división celular en el que una célula se divide en cuatro células con la mitad del número de cromosomas.</p>
+                    `;
+                    break;
+                case 10:
+                    resumenHTML = `
+                        <h2>Tema 10: Genética Molecular</h2>
+                        <h3>10.1 Replicación</h3>
+                        <p>La replicación es el proceso de duplicación del ADN.</p>
+                        
+                        <h3>10.2 Transcripción</h3>
+                        <p>La transcripción es el proceso de copia del ADN en ARN.</p>
+                        
+                        <h3>10.3 Traducción</h3>
+                        <p>La traducción es el proceso de síntesis de una proteína a partir de ARN.</p>
+                    `;
+                    break;
+                default:
+                    resumenHTML = `<p>Resumen no disponible. Por favor, selecciona otro tema.</p>`;
+            }
+            
+            contenido.innerHTML = resumenHTML;
+            modal.style.display = 'block';
+            
+            // Deshabilitar la selección de texto
+            document.body.style.userSelect = 'none';
+        }
+        
+        // Función para cerrar el modal
+        function cerrarModal() {
+            document.getElementById('resumenModal').style.display = 'none';
+            document.body.style.userSelect = '';
+        }
+        
+        // Cerrar el modal si se hace clic fuera del contenido
+        window.onclick = function(event) {
+            const modal = document.getElementById('resumenModal');
+            if (event.target == modal) {
+                cerrarModal();
+            }
+        }
+        
+        // Prevenir teclas que podrían permitir la descarga
+        document.addEventListener('keydown', function(e) {
+            // Prevenir Ctrl+S, Ctrl+P, Ctrl+Shift+I, F12
+            if ((e.ctrlKey && (e.key === 's' || e.key === 'p')) || 
+                (e.ctrlKey && e.shiftKey && e.key === 'i') ||
+                e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html> 

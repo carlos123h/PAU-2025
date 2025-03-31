@@ -1,0 +1,2108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador Examen PAU Química</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <style>
+    /* Estilos específicos del simulador */
+    .exam-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .exam-header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+    }
+    
+    .back-to-main {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 8px 15px;
+      background-color: #555;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .back-to-main:hover {
+      background-color: #333;
+    }
+    
+    .exercise {
+      margin-bottom: 30px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+    }
+    
+    .exercise-header {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .exercise-content {
+      margin-bottom: 15px;
+    }
+    
+    .question {
+      margin-bottom: 20px;
+    }
+    
+    .optional-questions {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    
+    .optional-question {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+    }
+    
+    .answer-area {
+      width: 100%;
+      min-height: 150px;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .btn-primary {
+      background-color: #5a66f1;
+      color: white;
+    }
+    
+    .btn-secondary {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+    
+    .feedback {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+    }
+    
+    .feedback.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .feedback.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .exam-selector {
+      margin-bottom: 20px;
+    }
+    
+    select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 250px;
+    }
+    
+    .formula-table, .periodic-table {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    
+    .formula-table h3, .periodic-table h3 {
+      margin-top: 0;
+    }
+    
+    .timer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #5a66f1;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    
+    .correction {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+      display: none;
+    }
+    
+    .score {
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    
+    @media print {
+      .controls, .timer, .exam-selector {
+        display: none;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Simulador de Examen PAU - Química</h1>
+      <p class="subtitle">Formato oficial Comunidad Valenciana 2025</p>
+    </header>
+    
+    <main>
+      <a href="../../index.html" class="back-to-main">Volver al menú principal</a>
+      
+      <div class="exam-selector">
+        <label for="exam-model">Selecciona un modelo de examen:</label>
+        <select id="exam-model">
+          <option value="">-- Selecciona un modelo --</option>
+          <option value="1">Modelo 1 - Junio 2025 (Simulación)</option>
+          <option value="2">Modelo 2 - Julio 2025 (Simulación)</option>
+          <option value="3">Modelo 3 - Química Orgánica y Ácido-Base</option>
+          <option value="4">Modelo 4 - Redox y Termoquímica</option>
+          <option value="5">Modelo 5 - Equilibrio y Cinética</option>
+          <option value="6">Modelo 6 - Estructura Atómica y Enlace</option>
+          <option value="7">Modelo 7 - Disoluciones y Estequiometría</option>
+          <option value="8">Modelo 8 - Equilibrio y Orgánica</option>
+          <option value="9">Modelo 9 - Ácido-Base y Redox</option>
+          <option value="10">Modelo 10 - Termoquímica y Estructura</option>
+          <option value="11">Modelo 11 - Cinética y Equilibrio</option>
+          <option value="12">Modelo 12 - Química Orgánica</option>
+          <option value="13">Modelo 13 - Electroquímica</option>
+          <option value="14">Modelo 14 - Química Nuclear</option>
+          <option value="15">Modelo 15 - Química Industrial</option>
+        </select>
+        <button class="btn btn-primary" id="load-exam">Cargar Examen</button>
+      </div>
+      
+      <div class="timer">
+        Tiempo restante: <span id="time">03:00:00</span>
+      </div>
+      
+      <div class="exam-container" id="exam-content">
+        <div class="exam-header">
+          <h2>PRUEBAS DE ACCESO A LA UNIVERSIDAD</h2>
+          <h3>QUÍMICA - CURSO 2024/2025</h3>
+          <p>Tiempo máximo: 3 horas</p>
+        </div>
+        
+        <div class="formula-table">
+          <h3>Formulario</h3>
+          <p>Constante de Avogadro: \(N_A = 6,022 \times 10^{23} mol^{-1}\)</p>
+          <p>Constante de los gases: \(R = 0,082 \frac{atm \cdot L}{mol \cdot K} = 8,31 \frac{J}{mol \cdot K}\)</p>
+          <p>Ley de Nernst: \(E = E^0 - \frac{0,059}{n} \log Q\) (a 25°C)</p>
+          <p>Constante de equilibrio: \(K_p = K_c \cdot (RT)^{\Delta n}\)</p>
+        </div>
+        
+        <div id="exam-exercises">
+          <!-- Los ejercicios se cargarán aquí dinámicamente -->
+          <p class="select-message">Selecciona un modelo de examen y haz clic en "Cargar Examen"</p>
+        </div>
+        
+        <div class="controls">
+          <button class="btn btn-secondary" id="print-exam">Imprimir</button>
+          <button class="btn btn-primary" id="check-exam">Corregir Examen</button>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    // Simulador de 15 modelos de exámenes PAU de Química
+    const examModels = {
+      // Modelo 1
+      "1": {
+        title: "Modelo 1 - Junio 2025 (Simulación)",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Estructura atómica y enlace (2 puntos)",
+            content: "La constante de Rydberg, \(R_H\), vale \(2,18 \times 10^{-18} J\). Con este dato:",
+            questions: [
+              {
+                text: "a) Calcule la energía del fotón que, siendo absorbido por un átomo de hidrógeno, provoca el salto de un electrón desde el nivel \(n = 2\) al nivel \(n = 5\). ¿En qué zona del espectro electromagnético se encontrará dicho fotón? (0,7 puntos)",
+                score: 0.7
+              },
+              {
+                text: "b) Determine, en eV, la energía de ionización del átomo de hidrógeno cuando su electrón se encuentra en el nivel \(n = 2\). (0,7 puntos)",
+                score: 0.7
+              },
+              {
+                text: "c) Explique, en términos de hibridación de orbitales, la geometría de la molécula de metano (CH₄). (0,6 puntos)",
+                score: 0.6
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Termoquímica (2 puntos)",
+            content: "La entalpía estándar de combustión del etanol líquido, C₂H₅OH(l), es -1367 kJ/mol. Las entalpías estándar de formación del CO₂(g) y del H₂O(l) son -393,5 kJ/mol y -285,8 kJ/mol, respectivamente.",
+            questions: [
+              {
+                text: "a) Escriba la ecuación termoquímica ajustada para la combustión del etanol líquido. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "b) Calcule la entalpía estándar de formación del etanol líquido, C₂H₅OH(l). (1 punto)",
+                score: 1
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Si se queman completamente 115 g de etanol líquido, calcule el calor desprendido a presión constante. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Calcule la energía de enlace C-O a partir de los siguientes datos: Energías de enlace (kJ/mol): C-H: 414; C-C: 347; O-H: 464; C=O: 730. Entalpía estándar de formación del metanol, CH₃OH(g): -202 kJ/mol. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 3 - Equilibrio químico (2 puntos)",
+            content: "En un recipiente de 5,0 L se introducen 0,30 moles de pentacloruro de fósforo, PCl₅, y se calienta hasta 200 °C. A esta temperatura el PCl₅ se disocia parcialmente según el equilibrio:<br>PCl₅(g) ⇌ PCl₃(g) + Cl₂(g)<br>Si la constante de equilibrio, Kc, vale 0,042 a 200 °C, calcule:",
+            questions: [
+              {
+                text: "a) El grado de disociación del PCl₅(g) a 200 °C. (1 punto)",
+                score: 1
+              },
+              {
+                text: "b) Las concentraciones de todas las especies en el equilibrio. (0,5 puntos)",
+                score: 0.5
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) El valor de la constante Kp a 200 °C. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Razone cómo afectaría al equilibrio un aumento de la temperatura. (Dato: la reacción de disociación del PCl₅ es endotérmica). (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 4 - Ácido-Base (2 puntos)",
+            content: "La constante de acidez del ácido benzoico, C₆H₅COOH, es 6,5·10⁻⁵. Se dispone de una disolución acuosa de ácido benzoico 0,50 M.",
+            questions: [
+              {
+                text: "a) Calcule el pH de la disolución. (0,8 puntos)",
+                score: 0.8
+              },
+              {
+                text: "b) Calcule el volumen de una disolución de hidróxido de sodio 0,25 M necesario para neutralizar 25 mL de la disolución de ácido benzoico. (0,7 puntos)",
+                score: 0.7
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Calcule el pH de la disolución resultante cuando se añaden 20 mL de la disolución de NaOH 0,25 M a 25 mL de la disolución de ácido benzoico. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Indique razonadamente si una disolución acuosa de benzoato de sodio, C₆H₅COONa, será ácida, básica o neutra. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 5 - Redox y electroquímica (2 puntos)",
+            content: "Se construye una celda galvánica con los siguientes electrodos: Cu²⁺/Cu y Ag⁺/Ag.<br>Datos: E°(Cu²⁺/Cu) = +0,34 V; E°(Ag⁺/Ag) = +0,80 V.",
+            questions: [
+              {
+                text: "a) Escriba las semirreacciones que ocurren en el ánodo y en el cátodo e indique cuál es el electrodo positivo y cuál el negativo. (0,8 puntos)",
+                score: 0.8
+              },
+              {
+                text: "b) Calcule la fuerza electromotriz estándar de la pila. (0,7 puntos)",
+                score: 0.7
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Indique el sentido en que fluyen los electrones y cómo se desplazarían los iones en el puente salino. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Calcule la constante de equilibrio para la reacción redox global. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          }
+        ]
+      },
+      // Modelo 2
+      "2": {
+        title: "Modelo 2 - Julio 2025 (Simulación)",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Química Orgánica (2 puntos)",
+            content: "Complete las siguientes reacciones orgánicas, nombrando los productos obtenidos:",
+            questions: [
+              {
+                text: "a) Etanol + Ácido butanoico → (Reacción de esterificación) (0,7 puntos)",
+                score: 0.7
+              },
+              {
+                text: "b) Propeno + HBr → (Adición electrófila) (0,7 puntos)",
+                score: 0.7
+              },
+              {
+                text: "c) 2-butanol + K₂Cr₂O₇/H₂SO₄ → (Oxidación) (0,6 puntos)",
+                score: 0.6
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Cinética química (2 puntos)",
+            content: "La descomposición del N₂O₅ sigue la ecuación: 2 N₂O₅(g) → 4 NO₂(g) + O₂(g).<br>A 25°C, la constante de velocidad de la reacción es k = 3,7·10⁻⁵ s⁻¹.",
+            questions: [
+              {
+                text: "a) Determine el orden de la reacción. (0,7 puntos)",
+                score: 0.7
+              },
+              {
+                text: "b) Calcule el tiempo necesario para que la concentración de N₂O₅ se reduzca a la mitad de su valor inicial. (0,8 puntos)",
+                score: 0.8
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) ¿Cómo afectaría a la velocidad de la reacción un aumento de la presión? Razone la respuesta. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Explique cómo afectaría a la velocidad de la reacción la presencia de un catalizador. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          // Otros ejercicios del Modelo 2 seguirían aquí...
+          {
+            header: "Ejercicio 3 - Ácido-Base (2 puntos)",
+            content: "Se prepara una disolución acuosa de amoníaco, NH₃, disolviendo 1,7 g de NH₃ en agua hasta un volumen final de 500 mL.<br>Datos: Ka(NH₄⁺) = 5,5·10⁻¹⁰; Masas atómicas: N = 14, H = 1.",
+            questions: [
+              {
+                text: "a) Calcule el pH de la disolución. (1 punto)",
+                score: 1
+              },
+              {
+                text: "b) Calcule el grado de hidrólisis del amoníaco en la disolución. (0,5 puntos)",
+                score: 0.5
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Calcule el volumen de una disolución de HCl 0,1 M necesario para neutralizar 50 mL de la disolución de amoníaco. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Mediante la teoría ácido-base de Lewis, explique por qué el ion Al³⁺ en disolución acuosa tiene carácter ácido. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 4 - Enlace químico (2 puntos)",
+            content: "Considere las moléculas: CH₄, NH₃, H₂O y HF.",
+            questions: [
+              {
+                text: "a) Escriba las estructuras de Lewis de estas moléculas. (0,8 puntos)",
+                score: 0.8
+              },
+              {
+                text: "b) Prediga la geometría molecular de cada una de ellas según la teoría de repulsión de pares electrónicos de la capa de valencia (RPECV). (0,8 puntos)",
+                score: 0.8
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Ordene las moléculas de menor a mayor punto de ebullición. Justifique su respuesta. (0,4 puntos)",
+                score: 0.4
+              },
+              {
+                text: "c.2) Explique la polaridad de estas moléculas. (0,4 puntos)",
+                score: 0.4
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 5 - Redox (2 puntos)",
+            content: "El dicromato de potasio, K₂Cr₂O₇, en medio ácido sulfúrico reacciona con el sulfato de hierro(II), FeSO₄, formando sulfato de hierro(III), Fe₂(SO₄)₃, sulfato de cromo(III), Cr₂(SO₄)₃, sulfato de potasio, K₂SO₄, y agua.",
+            questions: [
+              {
+                text: "a) Escriba y ajuste la ecuación iónica y molecular por el método del ion-electrón. (1,2 puntos)",
+                score: 1.2
+              },
+              {
+                text: "b) Calcule la masa de dicromato de potasio necesaria para oxidar completamente 12 g de sulfato de hierro(II). (0,4 puntos)",
+                score: 0.4
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Calcule el volumen de una disolución de dicromato de potasio 0,2 M necesario para oxidar completamente los 12 g de sulfato de hierro(II). (0,4 puntos)",
+                score: 0.4
+              },
+              {
+                text: "c.2) Indique el estado de oxidación de cada elemento en los reactivos y productos. (0,4 puntos)",
+                score: 0.4
+              }
+            ]
+          }
+        ]
+      },
+      // Modelo 3
+      "3": {
+        title: "Modelo 3 - Química Orgánica y Ácido-Base",
+        exercises: [
+          // Aquí irían los ejercicios del modelo 3
+          {
+            header: "Ejercicio 1 - Isomería (2 puntos)",
+            content: "Considere los siguientes compuestos orgánicos: 2-metilbutanal, pentanal, pent-2-eno, 2-pentanona.",
+            questions: [
+              {
+                text: "a) Escriba la fórmula estructural de cada uno de ellos. (0,8 puntos)",
+                score: 0.8
+              },
+              {
+                text: "b) Indique qué tipo de isomería presenta el 2-metilbutanal respecto al pentanal. (0,6 puntos)",
+                score: 0.6
+              },
+              {
+                text: "c) Explique qué tipo de isomería presentan el pent-2-eno y la 2-pentanona. (0,6 puntos)",
+                score: 0.6
+              }
+            ],
+            hasOptional: false
+          },
+          // Otros ejercicios del modelo 3...
+          {
+            header: "Ejercicio 2 - Reacciones orgánicas (2 puntos)",
+            content: "Complete y nombre los productos de las siguientes reacciones:",
+            questions: [
+              {
+                text: "a) Propeno + H₂O (H⁺) → (0,7 puntos)",
+                score: 0.7
+              },
+              {
+                text: "b) Ácido propanoico + Metanol (H⁺) → (0,8 puntos)",
+                score: 0.8
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) CH₃-CH₂-CH₂-OH + KMnO₄/H⁺ → (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) CH₃-CH₂-CHO + LiAlH₄ → (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 3 - Ácido-Base (2 puntos)",
+            content: "Se prepara una disolución tampón mezclando 50 mL de ácido acético 0,2 M con 50 mL de acetato de sodio 0,1 M.<br>Datos: Ka (ácido acético) = 1,8·10⁻⁵",
+            questions: [
+              {
+                text: "a) Calcule el pH de la disolución tampón. (1 punto)",
+                score: 1
+              },
+              {
+                text: "b) ¿Cuál será el nuevo pH de la disolución si se añaden 5 mL de HCl 0,01 M? (0,5 puntos)",
+                score: 0.5
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) ¿Cuál será el nuevo pH de la disolución si se añaden 5 mL de NaOH 0,01 M? (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Explique cómo funciona una disolución tampón y por qué es importante en sistemas biológicos. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 4 - Identificación de compuestos orgánicos (2 puntos)",
+            content: "Un compuesto orgánico tiene la fórmula molecular C₄H₈O. Al oxidarse produce un ácido carboxílico de fórmula C₄H₈O₂.",
+            questions: [
+              {
+                text: "a) Identifique el compuesto orgánico original y escriba su fórmula estructural. (0,8 puntos)",
+                score: 0.8
+              },
+              {
+                text: "b) Escriba la ecuación química de la reacción de oxidación. (0,7 puntos)",
+                score: 0.7
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Nombre todos los isómeros posibles con la fórmula C₄H₈O. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Explique cómo se podría distinguir experimentalmente un aldehído de una cetona. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 5 - Ácido-Base (2 puntos)",
+            content: "Se valoran 50 mL de una disolución de hidróxido de sodio con ácido clorhídrico 0,1 M. Se necesitan 25 mL del ácido para alcanzar el punto de equivalencia.",
+            questions: [
+              {
+                text: "a) Calcule la concentración de la disolución de hidróxido de sodio. (0,8 puntos)",
+                score: 0.8
+              },
+              {
+                text: "b) Calcule el pH en el punto de equivalencia. (0,7 puntos)",
+                score: 0.7
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Calcule el pH cuando se han añadido 12,5 mL de ácido clorhídrico. (0,5 puntos)",
+                score: 0.5
+              },
+              {
+                text: "c.2) Indique el indicador más adecuado para esta valoración y explique por qué. (0,5 puntos)",
+                score: 0.5
+              }
+            ]
+          }
+        ]
+      },
+      // Modelo 4
+      "4": {
+        title: "Modelo 4 - Redox y Termoquímica",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Ajuste Redox (2 puntos)",
+            content: "Se hace reaccionar permanganato de potasio, KMnO₄, con sulfito de sodio, Na₂SO₃, en medio ácido sulfúrico. Los productos de la reacción son sulfato de sodio, Na₂SO₄, sulfato de manganeso(II), MnSO₄, sulfato de potasio, K₂SO₄, y agua.",
+            questions: [
+              {
+                text: "a) Escriba y ajuste la ecuación iónica de la reacción por el método del ion-electrón. (1 punto)",
+                score: 1,
+                solution: "Semirreacción de oxidación: SO₃²⁻ + H₂O → SO₄²⁻ + 2H⁺ + 2e⁻\nSemirreacción de reducción: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O\nMultiplicando por 5 y 2 respectivamente y sumando: 5SO₃²⁻ + 2MnO₄⁻ + 6H⁺ → 5SO₄²⁻ + 2Mn²⁺ + 3H₂O"
+              },
+              {
+                text: "b) Escriba la ecuación molecular ajustada. (0,5 puntos)",
+                score: 0.5,
+                solution: "5Na₂SO₃ + 2KMnO₄ + 3H₂SO₄ → 5Na₂SO₄ + 2MnSO₄ + K₂SO₄ + 3H₂O"
+              },
+              {
+                text: "c) Calcule la masa de permanganato de potasio necesaria para oxidar completamente 6,3 g de sulfito de sodio. (0,5 puntos)<br>Datos: Masas atómicas: K = 39; Mn = 55; O = 16; Na = 23; S = 32.",
+                score: 0.5,
+                solution: "Masa molar de Na₂SO₃ = 126 g/mol\nMasa molar de KMnO₄ = 158 g/mol\nMoles de Na₂SO₃ = 6,3 g / 126 g/mol = 0,05 mol\nRelación molar: 5 mol de Na₂SO₃ : 2 mol de KMnO₄\nMoles de KMnO₄ = 0,05 mol × (2/5) = 0,02 mol\nMasa de KMnO₄ = 0,02 mol × 158 g/mol = 3,16 g"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Termoquímica (2 puntos)",
+            content: "A partir de los siguientes datos de entalpías estándar de formación a 25°C:<br>ΔHf°[CO₂(g)] = -393,5 kJ/mol<br>ΔHf°[H₂O(l)] = -285,8 kJ/mol<br>ΔHf°[C₂H₅OH(l)] = -277,7 kJ/mol",
+            questions: [
+              {
+                text: "a) Calcule la entalpía estándar de combustión del etanol líquido. (1 punto)",
+                score: 1,
+                solution: "Ecuación de combustión: C₂H₅OH(l) + 3O₂(g) → 2CO₂(g) + 3H₂O(l)\nΔHc° = 2×ΔHf°[CO₂(g)] + 3×ΔHf°[H₂O(l)] - ΔHf°[C₂H₅OH(l)]\nΔHc° = 2×(-393,5) + 3×(-285,8) - (-277,7) = -1367,7 kJ/mol"
+              },
+              {
+                text: "b) Calcule el calor liberado al quemar completamente 230 g de etanol en condiciones estándar. (0,5 puntos)",
+                score: 0.5,
+                solution: "Masa molar de C₂H₅OH = 46 g/mol\nMoles de etanol = 230 g / 46 g/mol = 5 mol\nCalor liberado = 5 mol × (-1367,7 kJ/mol) = -6838,5 kJ"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Si el etanol se utiliza como combustible en un motor con un rendimiento del 30%, ¿cuánta energía útil se obtendría al quemar los 230 g? (0,5 puntos)",
+                score: 0.5,
+                solution: "Energía útil = 6838,5 kJ × 0,30 = 2051,6 kJ"
+              },
+              {
+                text: "c.2) ¿Es la combustión del etanol un proceso exotérmico o endotérmico? Justifique su respuesta. (0,5 puntos)",
+                score: 0.5,
+                solution: "La combustión del etanol es un proceso exotérmico porque el valor de ΔH es negativo (-1367,7 kJ/mol), lo que indica que se libera calor al medio durante la reacción."
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 3 - Electroquímica (2 puntos)",
+            content: "Se construye una pila galvánica utilizando los siguientes electrodos:<br>Cu²⁺(aq) (1,0 M) / Cu(s) | E°(Cu²⁺/Cu) = +0,34 V<br>Pb²⁺(aq) (1,0 M) / Pb(s) | E°(Pb²⁺/Pb) = -0,13 V",
+            questions: [
+              {
+                text: "a) Dibuje un esquema de la pila, indicando el ánodo, el cátodo y el sentido del flujo de electrones. (0,8 puntos)",
+                score: 0.8,
+                solution: "Ánodo: Pb(s) → Pb²⁺(aq) + 2e⁻ (oxidación)\nCátodo: Cu²⁺(aq) + 2e⁻ → Cu(s) (reducción)\nEl flujo de electrones va del ánodo (electrodo de Pb) al cátodo (electrodo de Cu) a través del circuito externo."
+              },
+              {
+                text: "b) Escriba las semirreacciones que tienen lugar en el ánodo y en el cátodo, así como la reacción global de la pila. (0,7 puntos)",
+                score: 0.7,
+                solution: "Ánodo (oxidación): Pb(s) → Pb²⁺(aq) + 2e⁻\nCátodo (reducción): Cu²⁺(aq) + 2e⁻ → Cu(s)\nReacción global: Pb(s) + Cu²⁺(aq) → Pb²⁺(aq) + Cu(s)"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Calcule la fuerza electromotriz estándar de la pila. (0,5 puntos)",
+                score: 0.5,
+                solution: "E° = E°cátodo - E°ánodo = E°(Cu²⁺/Cu) - E°(Pb²⁺/Pb) = 0,34 V - (-0,13 V) = 0,47 V"
+              },
+              {
+                text: "c.2) Calcule la constante de equilibrio para la reacción redox global a 25°C. (0,5 puntos)",
+                score: 0.5,
+                solution: "La relación entre la constante de equilibrio y la fuerza electromotriz estándar es:\nlog K = (n·F·E°)/(2,303·R·T) = (n·E°)/0,059 a 25°C\nDonde n es el número de electrones transferidos (2)\nlog K = (2 × 0,47)/0,059 = 15,93\nK = 10^15,93 = 8,51 × 10^15"
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 4 - Termoquímica y equilibrio (2 puntos)",
+            content: "La síntesis del amoníaco se representa mediante la ecuación:<br>N₂(g) + 3H₂(g) ⇌ 2NH₃(g)    ΔH = -92,4 kJ/mol",
+            questions: [
+              {
+                text: "a) Explique cómo afectaría a la producción de amoníaco un aumento de la presión. (0,8 puntos)",
+                score: 0.8,
+                solution: "Según el principio de Le Châtelier, un aumento de presión favorece el desplazamiento del equilibrio hacia donde hay menor número de moles gaseosos. En esta reacción, hay 4 moles de gas en los reactivos (1 mol de N₂ y 3 moles de H₂) frente a 2 moles de gas en los productos (2 moles de NH₃). Por tanto, un aumento de presión desplazará el equilibrio hacia la formación de NH₃, aumentando su producción."
+              },
+              {
+                text: "b) Explique cómo afectaría a la producción de amoníaco un aumento de la temperatura. (0,7 puntos)",
+                score: 0.7,
+                solution: "La reacción es exotérmica (ΔH < 0), lo que significa que libera calor. Según el principio de Le Châtelier, un aumento de temperatura desplazará el equilibrio en el sentido en que se absorba calor, es decir, hacia la reacción endotérmica (sentido inverso). Por tanto, un aumento de temperatura disminuirá la producción de amoníaco al favorecer la reacción inversa."
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) ¿Cómo afectaría a la producción de amoníaco la adición de un catalizador? (0,5 puntos)",
+                score: 0.5,
+                solution: "Un catalizador acelera la velocidad a la que se alcanza el equilibrio, pero no modifica la posición del equilibrio ni altera la cantidad de producto formado una vez alcanzado el equilibrio. Por tanto, la adición de un catalizador no afectaría a la cantidad final de amoníaco producido, solo reduciría el tiempo necesario para alcanzar el equilibrio."
+              },
+              {
+                text: "c.2) En el proceso industrial de obtención de amoníaco (proceso Haber-Bosch), se utilizan temperaturas de unos 450°C a pesar de que esta reacción es exotérmica. Explique por qué. (0,5 puntos)",
+                score: 0.5,
+                solution: "Aunque un aumento de temperatura desfavorece termodinámicamente la producción de amoníaco (por ser exotérmica), se utilizan temperaturas elevadas porque la reacción es muy lenta a temperatura ambiente. El aumento de temperatura acelera considerablemente la velocidad de reacción, permitiendo que se alcance el equilibrio en tiempos razonables. Este efecto cinético compensa la menor conversión en el equilibrio. Además, se utilizan altas presiones y catalizadores para aumentar el rendimiento."
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 5 - Reacciones Redox (2 puntos)",
+            content: "Se valoran 50,0 mL de una disolución de Fe²⁺ con una disolución de K₂Cr₂O₇ 0,02 M. El punto final se alcanza tras añadir 25,0 mL de dicromato. La reacción que tiene lugar es:<br>Cr₂O₇²⁻ + 14H⁺ + 6Fe²⁺ → 2Cr³⁺ + 7H₂O + 6Fe³⁺",
+            questions: [
+              {
+                text: "a) Calcule la concentración de iones Fe²⁺ en la disolución inicial. (1 punto)",
+                score: 1,
+                solution: "En la ecuación química, 1 mol de Cr₂O₇²⁻ reacciona con 6 moles de Fe²⁺\nMoles de K₂Cr₂O₇ = 0,02 mol/L × 0,025 L = 0,0005 mol\nMoles de Fe²⁺ = 0,0005 mol × 6 = 0,003 mol\nConcentración de Fe²⁺ = 0,003 mol / 0,050 L = 0,06 M"
+              },
+              {
+                text: "b) Identifique el agente oxidante y el agente reductor en esta reacción. (0,5 puntos)",
+                score: 0.5,
+                solution: "Agente oxidante: Cr₂O₇²⁻ (se reduce a Cr³⁺)\nAgente reductor: Fe²⁺ (se oxida a Fe³⁺)"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Determine el número de oxidación de cada elemento antes y después de la reacción. (0,5 puntos)",
+                score: 0.5,
+                solution: "Cr₂O₇²⁻: Cr tiene un número de oxidación de +6\nH⁺: H tiene un número de oxidación de +1\nFe²⁺: Fe tiene un número de oxidación de +2\nCr³⁺: Cr tiene un número de oxidación de +3\nH₂O: H tiene un número de oxidación de +1 y O de -2\nFe³⁺: Fe tiene un número de oxidación de +3"
+              },
+              {
+                text: "c.2) ¿Qué indicador podría utilizarse para detectar el punto final de esta valoración? Explique su elección. (0,5 puntos)",
+                score: 0.5,
+                solution: "Para esta valoración redox se podría utilizar la difenilamina sulfónica, que cambia de incoloro a violeta cuando todo el Fe²⁺ se ha oxidado a Fe³⁺. Este indicador es adecuado porque su cambio de color se produce a un potencial cercano al del punto de equivalencia de la reacción Fe²⁺/Fe³⁺. También podría utilizarse el ferroína, que cambia de rojo a azul pálido."
+              }
+            ]
+          }
+        ]
+      },
+      // Modelo 5
+      "5": {
+        title: "Modelo 5 - Equilibrio y Cinética",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Equilibrio Químico (2 puntos)",
+            content: "El pentacloruro de fósforo se descompone según la reacción:<br>PCl₅(g) ⇌ PCl₃(g) + Cl₂(g)<br>En un recipiente cerrado de 2,0 L se introducen 2,08 g de PCl₅ y se calienta a 250°C, alcanzándose el equilibrio. En estas condiciones, la presión total es de 1,0 atm.<br>Datos: R = 0,082 atm·L/(mol·K); Masas atómicas: P = 31; Cl = 35,5.",
+            questions: [
+              {
+                text: "a) Calcule la constante de equilibrio Kc a 250°C. (1,2 puntos)",
+                score: 1.2,
+                solution: "Masa molar de PCl₅ = 208,5 g/mol\nMoles iniciales de PCl₅ = 2,08 g / 208,5 g/mol = 0,01 mol\nConcentración inicial de PCl₅ = 0,01 mol / 2,0 L = 0,005 M\nSea x el número de moles/L de PCl₅ que se descomponen\nEn el equilibrio: [PCl₅] = 0,005 - x; [PCl₃] = x; [Cl₂] = x\nMoles totales en equilibrio = (0,005 - x) + x + x = 0,005 + x\nPresión total = (0,005 + x) · 0,082 · 523 = 1,0 atm\nDespejando: x = 0,0033 M\nEn el equilibrio: [PCl₅] = 0,0017 M; [PCl₃] = [Cl₂] = 0,0033 M\nKc = [PCl₃]·[Cl₂]/[PCl₅] = 0,0033 · 0,0033 / 0,0017 = 0,0064 M"
+              },
+              {
+                text: "b) Calcule el grado de disociación del PCl₅ a 250°C. (0,8 puntos)",
+                score: 0.8,
+                solution: "Grado de disociación α = moles disociados / moles iniciales = x / 0,005 = 0,0033 / 0,005 = 0,66 (66%)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Cinética Química (2 puntos)",
+            content: "A 25°C, la reacción elemental A + B → C tiene una constante de velocidad k = 0,55 L/(mol·s).",
+            questions: [
+              {
+                text: "a) Determine el orden de reacción con respecto a cada reactivo y el orden total. (0,6 puntos)",
+                score: 0.6,
+                solution: "Al ser una reacción elemental, el orden parcial respecto a cada reactivo coincide con su coeficiente estequiométrico.\nOrden respecto a A = 1\nOrden respecto a B = 1\nOrden total = 1 + 1 = 2"
+              },
+              {
+                text: "b) Escriba la ecuación de velocidad para esta reacción. (0,4 puntos)",
+                score: 0.4,
+                solution: "Ecuación de velocidad: v = k·[A]·[B] = 0,55 L/(mol·s)·[A]·[B]"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Si las concentraciones iniciales de A y B son [A]₀ = 0,20 M y [B]₀ = 0,30 M, calcule la velocidad inicial de la reacción. (0,5 puntos)",
+                score: 0.5,
+                solution: "Velocidad inicial = k·[A]₀·[B]₀ = 0,55 L/(mol·s) · 0,20 mol/L · 0,30 mol/L = 0,033 mol/(L·s)"
+              },
+              {
+                text: "c.2) ¿Cómo afectaría a la velocidad de reacción duplicar la concentración de A manteniendo constante la de B? ¿Y si se duplicaran ambas concentraciones? (0,5 puntos)",
+                score: 0.5,
+                solution: "Si se duplica la concentración de A, la velocidad también se duplica, ya que v = k·[A]·[B] y el orden respecto a A es 1.\nSi se duplican ambas concentraciones, la velocidad se multiplica por 2 × 2 = 4, ya que el orden total de la reacción es 2."
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 3 - Equilibrio de Solubilidad (2 puntos)",
+            content: "La solubilidad del carbonato de calcio, CaCO₃, en agua pura es 5,8·10⁻⁵ M a 25°C.",
+            questions: [
+              {
+                text: "a) Escriba el equilibrio de solubilidad del CaCO₃ y calcule el valor de la constante del producto de solubilidad (Kps) a 25°C. (1 punto)",
+                score: 1,
+                solution: "Equilibrio de solubilidad: CaCO₃(s) ⇌ Ca²⁺(aq) + CO₃²⁻(aq)\nSi la solubilidad es s = 5,8·10⁻⁵ M, entonces [Ca²⁺] = [CO₃²⁻] = s = 5,8·10⁻⁵ M\nKps = [Ca²⁺]·[CO₃²⁻] = (5,8·10⁻⁵)² = 3,36·10⁻⁹"
+              },
+              {
+                text: "b) Calcule la solubilidad del CaCO₃ en una disolución de Na₂CO₃ 0,01 M. (0,5 puntos)",
+                score: 0.5,
+                solution: "En una disolución de Na₂CO₃ 0,01 M, tenemos [CO₃²⁻] = 0,01 M (efecto del ion común)\nSea s la solubilidad del CaCO₃ en estas condiciones\n[Ca²⁺] = s\n[CO₃²⁻] = 0,01 + s ≈ 0,01 M (ya que s será muy pequeña)\nKps = [Ca²⁺]·[CO₃²⁻] = s·0,01 = 3,36·10⁻⁹\nDespejando: s = 3,36·10⁻⁹/0,01 = 3,36·10⁻⁷ M"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Explique, utilizando el principio de Le Châtelier, por qué la solubilidad del CaCO₃ disminuye en una disolución de Na₂CO₃. (0,5 puntos)",
+                score: 0.5,
+                solution: "Según el principio de Le Châtelier, cuando se añade una sustancia que participa en un equilibrio, este se desplaza en el sentido que contrarresta dicha adición. Al añadir Na₂CO₃, aumenta la concentración de CO₃²⁻ en la disolución, lo que desplaza el equilibrio hacia la izquierda (formación de CaCO₃ sólido), reduciendo la solubilidad del compuesto."
+              },
+              {
+                text: "c.2) ¿Cómo afectaría a la solubilidad del CaCO₃ la adición de un ácido como el HCl? Explique su respuesta. (0,5 puntos)",
+                score: 0.5,
+                solution: "La adición de HCl aumentaría la solubilidad del CaCO₃. Esto se debe a que el ácido (H⁺) reacciona con los iones CO₃²⁻ formando HCO₃⁻ o incluso H₂CO₃ (que se descompone en H₂O y CO₂), reduciendo la concentración de CO₃²⁻ en la disolución. Según el principio de Le Châtelier, esto desplaza el equilibrio hacia la derecha (disolución del CaCO₃), aumentando su solubilidad."
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 4 - Energía de Activación (2 puntos)",
+            content: "Para una determinada reacción, se han obtenido experimentalmente los siguientes datos a diferentes temperaturas:<br>T (K): 300, 310, 320<br>k (s⁻¹): 0,0216, 0,0342, 0,0522<br>Donde k es la constante de velocidad.",
+            questions: [
+              {
+                text: "a) Determine la energía de activación de la reacción utilizando la ecuación de Arrhenius. (1,2 puntos)",
+                score: 1.2,
+                solution: "La ecuación de Arrhenius en forma logarítmica es: ln(k) = ln(A) - Ea/(R·T)\nCalculando ln(k) para cada temperatura:\nT = 300 K: ln(k) = ln(0,0216) = -3,83\nT = 310 K: ln(k) = ln(0,0342) = -3,38\nT = 320 K: ln(k) = ln(0,0522) = -2,95\nRepresentando ln(k) frente a 1/T:\nPendiente = -Ea/R\nUsando los puntos (1/300, -3,83) y (1/320, -2,95):\nPendiente = (-2,95-(-3,83))/(1/320-1/300) = 0,88/(-2,08·10⁻⁴) = -4,23·10³\nEa = -pendiente·R = 4,23·10³ · 8,31 = 35,1 kJ/mol"
+              },
+              {
+                text: "b) Calcule el factor preexponencial A de la ecuación de Arrhenius. (0,4 puntos)",
+                score: 0.4,
+                solution: "Usando ln(k) = ln(A) - Ea/(R·T) con T = 300 K:\n-3,83 = ln(A) - 35100/(8,31·300)\n-3,83 = ln(A) - 14,09\nln(A) = -3,83 + 14,09 = 10,26\nA = e^10,26 = 28500 s⁻¹"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Estime la constante de velocidad a 330 K. (0,4 puntos)",
+                score: 0.4,
+                solution: "Usando la ecuación de Arrhenius con los valores calculados:\nk = A·e^(-Ea/(R·T)) = 28500·e^(-35100/(8,31·330)) = 28500·e^(-12,79) = 28500 · 2,78·10⁻⁶ = 0,0792 s⁻¹"
+              },
+              {
+                text: "c.2) Explique el significado físico de la energía de activación y su relación con la velocidad de reacción. (0,4 puntos)",
+                score: 0.4,
+                solution: "La energía de activación (Ea) representa la barrera energética mínima que deben superar las moléculas de reactivos para transformarse en productos. Una energía de activación alta implica que pocas moléculas tendrán suficiente energía para reaccionar, resultando en una reacción lenta. Al aumentar la temperatura, más moléculas superan esta barrera, incrementando la velocidad de reacción. Esto explica por qué las reacciones con Ea elevada son más sensibles a cambios de temperatura."
+              }
+            ]
+          },
+          {
+            header: "Ejercicio 5 - Equilibrios Ácido-Base (2 puntos)",
+            content: "Se prepara una disolución tampón mezclando 100 mL de ácido acético (CH₃COOH) 0,2 M con 100 mL de acetato de sodio (CH₃COONa) 0,2 M.<br>Datos: Ka (CH₃COOH) = 1,8·10⁻⁵.",
+            questions: [
+              {
+                text: "a) Calcule el pH de la disolución resultante. (0,8 puntos)",
+                score: 0.8,
+                solution: "Al mezclar ambas disoluciones, los volúmenes se suman y las concentraciones se diluyen a la mitad:\n[CH₃COOH] = 0,2 M · 100 mL / 200 mL = 0,1 M\n[CH₃COONa] = 0,2 M · 100 mL / 200 mL = 0,1 M\nUsando la ecuación de Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA])\npKa = -log(1,8·10⁻⁵) = 4,74\npH = 4,74 + log(0,1/0,1) = 4,74 + log(1) = 4,74"
+              },
+              {
+                text: "b) Calcule la variación de pH que se produce al añadir 10 mL de HCl 0,1 M a la disolución tampón. (0,7 puntos)",
+                score: 0.7,
+                solution: "Los moles de ácido acético y acetato antes de añadir HCl son:\nMoles CH₃COOH = 0,1 M · 0,2 L = 0,02 mol\nMoles CH₃COO⁻ = 0,1 M · 0,2 L = 0,02 mol\nEl HCl añadido (0,1 M · 0,01 L = 0,001 mol) reacciona con el acetato formando ácido acético:\nCH₃COO⁻ + H⁺ → CH₃COOH\nDespués de añadir HCl:\nMoles CH₃COOH = 0,02 + 0,001 = 0,021 mol\nMoles CH₃COO⁻ = 0,02 - 0,001 = 0,019 mol\nVolumen total = 200 + 10 = 210 mL = 0,21 L\n[CH₃COOH] = 0,021 mol / 0,21 L = 0,1 M\n[CH₃COO⁻] = 0,019 mol / 0,21 L = 0,09 M\nNuevo pH = 4,74 + log(0,09/0,1) = 4,74 + log(0,9) = 4,74 - 0,046 = 4,69\nVariación de pH = 4,69 - 4,74 = -0,05"
+              }
+            ],
+            hasOptional: true,
+            optionalQuestions: [
+              {
+                text: "c.1) Calcule la variación de pH que se produciría al añadir 10 mL de HCl 0,1 M a 200 mL de agua pura. (0,5 puntos)",
+                score: 0.5,
+                solution: "En 10 mL de HCl 0,1 M hay 0,001 mol de H⁺\nAl añadirlos a 200 mL de agua: [H⁺] = 0,001 mol / 0,21 L = 0,0048 M\npH = -log(0,0048) = 2,32\nVariación de pH respecto al agua pura (pH = 7): ΔpH = 2,32 - 7 = -4,68"
+              },
+              {
+                text: "c.2) Explique por qué la variación de pH es mucho menor en la disolución tampón que en el agua pura. (0,5 puntos)",
+                score: 0.5,
+                solution: "La disolución tampón resiste los cambios de pH porque contiene concentraciones similares de un ácido débil (CH₃COOH) y su base conjugada (CH₃COO⁻). Cuando se añade un ácido fuerte como HCl, los iones H⁺ reaccionan preferentemente con la base conjugada (CH₃COO⁻), formando más ácido débil (CH₃COOH) pero sin cambiar significativamente la relación [CH₃COO⁻]/[CH₃COOH], que determina el pH. En cambio, cuando se añade HCl al agua pura, los iones H⁺ aumentan directamente la concentración de H⁺ y, por tanto, disminuyen drásticamente el pH."
+              }
+            ]
+          }
+        ]
+      },
+      // Después del modelo 5
+      "6": {
+        title: "Modelo 6 - Estructura Atómica y Enlace",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Configuración Electrónica (2 puntos)",
+            content: "Para el elemento Z = 24:",
+            questions: [
+              {
+                text: "a) Escriba su configuración electrónica. (0,8 puntos)",
+                score: 0.8,
+                solution: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁴"
+              },
+              {
+                text: "b) Indique los números cuánticos posibles del último electrón. (1,2 puntos)",
+                score: 1.2,
+                solution: "n=3, l=2, m=-2,-1,0,1,2, s=±½"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Tabla Periódica (2 puntos)",
+            content: "Dados los elementos Na (Z=11), Mg (Z=12) y Al (Z=13):",
+            questions: [
+              {
+                text: "a) Ordénelos de mayor a menor radio atómico. Justifique. (1 punto)",
+                score: 1,
+                solution: "Na > Mg > Al (aumenta la carga nuclear efectiva)"
+              },
+              {
+                text: "b) Ordénelos de mayor a menor energía de ionización. Justifique. (1 punto)",
+                score: 1,
+                solution: "Al < Mg < Na (el radio atómico disminuye)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Enlace Químico (2 puntos)",
+            content: "Para las moléculas BF₃ y NH₃:",
+            questions: [
+              {
+                text: "a) Dibuje sus estructuras de Lewis. (1 punto)",
+                score: 1,
+                solution: "BF₃: B con 3 enlaces B-F\nNH₃: N con 3 enlaces N-H y un par solitario"
+              },
+              {
+                text: "b) Prediga su geometría molecular según TRPECV. (1 punto)",
+                score: 1,
+                solution: "BF₃: trigonal plana\nNH₃: piramidal trigonal"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Fuerzas Intermoleculares (2 puntos)",
+            content: "Compare H₂O y H₂S:",
+            questions: [
+              {
+                text: "a) ¿Por qué el agua tiene mayor punto de ebullición? (1 punto)",
+                score: 1,
+                solution: "Enlaces de hidrógeno en H₂O vs fuerzas de Van der Waals en H₂S"
+              },
+              {
+                text: "b) Explique sus diferencias de solubilidad. (1 punto)",
+                score: 1,
+                solution: "H₂O más polar, mejor disolvente polar"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Orbitales Moleculares (2 puntos)",
+            content: "Para la molécula de H₂:",
+            questions: [
+              {
+                text: "a) Describa la formación del enlace según la teoría de orbitales moleculares. (1,2 puntos)",
+                score: 1.2,
+                solution: "Combinación de orbitales 1s para formar σ y σ*"
+              },
+              {
+                text: "b) Calcule el orden de enlace. (0,8 puntos)",
+                score: 0.8,
+                solution: "Orden = (2-0)/2 = 1"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "7": {
+        title: "Modelo 7 - Disoluciones y Estequiometría",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Concentración (2 puntos)",
+            content: "Se disuelven 5,3 g de Na₂CO₃ en agua hasta 250 mL.",
+            questions: [
+              {
+                text: "a) Calcule la molaridad de la disolución. (1 punto)",
+                score: 1,
+                solution: "M = (5,3 g)/(106 g/mol)×(1000 mL/L)/(250 mL) = 0,2 M"
+              },
+              {
+                text: "b) ¿Qué volumen debe tomarse para preparar 100 mL 0,1 M? (1 punto)",
+                score: 1,
+                solution: "V₁M₁ = V₂M₂\nV₁ = (100×0,1)/0,2 = 50 mL"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Solubilidad (2 puntos)",
+            content: "La solubilidad del CaSO₄ es 0,2 g/100 mL a 25°C.",
+            questions: [
+              {
+                text: "a) Calcule su producto de solubilidad. (1,2 puntos)",
+                score: 1.2,
+                solution: "Kps = [Ca²⁺][SO₄²⁻] = (0,2/136)²×(1000/100)² = 2,15×10⁻⁴"
+              },
+              {
+                text: "b) ¿Precipitará al mezclar CaCl₂ 0,1 M y Na₂SO₄ 0,1 M? (0,8 puntos)",
+                score: 0.8,
+                solution: "Q = 0,1×0,1 = 0,01 > Kps, sí precipita"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Gases (2 puntos)",
+            content: "Un gas ocupa 2,5 L a 2 atm y 300 K.",
+            questions: [
+              {
+                text: "a) ¿Qué volumen ocupará a 1 atm y 600 K? (1 punto)",
+                score: 1,
+                solution: "P₁V₁/T₁ = P₂V₂/T₂\nV₂ = (2,5×2×600)/(1×300) = 10 L"
+              },
+              {
+                text: "b) Calcule la densidad del gas en condiciones normales. (1 punto)",
+                score: 1,
+                solution: "d = PM/RT = (1×44)/(0,082×273) = 1,96 g/L"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Estequiometría (2 puntos)",
+            content: "La reacción: 2 Al + 6 HCl → 2 AlCl₃ + 3 H₂",
+            questions: [
+              {
+                text: "a) ¿Cuántos gramos de Al reaccionan con 100 mL HCl 2M? (1,2 puntos)",
+                score: 1.2,
+                solution: "moles HCl = 0,2\nmoles Al = 0,2/3 = 0,067\ng Al = 0,067×27 = 1,8 g"
+              },
+              {
+                text: "b) ¿Qué volumen de H₂ se obtiene a 25°C y 1 atm? (0,8 puntos)",
+                score: 0.8,
+                solution: "V = nRT/P = (0,1×0,082×298)/1 = 2,44 L"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Reactivo Limitante (2 puntos)",
+            content: "Se mezclan 50 mL de AgNO₃ 0,1 M con 50 mL de NaCl 0,15 M.",
+            questions: [
+              {
+                text: "a) Identifique el reactivo limitante. (1 punto)",
+                score: 1,
+                solution: "AgNO₃: 0,005 mol\nNaCl: 0,0075 mol\nAgNO₃ es limitante"
+              },
+              {
+                text: "b) Calcule los gramos de AgCl formados. (1 punto)",
+                score: 1,
+                solution: "moles AgCl = 0,005\ng AgCl = 0,005×143,5 = 0,72 g"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "8": {
+        title: "Modelo 8 - Equilibrio Químico",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Constante de Equilibrio (2 puntos)",
+            content: "Para la reacción N₂(g) + 3H₂(g) ⇌ 2NH₃(g), Kc = 4 a 400°C.",
+            questions: [
+              {
+                text: "a) Calcule Kp a esa temperatura. (1 punto)",
+                score: 1,
+                solution: "Kp = Kc(RT)^Δn = 4(0,082×673)^-2 = 0,34"
+              },
+              {
+                text: "b) ¿Cómo afecta un aumento de presión? (1 punto)",
+                score: 1,
+                solution: "Favorece formación de NH₃ (menos moles gaseosos)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Equilibrio Heterogéneo (2 puntos)",
+            content: "CaCO₃(s) ⇌ CaO(s) + CO₂(g), Kp = 0,2 atm a 800°C.",
+            questions: [
+              {
+                text: "a) Calcule la presión de CO₂ en equilibrio. (1,2 puntos)",
+                score: 1.2,
+                solution: "P(CO₂) = √Kp = √0,2 = 0,447 atm"
+              },
+              {
+                text: "b) ¿Cómo afecta añadir más CaCO₃? (0,8 puntos)",
+                score: 0.8,
+                solution: "No afecta al equilibrio (sólido)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Principio de Le Chatelier (2 puntos)",
+            content: "Para la reacción exotérmica: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g)",
+            questions: [
+              {
+                text: "a) Efecto de aumentar la temperatura. (1 punto)",
+                score: 1,
+                solution: "Desplaza hacia reactivos (endotérmico)"
+              },
+              {
+                text: "b) Efecto de eliminar SO₃. (1 punto)",
+                score: 1,
+                solution: "Desplaza hacia productos (compensar eliminación)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Grado de Disociación (2 puntos)",
+            content: "El PCl₅ se disocia según: PCl₅(g) ⇌ PCl₃(g) + Cl₂(g)",
+            questions: [
+              {
+                text: "a) Si α = 0,4 a 200°C, calcule Kc. (1,2 puntos)",
+                score: 1.2,
+                solution: "Kc = (cα²)/(1-α) = (1×0,4²)/(1-0,4) = 0,267"
+              },
+              {
+                text: "b) Calcule las concentraciones en equilibrio. (0,8 puntos)",
+                score: 0.8,
+                solution: "[PCl₃] = [Cl₂] = cα = 1×0,4 = 0,4 M\n[PCl₅] = c(1-α) = 1×0,6 = 0,6 M"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Equilibrios Simultáneos (2 puntos)",
+            content: "Para el equilibrio: N₂O₄(g) ⇌ 2NO₂(g), Kc = 0,0625 a 25°C",
+            questions: [
+              {
+                text: "a) Si [N₂O₄] = 0,8 M, calcule [NO₂]. (1 punto)",
+                score: 1,
+                solution: "[NO₂] = √(Kc×[N₂O₄]) = √(0,0625×0,8) = 0,2236 M"
+              },
+              {
+                text: "b) Calcule Kp a esa temperatura. (1 punto)",
+                score: 1,
+                solution: "Kp = Kc(RT)^Δn = 0,0625(0,082×298)^1 = 1,52"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "12": {
+        title: "Modelo 12 - Química Orgánica",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Reacciones Orgánicas (2 puntos)",
+            content: "Complete las siguientes reacciones orgánicas:",
+            questions: [
+              {
+                text: "a) CH₃-CH=CH₂ + HBr → (0,7 puntos)",
+                score: 0.7,
+                solution: "CH₃-CHBr-CH₃ (Adición de HBr al propeno según regla de Markovnikov)"
+              },
+              {
+                text: "b) CH₃-CH₂OH + H₂SO₄/calor → (0,7 puntos)",
+                score: 0.7,
+                solution: "CH₂=CH₂ + H₂O (Deshidratación del etanol)"
+              },
+              {
+                text: "c) Nombre los productos obtenidos. (0,6 puntos)",
+                score: 0.6,
+                solution: "a) 2-bromopropano\nb) eteno"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Isomería (2 puntos)",
+            content: "Para el compuesto C₄H₈O₂:",
+            questions: [
+              {
+                text: "a) Escriba y nombre todos sus isómeros. (1,2 puntos)",
+                score: 1.2,
+                solution: "Ácido butanoico (CH₃-CH₂-CH₂-COOH)\nÁcido 2-metilpropanoico ((CH₃)₂CH-COOH)\nButanoato de metilo (CH₃-CH₂-CH₂-COO-CH₃)\nPropanoato de etilo (CH₃-CH₂-COO-CH₂-CH₃)"
+              },
+              {
+                text: "b) Clasifique los tipos de isomería presentes. (0,8 puntos)",
+                score: 0.8,
+                solution: "Isomería de función (ácidos y ésteres)\nIsomería de posición (en los ésteres)\nIsomería de cadena (en los ácidos)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Grupos Funcionales (2 puntos)",
+            content: "Identifique los grupos funcionales presentes en la glucosa (C₆H₁₂O₆):",
+            questions: [
+              {
+                text: "a) Dibuje su estructura lineal y cíclica. (1,2 puntos)",
+                score: 1.2,
+                solution: "Lineal: CHO-(CHOH)₄-CH₂OH\nCíclica: forma hemiacetal cíclica de 6 miembros"
+              },
+              {
+                text: "b) Explique su reactividad. (0,8 puntos)",
+                score: 0.8,
+                solution: "Aldehído: oxidación, reducción\nAlcoholes: esterificación, deshidratación"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Mecanismos (2 puntos)",
+            content: "Para la reacción de esterificación entre ácido acético y etanol:",
+            questions: [
+              {
+                text: "a) Escriba el mecanismo detallado. (1,2 puntos)",
+                score: 1.2,
+                solution: "1. Protonación del carbonilo\n2. Ataque nucleófilo del alcohol\n3. Transferencia de protón\n4. Pérdida de agua\n5. Desprotonación"
+              },
+              {
+                text: "b) ¿Por qué es reversible? (0,8 puntos)",
+                score: 0.8,
+                solution: "La hidrólisis del éster es favorable, estableciéndose un equilibrio con el ácido y alcohol iniciales"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Polímeros (2 puntos)",
+            content: "Sobre la polimerización del eteno:",
+            questions: [
+              {
+                text: "a) Escriba la reacción de polimerización. (1 punto)",
+                score: 1,
+                solution: "nCH₂=CH₂ → [-CH₂-CH₂-]ₙ"
+              },
+              {
+                text: "b) Explique sus propiedades y aplicaciones. (1 punto)",
+                score: 1,
+                solution: "Termoplástico, flexible, resistente a ácidos y bases\nUsos: envases, bolsas, tuberías"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "13": {
+        title: "Modelo 13 - Electroquímica",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Pilas (2 puntos)",
+            content: "Se construye una pila con los electrodos Zn²⁺/Zn y Cu²⁺/Cu. E°(Zn²⁺/Zn) = -0,76 V, E°(Cu²⁺/Cu) = +0,34 V.",
+            questions: [
+              {
+                text: "a) Escriba las semirreacciones y la reacción global. (1 punto)",
+                score: 1,
+                solution: "Ánodo: Zn → Zn²⁺ + 2e⁻\nCátodo: Cu²⁺ + 2e⁻ → Cu\nGlobal: Zn + Cu²⁺ → Zn²⁺ + Cu"
+              },
+              {
+                text: "b) Calcule la fuerza electromotriz de la pila. (1 punto)",
+                score: 1,
+                solution: "E° = E°cátodo - E°ánodo = 0,34 - (-0,76) = 1,10 V"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Electrólisis (2 puntos)",
+            content: "Se realiza la electrólisis de NaCl fundido:",
+            questions: [
+              {
+                text: "a) Escriba las reacciones en cada electrodo. (1 punto)",
+                score: 1,
+                solution: "Cátodo: Na⁺ + e⁻ → Na\nÁnodo: 2Cl⁻ → Cl₂ + 2e⁻"
+              },
+              {
+                text: "b) Calcule la masa de productos obtenidos al pasar 96500 C. (1 punto)",
+                score: 1,
+                solution: "Na: 23 g/mol × (96500 C)/(96500 C/mol) = 23 g\nCl₂: 35,5 g/mol × (96500 C)/(2×96500 C/mol) = 17,75 g"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Corrosión (2 puntos)",
+            content: "Sobre la corrosión del hierro:",
+            questions: [
+              {
+                text: "a) Escriba las semirreacciones del proceso. (1 punto)",
+                score: 1,
+                solution: "Fe → Fe²⁺ + 2e⁻\nO₂ + 2H₂O + 4e⁻ → 4OH⁻\nFe²⁺ + 2OH⁻ → Fe(OH)₂"
+              },
+              {
+                text: "b) Explique métodos de protección. (1 punto)",
+                score: 1,
+                solution: "Galvanización (Zn), pintura, ánodos de sacrificio"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Leyes de Faraday (2 puntos)",
+            content: "Se electrolizan simultáneamente disoluciones de CuSO₄ y AgNO₃:",
+            questions: [
+              {
+                text: "a) Calcule la relación entre las masas depositadas. (1,2 puntos)",
+                score: 1.2,
+                solution: "m₁/m₂ = (M₁n₂)/(M₂n₁)\nCu/Ag = (63,5×1)/(108×2) = 0,294"
+              },
+              {
+                text: "b) ¿Qué volumen de gas se obtiene en el ánodo? (0,8 puntos)",
+                score: 0.8,
+                solution: "2H₂O → O₂ + 4H⁺ + 4e⁻\nV = (nRT)/P = (0,25×0,082×298)/1 = 6,1 L"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Potenciales (2 puntos)",
+            content: "Para la pila Daniell (Zn/Zn²⁺//Cu²⁺/Cu):",
+            questions: [
+              {
+                text: "a) Calcule el potencial si [Zn²⁺] = 0,01 M y [Cu²⁺] = 0,1 M. (1,2 puntos)",
+                score: 1.2,
+                solution: "E = E° - (0,059/2)log([Zn²⁺]/[Cu²⁺])\nE = 1,10 - 0,0295log(0,01/0,1) = 1,16 V"
+              },
+              {
+                text: "b) ¿Cuándo se agotará la pila? (0,8 puntos)",
+                score: 0.8,
+                solution: "Cuando E = 0 V o cuando se consuma el Zn o Cu²⁺"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "14": {
+        title: "Modelo 14 - Química Nuclear",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Radiactividad (2 puntos)",
+            content: "El isótopo ²³⁸U se desintegra emitiendo partículas alfa con un periodo de semidesintegración de 4,5·10⁹ años.",
+            questions: [
+              {
+                text: "a) Escriba la ecuación de desintegración. (1 punto)",
+                score: 1,
+                solution: "²³⁸U → ²³⁴Th + ⁴He"
+              },
+              {
+                text: "b) Si inicialmente se tienen 100 g de ²³⁸U, ¿cuántos gramos quedarán después de 9·10⁹ años? (1 punto)",
+                score: 1,
+                solution: "n = 2 periodos\nm = m₀(1/2)ⁿ = 100(1/2)² = 25 g"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Cinética Nuclear (2 puntos)",
+            content: "La actividad de una muestra radiactiva disminuye de 800 Bq a 50 Bq en 24 horas.",
+            questions: [
+              {
+                text: "a) Calcule la constante de desintegración. (1,2 puntos)",
+                score: 1.2,
+                solution: "A = A₀e^(-λt)\n50 = 800e^(-λ×86400)\nλ = 3,47·10⁻⁵ s⁻¹"
+              },
+              {
+                text: "b) Calcule el periodo de semidesintegración. (0,8 puntos)",
+                score: 0.8,
+                solution: "t₁/₂ = ln(2)/λ = 0,693/3,47·10⁻⁵ = 20000 s"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Fusión Nuclear (2 puntos)",
+            content: "La reacción de fusión: ²H + ³H → ⁴He + n",
+            questions: [
+              {
+                text: "a) Calcule el defecto de masa. (1,2 puntos)",
+                score: 1.2,
+                solution: "Δm = (m₁ + m₂) - (m₃ + m₄)\nΔm = (2,014 + 3,016) - (4,002 + 1,009) = 0,019 u"
+              },
+              {
+                text: "b) Calcule la energía liberada en MeV. (0,8 puntos)",
+                score: 0.8,
+                solution: "E = Δm·c² = 0,019×931,5 = 17,7 MeV"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Fisión Nuclear (2 puntos)",
+            content: "La fisión del ²³⁵U con neutrones:",
+            questions: [
+              {
+                text: "a) Escriba una posible reacción de fisión. (1 punto)",
+                score: 1,
+                solution: "²³⁵U + n → ⁹⁰Kr + ¹⁴³Ba + 3n"
+              },
+              {
+                text: "b) Explique la reacción en cadena. (1 punto)",
+                score: 1,
+                solution: "Los neutrones liberados provocan nuevas fisiones, liberando más neutrones y energía"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Aplicaciones (2 puntos)",
+            content: "Sobre las aplicaciones de la radiactividad:",
+            questions: [
+              {
+                text: "a) Explique la datación con ¹⁴C. (1,2 puntos)",
+                score: 1.2,
+                solution: "El ¹⁴C se forma continuamente, mantiene ratio constante con ¹²C en seres vivos\nAl morir, el ratio cambia por desintegración\nt₁/₂ = 5730 años"
+              },
+              {
+                text: "b) Cite aplicaciones médicas. (0,8 puntos)",
+                score: 0.8,
+                solution: "Diagnóstico por imagen (gammagrafía)\nTratamiento de tumores (radioterapia)\nEsterilización de material médico"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "15": {
+        title: "Modelo 15 - Química Industrial",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Proceso Haber-Bosch (2 puntos)",
+            content: "El proceso Haber-Bosch para la síntesis de amoníaco: N₂(g) + 3H₂(g) ⇌ 2NH₃(g) ΔH = -92 kJ",
+            questions: [
+              {
+                text: "a) Explique cómo afecta al equilibrio un aumento de presión. (1 punto)",
+                score: 1,
+                solution: "Al aumentar la presión, el equilibrio se desplaza hacia donde hay menos moles gaseosos (derecha), favoreciendo la formación de NH₃"
+              },
+              {
+                text: "b) ¿Cómo afecta un aumento de temperatura? (1 punto)",
+                score: 1,
+                solution: "Al ser exotérmica, un aumento de temperatura desplaza el equilibrio hacia la izquierda, desfavoreciendo la formación de NH₃"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Industria del Ácido Sulfúrico (2 puntos)",
+            content: "Proceso de contacto: SO₂ + ½O₂ ⇌ SO₃ ΔH = -98 kJ",
+            questions: [
+              {
+                text: "a) Explique las condiciones óptimas del proceso. (1,2 puntos)",
+                score: 1.2,
+                solution: "T = 400-450°C (compromiso cinética-termodinámica)\nP = 1-2 atm\nCatalizador: V₂O₅"
+              },
+              {
+                text: "b) Calcule el rendimiento si se obtienen 392 kg de H₂SO₄ a partir de 256 kg de SO₂. (0,8 puntos)",
+                score: 0.8,
+                solution: "Rendimiento = (392/98)/(256/64)×100 = 100%"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Metalurgia (2 puntos)",
+            content: "Obtención de hierro en alto horno:",
+            questions: [
+              {
+                text: "a) Escriba y ajuste las reacciones principales. (1,2 puntos)",
+                score: 1.2,
+                solution: "C + O₂ → CO₂\nCO₂ + C → 2CO\nFe₂O₃ + 3CO → 2Fe + 3CO₂"
+              },
+              {
+                text: "b) Explique la función de la caliza. (0,8 puntos)",
+                score: 0.8,
+                solution: "CaCO₃ → CaO + CO₂\nCaO + SiO₂ → CaSiO₃ (escoria)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Petroquímica (2 puntos)",
+            content: "Sobre el proceso de cracking catalítico:",
+            questions: [
+              {
+                text: "a) Explique el proceso y sus productos. (1,2 puntos)",
+                score: 1.2,
+                solution: "Ruptura de hidrocarburos pesados\nProductos: gasolina, gasóleo, gases\nCatalizador: zeolitas"
+              },
+              {
+                text: "b) Compare con el cracking térmico. (0,8 puntos)",
+                score: 0.8,
+                solution: "Catalítico: menor T, más selectivo\nTérmico: mayor T, menos selectivo"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Química Verde (2 puntos)",
+            content: "Principios de la química sostenible:",
+            questions: [
+              {
+                text: "a) Explique tres principios fundamentales. (1,2 puntos)",
+                score: 1.2,
+                solution: "1. Prevención de residuos\n2. Economía atómica\n3. Uso de materias primas renovables"
+              },
+              {
+                text: "b) Proponga un ejemplo de proceso sostenible. (0,8 puntos)",
+                score: 0.8,
+                solution: "Biodiesel a partir de aceites usados\nCatálisis enzimática\nUso de disolventes verdes"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "9": {
+        title: "Modelo 9 - Ácido-Base y Redox",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Ácidos y Bases (2 puntos)",
+            content: "Se tiene una disolución de ácido acético 0,1 M (Ka = 1,8·10⁻⁵).",
+            questions: [
+              {
+                text: "a) Calcule el pH de la disolución. (1 punto)",
+                score: 1,
+                solution: "Ka = [H⁺][CH₃COO⁻]/[CH₃COOH]\n1,8·10⁻⁵ = x²/(0,1-x)\nx = [H⁺] = 1,34·10⁻³\npH = -log[H⁺] = 2,87"
+              },
+              {
+                text: "b) Calcule el grado de disociación. (1 punto)",
+                score: 1,
+                solution: "α = [H⁺]/[CH₃COOH]₀ = 1,34·10⁻³/0,1 = 0,0134 = 1,34%"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Disoluciones Reguladoras (2 puntos)",
+            content: "Se prepara una disolución tampón mezclando 50 mL de NH₃ 0,2 M con 50 mL de NH₄Cl 0,2 M. Kb(NH₃) = 1,8·10⁻⁵",
+            questions: [
+              {
+                text: "a) Calcule el pH de la disolución tampón. (1,2 puntos)",
+                score: 1.2,
+                solution: "pOH = -log Kb - log([NH₃]/[NH₄⁺]) = 4,74 - log(1) = 4,74\npH = 14 - 4,74 = 9,26"
+              },
+              {
+                text: "b) Calcule el pH tras añadir 5 mL de HCl 0,1 M. (0,8 puntos)",
+                score: 0.8,
+                solution: "Moles HCl = 0,0005 mol\nNuevo pH = 9,20 (pequeña variación por efecto tampón)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Hidrólisis (2 puntos)",
+            content: "Se disuelve NH₄Cl hasta una concentración 0,2 M.",
+            questions: [
+              {
+                text: "a) Escriba las ecuaciones de hidrólisis. (1 punto)",
+                score: 1,
+                solution: "NH₄⁺ + H₂O ⇌ NH₃ + H₃O⁺\nCl⁻ + H₂O → no reacciona"
+              },
+              {
+                text: "b) Calcule el pH de la disolución. (1 punto)",
+                score: 1,
+                solution: "Ka = Kw/Kb = 10⁻¹⁴/1,8·10⁻⁵ = 5,56·10⁻¹⁰\npH = -log√(Ka×c) = 5,48"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Valoraciones (2 puntos)",
+            content: "Se valoran 25 mL de H₂SO₄ con NaOH 0,1 M.",
+            questions: [
+              {
+                text: "a) Dibuje la curva de valoración. (1,2 puntos)",
+                score: 1.2,
+                solution: "Dos saltos: pH 4 → 7 y pH 7 → 10\nDos puntos de equivalencia por ser diprótido"
+              },
+              {
+                text: "b) Elija el indicador adecuado. (0,8 puntos)",
+                score: 0.8,
+                solution: "Fenolftaleína (8,2-10) para el segundo punto\nNaranja de metilo (3,1-4,4) para el primero"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Redox (2 puntos)",
+            content: "Ajuste la reacción: KMnO₄ + HCl → KCl + MnCl₂ + Cl₂ + H₂O",
+            questions: [
+              {
+                text: "a) Ajuste por el método del ion-electrón. (1,2 puntos)",
+                score: 1.2,
+                solution: "MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O\n2Cl⁻ → Cl₂ + 2e⁻\n2KMnO₄ + 16HCl → 2KCl + 2MnCl₂ + 5Cl₂ + 8H₂O"
+              },
+              {
+                text: "b) Indique oxidante y reductor. (0,8 puntos)",
+                score: 0.8,
+                solution: "Oxidante: KMnO₄ (Mn⁺⁷ → Mn²⁺)\nReductor: HCl (Cl⁻ → Cl₂)"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "10": {
+        title: "Modelo 10 - Termoquímica y Estructura",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Termoquímica (2 puntos)",
+            content: "La combustión del metano produce CO₂ y H₂O. ΔH° = -890 kJ/mol",
+            questions: [
+              {
+                text: "a) Escriba y ajuste la ecuación termoquímica. (1 punto)",
+                score: 1,
+                solution: "CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(l)  ΔH° = -890 kJ/mol"
+              },
+              {
+                text: "b) Calcule la energía liberada al quemar 1 kg de metano. (1 punto)",
+                score: 1,
+                solution: "1 kg CH₄ = 1000 g / 16 g/mol = 62,5 mol\nEnergía = 62,5 mol × (-890 kJ/mol) = -55625 kJ"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Entalpías de Formación (2 puntos)",
+            content: "Dadas las entalpías de formación (kJ/mol): ΔHf°[CO₂(g)] = -393,5; ΔHf°[H₂O(l)] = -285,8; ΔHf°[C₂H₆(g)] = -84,7",
+            questions: [
+              {
+                text: "a) Calcule la entalpía de combustión del etano. (1,2 puntos)",
+                score: 1.2,
+                solution: "C₂H₆(g) + 3,5O₂(g) → 2CO₂(g) + 3H₂O(l)\nΔH° = 2×(-393,5) + 3×(-285,8) - (-84,7) = -1559,7 kJ/mol"
+              },
+              {
+                text: "b) ¿Qué cantidad de calor se libera al quemar 100 L de etano en CN? (0,8 puntos)",
+                score: 0.8,
+                solution: "100 L = 100/22,4 = 4,46 mol\nCalor = 4,46 mol × (-1559,7 kJ/mol) = -6956,3 kJ"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Energía de Enlace (2 puntos)",
+            content: "Dadas las energías de enlace (kJ/mol): C-H: 414; O=O: 498; C=O: 730; O-H: 463",
+            questions: [
+              {
+                text: "a) Calcule la entalpía de la reacción: CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(g) (1,2 puntos)",
+                score: 1.2,
+                solution: "ΔH° = ΣE enlaces rotos - ΣE enlaces formados\nRotos: 4(C-H) + 2(O=O) = 1656 + 996 = 2652 kJ\nFormados: 2(C=O) + 4(O-H) = 1460 + 1852 = 3312 kJ\nΔH° = 2652 - 3312 = -660 kJ/mol"
+              },
+              {
+                text: "b) ¿Es exotérmica o endotérmica? Justifique. (0,8 puntos)",
+                score: 0.8,
+                solution: "Exotérmica porque ΔH° < 0, se libera energía al medio"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Espontaneidad (2 puntos)",
+            content: "Para una reacción: ΔH° = -92 kJ/mol y ΔS° = -180 J/(mol·K)",
+            questions: [
+              {
+                text: "a) ¿A qué temperatura será espontánea? (1,2 puntos)",
+                score: 1.2,
+                solution: "ΔG° = ΔH° - TΔS°\nEspontánea si ΔG° < 0\n-92000 - T×(-180) < 0\nT < 511,1 K"
+              },
+              {
+                text: "b) Explique el signo de ΔS°. (0,8 puntos)",
+                score: 0.8,
+                solution: "ΔS° < 0 indica disminución del desorden, menos moles gaseosos en productos"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Ciclo de Born-Haber (2 puntos)",
+            content: "Para la formación de NaCl(s): Na(s) + ½Cl₂(g) → NaCl(s)",
+            questions: [
+              {
+                text: "a) Dibuje el ciclo de Born-Haber. (1,2 puntos)",
+                score: 1.2,
+                solution: "1. Sublimación Na(s)\n2. Disociación Cl₂(g)\n3. Ionización Na(g)\n4. Afinidad electrónica Cl(g)\n5. Energía de red NaCl(s)"
+              },
+              {
+                text: "b) Calcule la energía de red. (0,8 puntos)",
+                score: 0.8,
+                solution: "U = ΔHf° - (ΔHs° + ½D° + Ei + Aee)\nU = -411 - (108 + 121 + 496 - 349) = -787 kJ/mol"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      },
+      "11": {
+        title: "Modelo 11 - Cinética y Equilibrio",
+        exercises: [
+          {
+            header: "Ejercicio 1 - Velocidad de Reacción (2 puntos)",
+            content: "Para la reacción A + B → C + D, se han obtenido los siguientes datos iniciales: [A]₀ = 0,2 M, [B]₀ = 0,2 M. La velocidad inicial es v₀ = 4·10⁻³ M/s.",
+            questions: [
+              {
+                text: "a) Si la reacción es de primer orden respecto a A y B, calcule k. (1 punto)",
+                score: 1,
+                solution: "v = k[A][B]\n4·10⁻³ = k(0,2)(0,2)\nk = 0,1 M⁻¹s⁻¹"
+              },
+              {
+                text: "b) ¿Cómo afecta duplicar [A] manteniendo [B] constante? (1 punto)",
+                score: 1,
+                solution: "v = k[2A][B] = 2k[A][B]\nLa velocidad se duplica"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 2 - Orden de Reacción (2 puntos)",
+            content: "Para la reacción 2A → B + C se han medido las siguientes velocidades iniciales:",
+            questions: [
+              {
+                text: "a) Determine el orden de reacción. (1,2 puntos)",
+                score: 1.2,
+                solution: "Al duplicar [A], v se cuadruplica\nOrden = 2 respecto a A\nv = k[A]²"
+              },
+              {
+                text: "b) Calcule la vida media si [A]₀ = 0,1 M. (0,8 puntos)",
+                score: 0.8,
+                solution: "t₁/₂ = 1/(k[A]₀)\nt₁/₂ = 1/(0,1×0,1) = 100 s"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 3 - Energía de Activación (2 puntos)",
+            content: "La constante de velocidad de una reacción se duplica al aumentar la temperatura de 25°C a 35°C.",
+            questions: [
+              {
+                text: "a) Calcule la energía de activación. (1,2 puntos)",
+                score: 1.2,
+                solution: "ln(k₂/k₁) = -(Ea/R)(1/T₂ - 1/T₁)\nln(2) = -(Ea/8,31)(1/308 - 1/298)\nEa = 52,6 kJ/mol"
+              },
+              {
+                text: "b) Explique el efecto de un catalizador. (0,8 puntos)",
+                score: 0.8,
+                solution: "Disminuye Ea proporcionando un mecanismo alternativo"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 4 - Mecanismo de Reacción (2 puntos)",
+            content: "Para la reacción global A + B₂ → AB₂ se propone el mecanismo:\n1) A + B₂ ⇌ AB₂*\n2) AB₂* → AB₂",
+            questions: [
+              {
+                text: "a) ¿Cuál es la etapa limitante? Justifique. (1 punto)",
+                score: 1,
+                solution: "La etapa 2 es limitante por ser más lenta y unimolecular"
+              },
+              {
+                text: "b) Escriba la ecuación de velocidad. (1 punto)",
+                score: 1,
+                solution: "v = k[AB₂*] = K₁k₂[A][B₂]/(k₋₁ + k₂)"
+              }
+            ],
+            hasOptional: false
+          },
+          {
+            header: "Ejercicio 5 - Teoría de Colisiones (2 puntos)",
+            content: "Sobre la teoría de colisiones:",
+            questions: [
+              {
+                text: "a) Explique los factores que afectan a la velocidad. (1,2 puntos)",
+                score: 1.2,
+                solution: "1. Frecuencia de colisiones\n2. Orientación adecuada\n3. Energía suficiente"
+              },
+              {
+                text: "b) Relación con la ecuación de Arrhenius. (0,8 puntos)",
+                score: 0.8,
+                solution: "k = A·e^(-Ea/RT)\nA: factor de frecuencia y orientación\ne^(-Ea/RT): fracción con energía suficiente"
+              }
+            ],
+            hasOptional: false
+          }
+        ]
+      }
+    };
+    
+    // Función para cargar el examen seleccionado
+    function loadExam() {
+      const modelId = document.getElementById('exam-model').value;
+      const examContent = document.getElementById('exam-exercises');
+      
+      if (!modelId) {
+        alert('Por favor, selecciona un modelo de examen.');
+        return;
+      }
+      
+      const model = examModels[modelId];
+      if (!model) {
+        alert('Modelo no encontrado.');
+        return;
+      }
+      
+      let html = '';
+      model.exercises.forEach((exercise, exerciseIndex) => {
+        html += `
+          <div class="exercise">
+            <div class="exercise-header">${exercise.header}</div>
+            <div class="exercise-content">${exercise.content}</div>
+            <div class="questions">
+        `;
+        
+        exercise.questions.forEach((question, questionIndex) => {
+          html += `
+            <div class="question">
+              <p>${question.text}</p>
+              <textarea class="answer-area" data-type="obligatory" data-exercise="${exerciseIndex}" data-question="${questionIndex}" data-score="${question.score}"></textarea>
+              <div class="correction"></div>
+            </div>
+          `;
+        });
+        
+        if (exercise.hasOptional && exercise.optionalQuestions) {
+          html += `
+            <div class="optional-questions">
+              <div class="optional-question">
+                <p>${exercise.optionalQuestions[0].text}</p>
+                <textarea class="answer-area" data-type="optional" data-exercise="${exerciseIndex}" data-question="0" data-score="${exercise.optionalQuestions[0].score}"></textarea>
+                <div class="correction"></div>
+              </div>
+              <div class="optional-question">
+                <p>${exercise.optionalQuestions[1].text}</p>
+                <textarea class="answer-area" data-type="optional" data-exercise="${exerciseIndex}" data-question="1" data-score="${exercise.optionalQuestions[1].score}"></textarea>
+                <div class="correction"></div>
+              </div>
+            </div>
+          `;
+        }
+        
+        html += `
+            </div>
+          </div>
+        `;
+      });
+      
+      examContent.innerHTML = html;
+      
+      // Iniciar temporizador
+      startTimer();
+      
+      // Renderizar fórmulas matemáticas
+      if (window.MathJax) {
+        MathJax.typeset();
+      }
+    }
+    
+    // Función para iniciar el temporizador
+    function startTimer() {
+      let time = 3 * 60 * 60; // 3 horas en segundos
+      const timerElement = document.getElementById('time');
+      
+      if (window.examTimer) {
+        clearInterval(window.examTimer);
+      }
+      
+      window.examTimer = setInterval(() => {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+        
+        timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        if (time <= 0) {
+          clearInterval(window.examTimer);
+          alert('¡Tiempo agotado!');
+          checkExam();
+        }
+        
+        time--;
+      }, 1000);
+    }
+    
+    // Función para corregir el examen
+    function checkExam() {
+      let totalScore = 0;
+      let maxScore = 0;
+      
+      // Obtener todas las respuestas
+      const answers = document.querySelectorAll('.answer-area');
+      
+      answers.forEach(answer => {
+        const textValue = answer.value.toLowerCase().trim();
+        const score = parseFloat(answer.dataset.score);
+        const type = answer.dataset.type;
+        const correction = answer.nextElementSibling;
+        correction.style.display = 'block';
+        
+        let obtainedScore = 0;
+        let feedback = '';
+        
+        // Verificar si tiene algún contenido
+        if (textValue.length === 0) {
+          feedback = 'Sin respuesta';
+        } else {
+          // Encontrar el modelo y ejercicio actual
+          const modelId = document.getElementById('exam-model').value;
+          const exerciseIndex = parseInt(answer.dataset.exercise);
+          const questionIndex = parseInt(answer.dataset.question);
+          const model = examModels[modelId];
+          
+          if (model && model.exercises && model.exercises[exerciseIndex]) {
+            const exercise = model.exercises[exerciseIndex];
+            let questionData;
+            
+            if (type === 'obligatory' && exercise.questions[questionIndex]) {
+              questionData = exercise.questions[questionIndex];
+            } else if (type === 'optional' && exercise.optionalQuestions && exercise.optionalQuestions[questionIndex]) {
+              questionData = exercise.optionalQuestions[questionIndex];
+            }
+            
+            if (questionData && questionData.solution) {
+              // Solución disponible - comprobación más precisa
+              const solution = questionData.solution.toLowerCase();
+              
+              // Palabras clave que deberían estar en la respuesta
+              const keyTerms = extractKeyTerms(solution);
+              const foundTerms = keyTerms.filter(term => textValue.includes(term));
+              
+              // Cálculo de puntuación basado en términos encontrados
+              if (keyTerms.length > 0) {
+                const termPercentage = foundTerms.length / keyTerms.length;
+                
+                // Base de puntuación por tener contenido relevante
+                if (termPercentage > 0) {
+                  // 60% basado en términos encontrados, 20% en longitud, 20% en redacción
+                  const termScore = score * 0.6 * termPercentage;
+                  const lengthFactor = Math.min(textValue.length / 150, 1); // 150+ caracteres se considera completo
+                  const lengthScore = score * 0.2 * lengthFactor;
+                  
+                  // Evaluación básica de redacción (puntuación completa si tiene más del 80% de los términos)
+                  const writingScore = termPercentage > 0.8 ? score * 0.2 : score * 0.2 * (termPercentage / 0.8);
+                  
+                  obtainedScore = termScore + lengthScore + writingScore;
+                  
+                  if (termPercentage > 0.8) {
+                    feedback = 'Respuesta muy completa';
+                  } else if (termPercentage > 0.5) {
+                    feedback = 'Respuesta parcialmente correcta';
+                  } else {
+                    feedback = 'Respuesta con algunos elementos correctos';
+                  }
+                } else {
+                  feedback = 'La respuesta no contiene términos clave esperados';
+                  obtainedScore = Math.min(score * 0.1, 0.2); // Máximo 20% por intentarlo
+                }
+              } else {
+                // Sin términos clave definidos, revertir a evaluación por longitud
+                const lengthFactor = Math.min(textValue.length / 150, 1);
+                obtainedScore = score * 0.4 * lengthFactor;
+                feedback = 'Evaluado por extensión (sin términos clave definidos)';
+              }
+            } else {
+              // Sin solución disponible - evaluación básica por extensión y palabras clave básicas
+              const commonChemTerms = ['mol', 'átomo', 'molécula', 'enlace', 'electrón', 'protón', 'neutrón', 
+                                      'iónico', 'covalente', 'metálico', 'ácido', 'base', 'redox', 'oxidación', 
+                                      'reducción', 'equilibrio', 'catalizador', 'entalpía', 'entropía'];
+              
+              // Verificar si contiene términos químicos básicos
+              const foundBasicTerms = commonChemTerms.filter(term => textValue.includes(term));
+              const hasChemTerms = foundBasicTerms.length > 0;
+              
+              // Verificar si parece un cálculo numérico (contiene números y símbolos matemáticos)
+              const hasCalculation = /[0-9]+.*[+\-*/=]/.test(textValue);
+              
+              // Evaluar longitud y contenido
+              const responseLength = textValue.length;
+              const lengthFactor = Math.min(responseLength / 150, 1);
+              
+              if (hasChemTerms || hasCalculation) {
+                // Tiene términos químicos o cálculos - entre 20% y 60% dependiendo de la longitud
+                obtainedScore = score * (0.2 + 0.4 * lengthFactor);
+                feedback = 'Respuesta con terminología química adecuada (evaluación automática)';
+              } else if (responseLength > 100) {
+                // Respuesta larga pero sin términos químicos específicos - máximo 30%
+                obtainedScore = score * (0.1 + 0.2 * lengthFactor);
+                feedback = 'Respuesta extensa pero sin términos químicos específicos';
+              } else {
+                // Respuesta corta y sin términos químicos - máximo 10%
+                obtainedScore = score * 0.1 * lengthFactor;
+                feedback = 'Respuesta incompleta o irrelevante';
+              }
+            }
+          } else {
+            // Fallback si no se encuentra el modelo o ejercicio
+            const responseLength = textValue.length;
+            obtainedScore = Math.min(score * 0.3 * (responseLength / 100), score * 0.3);
+            feedback = 'Error en la evaluación (modelo no encontrado)';
+          }
+        }
+        
+        // Redondear puntuación a 2 decimales
+        obtainedScore = Math.round(obtainedScore * 100) / 100;
+        
+        // Limitar puntuación al máximo posible
+        obtainedScore = Math.min(obtainedScore, score);
+        
+        if (type === 'obligatory') {
+          totalScore += obtainedScore;
+          maxScore += score;
+        } else if (type === 'optional' && textValue.length > 0) {
+          // Para preguntas opcionales, solo contar si se ha respondido
+          totalScore += obtainedScore;
+          maxScore += score;
+        }
+        
+        // Mostrar puntuación y feedback
+        correction.innerHTML = `
+          <p>Puntuación: ${obtainedScore.toFixed(2)}/${score.toFixed(2)}</p>
+          <p class="feedback-text">${feedback}</p>
+        `;
+      });
+      
+      // Mostrar puntuación total
+      const feedbackDiv = document.getElementById('feedback');
+      feedbackDiv.className = 'feedback success';
+      feedbackDiv.innerHTML = `
+        <h3>Resultado del examen</h3>
+        <p>Has obtenido una puntuación de ${totalScore.toFixed(2)} sobre 10.</p>
+        <p>Nota: Esta es una corrección simulada basada en palabras clave y extensión.</p>
+      `;
+      feedbackDiv.style.display = 'block';
+      
+      // Detener el temporizador
+      if (window.examTimer) {
+        clearInterval(window.examTimer);
+      }
+    }
+    
+    // Función para extraer términos clave de una solución
+    function extractKeyTerms(solution) {
+      // Eliminar símbolos comunes y dividir por espacios
+      const text = solution.replace(/[.,;:()[\]{}=+\-*/<>]/g, ' ')
+                          .replace(/\s+/g, ' ')
+                          .trim();
+      
+      // Dividir en palabras
+      const words = text.split(' ');
+      
+      // Filtrar palabras comunes y demasiado cortas
+      const commonWords = ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'a', 'de', 'en', 'con', 'por', 'para', 'es', 'son', 'se', 'si', 'no', 'que', 'del', 'al', 'lo'];
+      
+      return words.filter(word => 
+        word.length > 2 && !commonWords.includes(word)
+      );
+    }
+    
+    // Función para imprimir el examen
+    function printExam() {
+      window.print();
+    }
+    
+    // Inicializar eventos
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('load-exam').addEventListener('click', loadExam);
+      document.getElementById('check-exam').addEventListener('click', checkExam);
+      document.getElementById('print-exam').addEventListener('click', printExam);
+    });
+  </script>
+</body>
+</html> 

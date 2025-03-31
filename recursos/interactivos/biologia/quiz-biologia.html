@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Biología - EstudioPAU</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            margin: 0;
+        }
+        
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #27ae60;
+        }
+        
+        .home-button {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            background-color: #333;
+        }
+        
+        .home-button:hover {
+            background-color: #555;
+        }
+        
+        .quiz-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .option {
+            background: #f1f1f1;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .option:hover {
+            background: #e5e5e5;
+        }
+        
+        .selected {
+            background-color: #b2dfdb;
+        }
+        
+        .correct {
+            background-color: #c8e6c9;
+        }
+        
+        .incorrect {
+            background-color: #ffcdd2;
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .correct-feedback {
+            background-color: #c8e6c9;
+            color: #1b5e20;
+        }
+        
+        .incorrect-feedback {
+            background-color: #ffcdd2;
+            color: #b71c1c;
+        }
+        
+        .progress {
+            height: 8px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #2ecc71;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        a.home-link {
+            display: inline-block;
+            color: white;
+            background-color: #333;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Quiz de Biología</h1>
+        <p>Pon a prueba tus conocimientos para el examen PAU</p>
+    </header>
+    
+    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+        <button class="home-button" onclick="window.location.href='../../../index-completo.html'">Volver a la página principal</button>
+        <button class="home-button" onclick="history.back()">Volver atrás</button>
+    </div>
+    
+    <div class="quiz-container">
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div id="question-container"></div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="controls">
+            <button class="btn" id="prev-btn" disabled>Anterior</button>
+            <button class="btn" id="next-btn">Siguiente</button>
+        </div>
+    </div>
+    
+    <div class="summary" id="summary">
+        <h2>Resultados del Quiz</h2>
+        <p id="score-display"></p>
+        <button class="btn" onclick="restartQuiz()">Volver a intentar</button>
+        <br>
+        <a href="../../../index-completo.html" class="home-link">Volver al inicio</a>
+    </div>
+    
+    <script>
+        const questions = [
+            {
+                question: "¿Cuál de las siguientes moléculas NO es un hidrato de carbono?",
+                options: ["Celulosa", "Almidón", "Colesterol", "Glucógeno"],
+                correctIndex: 2,
+                explanation: "El colesterol es un lípido esteroide, no un hidrato de carbono."
+            },
+            {
+                question: "La respiración celular aeróbica ocurre en:",
+                options: ["El núcleo", "El citoplasma", "Las mitocondrias", "El retículo endoplasmático"],
+                correctIndex: 2,
+                explanation: "Las mitocondrias son los orgánulos celulares donde se produce la mayor parte de la respiración celular aeróbica."
+            },
+            {
+                question: "¿Qué proceso permite a las plantas fabricar su propio alimento?",
+                options: ["Respiración", "Fotosíntesis", "Fermentación", "Quimiosíntesis"],
+                correctIndex: 1,
+                explanation: "La fotosíntesis es el proceso por el cual las plantas utilizan la luz solar para convertir CO2 y agua en glucosa."
+            },
+            {
+                question: "El ADN se encuentra en:",
+                options: ["Núcleo y mitocondrias", "Solo en el núcleo", "Citoplasma", "Membrana celular"],
+                correctIndex: 0,
+                explanation: "El ADN se encuentra principalmente en el núcleo de las células eucariotas, pero también en las mitocondrias y, en plantas, en los cloroplastos."
+            },
+            {
+                question: "¿Qué enzima cataliza la síntesis de ADN?",
+                options: ["ARN polimerasa", "ADN ligasa", "ADN polimerasa", "Proteasa"],
+                correctIndex: 2,
+                explanation: "La ADN polimerasa es la enzima responsable de la síntesis de ADN durante la replicación."
+            },
+            {
+                question: "Las proteínas están formadas por:",
+                options: ["Nucleótidos", "Aminoácidos", "Monosacáridos", "Ácidos grasos"],
+                correctIndex: 1,
+                explanation: "Las proteínas son polímeros formados por aminoácidos unidos mediante enlaces peptídicos."
+            },
+            {
+                question: "El proceso de meiosis resulta en:",
+                options: ["2 células diploides", "4 células haploides", "2 células haploides", "4 células diploides"],
+                correctIndex: 1,
+                explanation: "La meiosis produce 4 células haploides (n) a partir de una célula diploide (2n)."
+            },
+            {
+                question: "¿Cuál es la función principal de los lisosomas?",
+                options: ["Síntesis de proteínas", "Digestión celular", "Producción de energía", "Almacenamiento de lípidos"],
+                correctIndex: 1,
+                explanation: "Los lisosomas contienen enzimas hidrolíticas para la digestión celular de macromoléculas."
+            },
+            {
+                question: "El código genético es:",
+                options: ["Específico para cada especie", "Variable dentro de un organismo", "Universal para la mayoría de los organismos", "Diferente en cada célula"],
+                correctIndex: 2,
+                explanation: "El código genético es universal, lo que significa que es el mismo para casi todos los organismos vivos."
+            },
+            {
+                question: "La fase luminosa de la fotosíntesis ocurre en:",
+                options: ["El estroma del cloroplasto", "La membrana tilacoidal", "El citoplasma", "La mitocondria"],
+                correctIndex: 1,
+                explanation: "La fase luminosa de la fotosíntesis ocurre en la membrana tilacoidal de los cloroplastos."
+            }
+        ];
+        
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answeredQuestions = new Array(questions.length).fill(false);
+        let selectedOptions = new Array(questions.length).fill(null);
+        
+        // Elementos DOM
+        const questionContainer = document.getElementById('question-container');
+        const feedbackElement = document.getElementById('feedback');
+        const prevButton = document.getElementById('prev-btn');
+        const nextButton = document.getElementById('next-btn');
+        const progressBar = document.querySelector('.progress-bar');
+        const summaryElement = document.getElementById('summary');
+        
+        // Iniciar el quiz
+        displayQuestion(currentQuestionIndex);
+        updateProgressBar();
+        
+        // Event listeners
+        prevButton.addEventListener('click', showPreviousQuestion);
+        nextButton.addEventListener('click', handleNextButtonClick);
+        
+        function displayQuestion(index) {
+            const question = questions[index];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, i) => {
+                let className = 'option';
+                if (answeredQuestions[index]) {
+                    if (selectedOptions[index] === i) {
+                        className += i === question.correctIndex ? ' correct' : ' incorrect';
+                    } else if (i === question.correctIndex) {
+                        className += ' correct';
+                    }
+                } else if (selectedOptions[index] === i) {
+                    className += ' selected';
+                }
+                
+                optionsHTML += `<div class="${className}" onclick="selectOption(${i})">${option}</div>`;
+            });
+            
+            questionContainer.innerHTML = `
+                <div class="question">${index + 1}. ${question.question}</div>
+                <div class="options">${optionsHTML}</div>
+            `;
+            
+            // Mostrar/ocultar feedback
+            if (answeredQuestions[index]) {
+                feedbackElement.innerHTML = questions[index].explanation;
+                feedbackElement.className = 'feedback';
+                feedbackElement.classList.add(selectedOptions[index] === questions[index].correctIndex ? 'correct-feedback' : 'incorrect-feedback');
+                feedbackElement.style.display = 'block';
+            } else {
+                feedbackElement.style.display = 'none';
+            }
+            
+            // Actualizar botones
+            prevButton.disabled = index === 0;
+            
+            if (answeredQuestions[index]) {
+                nextButton.textContent = index === questions.length - 1 ? 'Ver resultados' : 'Siguiente';
+            } else {
+                nextButton.textContent = 'Comprobar';
+            }
+        }
+        
+        function selectOption(optionIndex) {
+            if (answeredQuestions[currentQuestionIndex]) return;
+            
+            // Deseleccionar la opción anterior
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Seleccionar la nueva opción
+            options[optionIndex].classList.add('selected');
+            selectedOptions[currentQuestionIndex] = optionIndex;
+        }
+        
+        function checkAnswer() {
+            if (selectedOptions[currentQuestionIndex] === null) return false;
+            
+            answeredQuestions[currentQuestionIndex] = true;
+            
+            const isCorrect = selectedOptions[currentQuestionIndex] === questions[currentQuestionIndex].correctIndex;
+            if (isCorrect) score++;
+            
+            // Mostrar retroalimentación
+            displayQuestion(currentQuestionIndex);
+            
+            return true;
+        }
+        
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function handleNextButtonClick() {
+            // Si la pregunta actual no está respondida, comprobar respuesta
+            if (!answeredQuestions[currentQuestionIndex]) {
+                const hasAnswer = checkAnswer();
+                if (!hasAnswer) return; // No hay respuesta seleccionada
+            } else {
+                // Si la pregunta está respondida, pasar a la siguiente o mostrar resultados
+                if (currentQuestionIndex === questions.length - 1) {
+                    showResults();
+                } else {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                }
+            }
+            
+            updateProgressBar();
+        }
+        
+        function updateProgressBar() {
+            const progress = (answeredQuestions.filter(answered => answered).length / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        function showResults() {
+            document.querySelector('.quiz-container').style.display = 'none';
+            summaryElement.style.display = 'block';
+            
+            const scoreDisplay = document.getElementById('score-display');
+            const percentage = (score / questions.length) * 100;
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = '¡Excelente! Estás muy bien preparado.';
+            } else if (percentage >= 70) {
+                message = '¡Muy bien! Dominas la mayoría de los conceptos.';
+            } else if (percentage >= 50) {
+                message = 'Bien, pero aún hay margen de mejora.';
+            } else {
+                message = 'Necesitas repasar más. ¡No te rindas!';
+            }
+            
+            scoreDisplay.innerHTML = `Has acertado ${score} de ${questions.length} preguntas (${percentage.toFixed(1)}%).<br>${message}`;
+        }
+        
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            answeredQuestions = new Array(questions.length).fill(false);
+            selectedOptions = new Array(questions.length).fill(null);
+            
+            document.querySelector('.quiz-container').style.display = 'block';
+            summaryElement.style.display = 'none';
+            
+            displayQuestion(currentQuestionIndex);
+            updateProgressBar();
+        }
+    </script>
+</body>
+</html> 

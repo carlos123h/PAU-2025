@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Química PAU - EstudioPAU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .instrucciones {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .download-button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .download-button:hover {
+            background-color: #219653;
+        }
+        
+        .formulas-preview {
+            margin: 30px 0;
+        }
+        
+        .formula-section {
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        
+        .formula-section h3 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .formula-card {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .formula-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .formula-content {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .formula-info {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .warning {
+            background-color: #ffe8d9;
+            border-left: 4px solid #ff7d45;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Formulario de Química PAU</h1>
+            <h2>Fórmulas esenciales para la PAU 2025 - Comunidad Valenciana</h2>
+        </header>
+        
+        <div class="instrucciones">
+            <p>Este formulario contiene las fórmulas más importantes para la PAU de Química 2025. Puedes consultarlo online o descargarlo en formato PDF para imprimir. Las fórmulas están organizadas por temas, siguiendo el temario oficial.</p>
+        </div>
+        
+        <a href="../../index.html" class="back-button">Volver a la página principal</a>
+        
+        <div class="warning">
+            <strong>Nota importante:</strong> Este formulario está adaptado al nuevo temario PAU 2025. Incluye todas las fórmulas relevantes para el examen y excluye aquellas que ya no forman parte del temario oficial.
+        </div>
+        
+        <a href="#" class="download-button" onclick="alert('Descarga de formulario PDF iniciada')">Descargar formulario completo (PDF)</a>
+        
+        <div class="formulas-preview">
+            <!-- Estructura atómica -->
+            <div class="formula-section">
+                <h3>Estructura atómica</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <div class="formula-name">Ecuación de Planck</div>
+                        <div class="formula-content">E = h · ν</div>
+                        <div class="formula-info">Donde h = 6,626·10<sup>-34</sup> J·s (constante de Planck)</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Longitud de onda de De Broglie</div>
+                        <div class="formula-content">λ = h / (m·v)</div>
+                        <div class="formula-info">Relaciona las propiedades ondulatorias y corpusculares</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Energía del fotón</div>
+                        <div class="formula-content">E = h·c / λ</div>
+                        <div class="formula-info">c = 3·10<sup>8</sup> m/s (velocidad de la luz)</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Principio de exclusión de Pauli</div>
+                        <div class="formula-content">Dos electrones en un átomo no pueden tener los 4 números cuánticos iguales</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Termodinámica -->
+            <div class="formula-section">
+                <h3>Termodinámica química</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <div class="formula-name">Primer principio de la termodinámica</div>
+                        <div class="formula-content">ΔU = Q + W</div>
+                        <div class="formula-info">ΔU = variación de energía interna, Q = calor, W = trabajo</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Relación entre ΔH y ΔU</div>
+                        <div class="formula-content">ΔH = ΔU + Δ(PV)</div>
+                        <div class="formula-info">Para gases ideales: ΔH = ΔU + ΔnRT</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Ley de Hess</div>
+                        <div class="formula-content">ΔH<sub>reacción</sub> = Σ ΔH<sub>f</sub>(productos) - Σ ΔH<sub>f</sub>(reactivos)</div>
+                        <div class="formula-info">Permite calcular ΔH a partir de entalpías de formación</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Variación de entalpía</div>
+                        <div class="formula-content">ΔH = Q<sub>p</sub></div>
+                        <div class="formula-info">A presión constante, ΔH equivale al calor intercambiado</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cinética química -->
+            <div class="formula-section">
+                <h3>Cinética química</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <div class="formula-name">Velocidad de reacción</div>
+                        <div class="formula-content">v = -1/a · d[A]/dt = 1/b · d[B]/dt</div>
+                        <div class="formula-info">Para la reacción aA → bB</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Ecuación de velocidad</div>
+                        <div class="formula-content">v = k · [A]<sup>α</sup> · [B]<sup>β</sup></div>
+                        <div class="formula-info">k = constante de velocidad, α y β son los órdenes parciales</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Ecuación de Arrhenius</div>
+                        <div class="formula-content">k = A · e<sup>-E<sub>a</sub>/RT</sup></div>
+                        <div class="formula-info">Relación entre k y la temperatura</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Tiempo de vida media (1<sup>er</sup> orden)</div>
+                        <div class="formula-content">t<sub>1/2</sub> = ln(2)/k</div>
+                        <div class="formula-info">Tiempo para que la concentración se reduzca a la mitad</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Equilibrio químico -->
+            <div class="formula-section">
+                <h3>Equilibrio químico</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <div class="formula-name">Constante de equilibrio K<sub>c</sub></div>
+                        <div class="formula-content">K<sub>c</sub> = [C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup></div>
+                        <div class="formula-info">Para la reacción aA + bB ⇄ cC + dD</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Constante de equilibrio K<sub>p</sub></div>
+                        <div class="formula-content">K<sub>p</sub> = (P<sub>C</sub>)<sup>c</sup>(P<sub>D</sub>)<sup>d</sup> / (P<sub>A</sub>)<sup>a</sup>(P<sub>B</sub>)<sup>b</sup></div>
+                        <div class="formula-info">En función de presiones parciales</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Relación entre K<sub>c</sub> y K<sub>p</sub></div>
+                        <div class="formula-content">K<sub>p</sub> = K<sub>c</sub> · (RT)<sup>Δn</sup></div>
+                        <div class="formula-info">Donde Δn = (c+d) - (a+b)</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Producto de solubilidad</div>
+                        <div class="formula-content">K<sub>ps</sub> = [A<sup>x+</sup>]<sup>a</sup> · [B<sup>y-</sup>]<sup>b</sup></div>
+                        <div class="formula-info">Para la sal A<sub>a</sub>B<sub>b</sub></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ácido-base -->
+            <div class="formula-section">
+                <h3>Equilibrio ácido-base</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <div class="formula-name">Constante de acidez</div>
+                        <div class="formula-content">K<sub>a</sub> = [H<sup>+</sup>][A<sup>-</sup>] / [HA]</div>
+                        <div class="formula-info">Para un ácido HA</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Constante de basicidad</div>
+                        <div class="formula-content">K<sub>b</sub> = [BH<sup>+</sup>][OH<sup>-</sup>] / [B]</div>
+                        <div class="formula-info">Para una base B</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Producto iónico del agua</div>
+                        <div class="formula-content">K<sub>w</sub> = [H<sup>+</sup>][OH<sup>-</sup>] = 10<sup>-14</sup></div>
+                        <div class="formula-info">A 25°C</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">pH y pOH</div>
+                        <div class="formula-content">pH = -log[H<sup>+</sup>] <br> pOH = -log[OH<sup>-</sup>] <br> pH + pOH = 14</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Relación entre K<sub>a</sub> y K<sub>b</sub></div>
+                        <div class="formula-content">K<sub>a</sub> · K<sub>b</sub> = K<sub>w</sub></div>
+                        <div class="formula-info">Para un par ácido-base conjugado</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">pH en el punto de equivalencia</div>
+                        <div class="formula-content">
+                            pH = 7 (ácido fuerte + base fuerte)<br>
+                            pH > 7 (ácido débil + base fuerte)<br>
+                            pH < 7 (ácido fuerte + base débil)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Redox -->
+            <div class="formula-section">
+                <h3>Reacciones redox</h3>
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <div class="formula-name">Potencial estándar de celda</div>
+                        <div class="formula-content">E°<sub>celda</sub> = E°<sub>cátodo</sub> - E°<sub>ánodo</sub></div>
+                        <div class="formula-info">También: E°<sub>celda</sub> = E°<sub>reducción</sub> - E°<sub>oxidación</sub></div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Ecuación de Nernst</div>
+                        <div class="formula-content">E = E° - (RT/nF) · ln Q</div>
+                        <div class="formula-info">A 25°C: E = E° - (0,059/n) · log Q</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Relación entre ΔG° y E°</div>
+                        <div class="formula-content">ΔG° = -nFE°</div>
+                        <div class="formula-info">F = 96485 C/mol (constante de Faraday)</div>
+                    </div>
+                    
+                    <div class="formula-card full-width">
+                        <div class="formula-name">Leyes de Faraday para la electrólisis</div>
+                        <div class="formula-content">
+                            m = (M · I · t) / (n · F)
+                        </div>
+                        <div class="formula-info">
+                            m = masa depositada (g)<br>
+                            M = masa molar (g/mol)<br>
+                            I = intensidad de corriente (A)<br>
+                            t = tiempo (s)<br>
+                            n = número de electrones intercambiados<br>
+                            F = constante de Faraday (96485 C/mol)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Química orgánica -->
+            <div class="formula-section">
+                <h3>Química orgánica</h3>
+                <div class="formula-grid">
+                    <div class="formula-card full-width">
+                        <div class="formula-name">Tipos de isomería</div>
+                        <table>
+                            <tr>
+                                <th colspan="2">Isomería estructural</th>
+                                <th colspan="2">Estereoisomería</th>
+                            </tr>
+                            <tr>
+                                <td>De cadena</td>
+                                <td>Diferentes esqueletos carbonados</td>
+                                <td>Geométrica</td>
+                                <td>Cis-Trans (Z-E)</td>
+                            </tr>
+                            <tr>
+                                <td>De posición</td>
+                                <td>Diferente posición del grupo funcional</td>
+                                <td>Óptica</td>
+                                <td>Enantiómeros (quiralidad)</td>
+                            </tr>
+                            <tr>
+                                <td>De función</td>
+                                <td>Diferentes grupos funcionales</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Reacción de adición</div>
+                        <div class="formula-content">C=C + HX → C-C-X</div>
+                        <div class="formula-info">X puede ser Cl, Br, OH, etc.</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Reacción de sustitución</div>
+                        <div class="formula-content">R-H + X<sub>2</sub> → R-X + HX</div>
+                        <div class="formula-info">X<sub>2</sub> puede ser Cl<sub>2</sub>, Br<sub>2</sub>, etc.</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Reacción de eliminación</div>
+                        <div class="formula-content">C-C → C=C + H<sub>2</sub>O</div>
+                        <div class="formula-info">Ejemplo: deshidratación de alcoholes</div>
+                    </div>
+                    
+                    <div class="formula-card">
+                        <div class="formula-name">Reacción de condensación</div>
+                        <div class="formula-content">R-COOH + R'-OH → R-COO-R' + H<sub>2</sub>O</div>
+                        <div class="formula-info">Ejemplo: esterificación</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="#" class="download-button" onclick="alert('Descarga de formulario PDF iniciada')">Descargar formulario completo (PDF)</a>
+        
+        <div class="footer">
+            <p>EstudioPAU Valencia 2025 - Formulario de Química</p>
+            <p>Material actualizado según el temario oficial PAU 2025</p>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resúmenes de Química PAU - EstudioPAU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .instrucciones {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .tema-card {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .tema-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tema-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .tema-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+        }
+        
+        .tema-description {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .tema-tag {
+            display: inline-block;
+            background-color: #e1f5fe;
+            color: #0288d1;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        
+        .tema-tags {
+            margin-bottom: 15px;
+        }
+        
+        .back-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+    </style>
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 25px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: #000;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .download-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Estilos para evitar la selección de texto */
+        .modal-content {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        /* Estilo para el contenido del resumen */
+        .resumen-content {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .resumen-content h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .resumen-content p {
+            margin-bottom: 15px;
+        }
+        
+        .resumen-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .resumen-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .resumen-content th, .resumen-content td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .resumen-content th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resúmenes de Química</h1>
+            <h2>Material de estudio PAU - Comunidad Valenciana 2025</h2>
+        </header>
+        
+        <div class="instrucciones">
+            <p>Aquí encontrarás resúmenes de todos los temas de Química para la PAU. Haz clic en "Ver resumen" para visualizar el contenido de cada tema. Estos resúmenes contienen las fórmulas más importantes, conceptos clave y ejemplos resueltos que te ayudarán a prepararte para el examen.</p>
+        </div>
+        
+        <a href="../../index.html" class="back-button">Volver a la página principal</a>
+        
+        <div class="temas-container">
+            <!-- Tema 1 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 1: La Actividad Científica</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Método científico</span>
+                    <span class="tema-tag">Magnitudes</span>
+                    <span class="tema-tag">Unidades</span>
+                </div>
+                <p class="tema-description">Resumen con los conceptos fundamentales del método científico, magnitudes físicas y químicas, unidades del Sistema Internacional, factores de conversión y análisis dimensional. Incluye ejemplos de problemas tipo PAU resueltos.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(1); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 2 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 2: Formulación Inorgánica</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Nomenclatura</span>
+                    <span class="tema-tag">IUPAC</span>
+                    <span class="tema-tag">Compuestos binarios</span>
+                </div>
+                <p class="tema-description">Esquema completo de formulación y nomenclatura inorgánica según las normas IUPAC. Incluye óxidos, hidruros, ácidos, hidróxidos y sales. Contiene tablas de prefijos y sufijos, así como ejemplos detallados.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(2); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 3 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 3: Enlace Químico</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Enlace iónico</span>
+                    <span class="tema-tag">Enlace covalente</span>
+                    <span class="tema-tag">Enlace metálico</span>
+                    <span class="tema-tag">Fuerzas intermoleculares</span>
+                </div>
+                <p class="tema-description">Resumen de los tipos de enlace químico, incluyendo diagramas de Lewis, geometría molecular, polaridad, fuerzas intermoleculares y propiedades de los compuestos según su tipo de enlace. Adaptado específicamente a los requerimientos 2025 de la PAU.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(3); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 4 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 4: Termodinámica Química</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Primer principio</span>
+                    <span class="tema-tag">Entalpía</span>
+                    <span class="tema-tag">Ley de Hess</span>
+                </div>
+                <p class="tema-description">Conceptos clave de termodinámica química, ecuaciones relevantes y ejercicios típicos de PAU. Este resumen se centra en el Primer Principio, concepto de entalpía y Ley de Hess, tal como se requiere en el temario 2025.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(4); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 5 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 5: Cinética Química</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Velocidad de reacción</span>
+                    <span class="tema-tag">Energía de activación</span>
+                    <span class="tema-tag">Catalizadores</span>
+                </div>
+                <p class="tema-description">Resumen de los factores que afectan a la velocidad de reacción, ecuaciones de velocidad, orden de reacción, teoría de colisiones y energía de activación. Incluye problemas resueltos de determinación de órdenes de reacción.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(5); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 6 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 6: Equilibrio Químico</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Constante de equilibrio</span>
+                    <span class="tema-tag">Principio de Le Chatelier</span>
+                    <span class="tema-tag">Solubilidad</span>
+                </div>
+                <p class="tema-description">Resumen completo sobre el concepto de equilibrio químico, cálculo de constantes, factores que alteran el equilibrio (concentración y temperatura) y aplicaciones. Incluye también equilibrios de solubilidad y producto de solubilidad.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(6); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 7 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 7: Ácidos y Bases</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Teorías ácido-base</span>
+                    <span class="tema-tag">pH</span>
+                    <span class="tema-tag">Hidrólisis</span>
+                    <span class="tema-tag">Valoraciones</span>
+                </div>
+                <p class="tema-description">Resumen de las teorías de Arrhenius, Brønsted-Lowry y Lewis. Cálculos de pH, hidrólisis de sales, disoluciones reguladoras y valoraciones ácido-base. Incluye indicadores y curvas de valoración.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(7); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 8 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 8: Reacciones Redox</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Número de oxidación</span>
+                    <span class="tema-tag">Ajuste redox</span>
+                    <span class="tema-tag">Potenciales</span>
+                </div>
+                <p class="tema-description">Conceptos de oxidación-reducción, números de oxidación, ajuste de reacciones por el método del ion-electrón, valoraciones redox y potenciales normales de reducción. También incluye pilas galvánicas y electrólisis.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(8); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 9 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 9: Electroquímica</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Pilas galvánicas</span>
+                    <span class="tema-tag">Electrólisis</span>
+                    <span class="tema-tag">Leyes de Faraday</span>
+                </div>
+                <p class="tema-description">Resumen sobre celdas galvánicas, potenciales de celda, ecuación de Nernst, electrólisis y leyes de Faraday. Este tema es especialmente importante ya que las leyes de Faraday están incluidas en el temario 2025.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(9); return false;">Ver resumen</a>
+            </div>
+            
+            <!-- Tema 10 -->
+            <div class="tema-card">
+                <div class="tema-header">
+                    <h3 class="tema-title">Tema 10: Química Orgánica</h3>
+                </div>
+                <div class="tema-tags">
+                    <span class="tema-tag">Grupos funcionales</span>
+                    <span class="tema-tag">Isomería</span>
+                    <span class="tema-tag">Reactividad</span>
+                    <span class="tema-tag">Polímeros</span>
+                </div>
+                <p class="tema-description">Resumen completo de formulación orgánica, tipos de isomería (estructural y espacial), principales reacciones orgánicas y su mecanismo, y una introducción a los polímeros. Incluye ejercicios resueltos de formulación e isomería.</p>
+                <a href="#" class="download-button" onclick="mostrarResumen(10); return false;">Ver resumen</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>EstudioPAU Valencia 2025 - Recursos de Química</p>
+            <p>Material actualizado según el temario oficial PAU 2025</p>
+        </div>
+    </div>
+    
+    <!-- Modal para mostrar resúmenes -->
+    <div id="resumenModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+            <div id="resumenContent" class="resumen-content">
+                <!-- El contenido del resumen se cargará aquí -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Desactivar clic derecho para evitar descargas
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.closest('.modal-content')) {
+                e.preventDefault();
+            }
+        });
+        
+        // Función para mostrar el modal con el resumen
+        function mostrarResumen(temaId) {
+            const modal = document.getElementById('resumenModal');
+            const contenido = document.getElementById('resumenContent');
+            
+            // Cargar contenido según el tema
+            let resumenHTML = '';
+            
+            switch(temaId) {
+                case 1:
+                    resumenHTML = `
+                        <h2>Tema 1: La Actividad Científica</h2>
+                        <h3>1.1 El método científico</h3>
+                        <p>El método científico es un proceso sistemático utilizado para investigar fenómenos, adquirir nuevo conocimiento, o corregir e integrar conocimientos previos. Sigue estos pasos:</p>
+                        <ul>
+                            <li><strong>Observación:</strong> Recopilación de hechos.</li>
+                            <li><strong>Hipótesis:</strong> Formulación de una posible explicación.</li>
+                            <li><strong>Experimentación:</strong> Diseño y realización de experimentos para comprobar la hipótesis.</li>
+                            <li><strong>Análisis:</strong> Interpretación de los resultados experimentales.</li>
+                            <li><strong>Conclusión:</strong> Aceptación o rechazo de la hipótesis original.</li>
+                            <li><strong>Teoría:</strong> Formulación si la hipótesis es confirmada repetidamente.</li>
+                        </ul>
+                        
+                        <h3>1.2 Magnitudes físicas y químicas</h3>
+                        <p>Las magnitudes son propiedades físicas que pueden ser medidas. En el Sistema Internacional (SI) existen:</p>
+                        <table>
+                            <tr>
+                                <th>Magnitud</th>
+                                <th>Unidad SI</th>
+                                <th>Símbolo</th>
+                            </tr>
+                            <tr>
+                                <td>Longitud</td>
+                                <td>Metro</td>
+                                <td>m</td>
+                            </tr>
+                            <tr>
+                                <td>Masa</td>
+                                <td>Kilogramo</td>
+                                <td>kg</td>
+                            </tr>
+                            <tr>
+                                <td>Tiempo</td>
+                                <td>Segundo</td>
+                                <td>s</td>
+                            </tr>
+                            <tr>
+                                <td>Temperatura</td>
+                                <td>Kelvin</td>
+                                <td>K</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad de sustancia</td>
+                                <td>Mol</td>
+                                <td>mol</td>
+                            </tr>
+                            <tr>
+                                <td>Intensidad de corriente</td>
+                                <td>Amperio</td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td>Intensidad luminosa</td>
+                                <td>Candela</td>
+                                <td>cd</td>
+                            </tr>
+                        </table>
+                        
+                        <h3>1.3 Análisis dimensional</h3>
+                        <p>El análisis dimensional es un método para verificar la coherencia de las ecuaciones y realizar conversiones de unidades.</p>
+                        <p><strong>Ejemplo:</strong> Convertir 108 km/h a m/s</p>
+                        <p>108 km/h × (1000 m / 1 km) × (1 h / 3600 s) = 30 m/s</p>
+                        
+                        <h3>1.4 Cifras significativas</h3>
+                        <p>Son todos los dígitos conocidos con certeza más uno estimado. Reglas básicas:</p>
+                        <ul>
+                            <li>En multiplicación/división: el resultado tiene tantas cifras significativas como el dato con menor número de cifras significativas.</li>
+                            <li>En suma/resta: el resultado tiene tantos decimales como el dato con menor número de decimales.</li>
+                        </ul>
+                    `;
+                    break;
+                case 2:
+                    resumenHTML = `
+                        <h2>Tema 2: Formulación Inorgánica</h2>
+                        <h3>2.1 Normas generales de la IUPAC</h3>
+                        <p>La nomenclatura IUPAC utiliza tres sistemas principales:</p>
+                        <ul>
+                            <li><strong>Sistemática:</strong> Prefijos que indican cantidad (mono-, di-, tri-, tetra-, etc.)</li>
+                            <li><strong>De Stock:</strong> Números romanos para indicar el estado de oxidación</li>
+                            <li><strong>Tradicional:</strong> Sufijos -oso/-ico para estados de oxidación menores/mayores</li>
+                        </ul>
+                        
+                        <h3>2.2 Compuestos binarios</h3>
+                        <h4>Combinaciones con oxígeno (óxidos)</h4>
+                        <table>
+                            <tr>
+                                <th>Fórmula</th>
+                                <th>Nomenclatura Sistemática</th>
+                                <th>Nomenclatura Stock</th>
+                                <th>Nomenclatura Tradicional</th>
+                            </tr>
+                            <tr>
+                                <td>FeO</td>
+                                <td>Monóxido de hierro</td>
+                                <td>Óxido de hierro(II)</td>
+                                <td>Óxido ferroso</td>
+                            </tr>
+                            <tr>
+                                <td>Fe₂O₃</td>
+                                <td>Trióxido de dihierro</td>
+                                <td>Óxido de hierro(III)</td>
+                                <td>Óxido férrico</td>
+                            </tr>
+                        </table>
+                        
+                        <h4>Hidruros</h4>
+                        <p>Combinaciones de hidrógeno con un elemento menos electronegativo.</p>
+                        <table>
+                            <tr>
+                                <th>Fórmula</th>
+                                <th>Nombre</th>
+                            </tr>
+                            <tr>
+                                <td>NaH</td>
+                                <td>Hidruro de sodio</td>
+                            </tr>
+                            <tr>
+                                <td>CaH₂</td>
+                                <td>Hidruro de calcio</td>
+                            </tr>
+                        </table>
+                        
+                        <h4>Hidruros volátiles</h4>
+                        <table>
+                            <tr>
+                                <th>Fórmula</th>
+                                <th>Nombre</th>
+                            </tr>
+                            <tr>
+                                <td>NH₃</td>
+                                <td>Amoníaco/Trihidruro de nitrógeno</td>
+                            </tr>
+                            <tr>
+                                <td>PH₃</td>
+                                <td>Fosfina/Trihidruro de fósforo</td>
+                            </tr>
+                            <tr>
+                                <td>H₂O</td>
+                                <td>Agua/Óxido de dihidrógeno</td>
+                            </tr>
+                            <tr>
+                                <td>H₂S</td>
+                                <td>Sulfuro de hidrógeno/Sulfuro de dihidrógeno</td>
+                            </tr>
+                        </table>
+                        
+                        <h3>2.3 Ácidos y bases</h3>
+                        <h4>Oxoácidos</h4>
+                        <p>Compuestos ternarios formados por hidrógeno, oxígeno y un no metal.</p>
+                        <table>
+                            <tr>
+                                <th>Fórmula</th>
+                                <th>Nombre Tradicional</th>
+                                <th>Nombre Sistemático</th>
+                            </tr>
+                            <tr>
+                                <td>HClO</td>
+                                <td>Ácido hipocloroso</td>
+                                <td>Monoxoclorato(I) de hidrógeno</td>
+                            </tr>
+                            <tr>
+                                <td>HClO₂</td>
+                                <td>Ácido cloroso</td>
+                                <td>Dioxoclorato(III) de hidrógeno</td>
+                            </tr>
+                            <tr>
+                                <td>HClO₃</td>
+                                <td>Ácido clórico</td>
+                                <td>Trioxoclorato(V) de hidrógeno</td>
+                            </tr>
+                            <tr>
+                                <td>HClO₄</td>
+                                <td>Ácido perclórico</td>
+                                <td>Tetraoxoclorato(VII) de hidrógeno</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case 3:
+                    resumenHTML = `
+                        <h2>Tema 3: Enlace Químico</h2>
+                        <h3>3.1 Tipos de enlace</h3>
+                        <p>Existen tres tipos principales de enlace químico:</p>
+                        
+                        <h4>Enlace iónico</h4>
+                        <p>Se forma por transferencia de electrones entre un metal y un no metal. Las características principales son:</p>
+                        <ul>
+                            <li>Formación de una red cristalina con iones de carga opuesta</li>
+                            <li>Altos puntos de fusión y ebullición</li>
+                            <li>Solubles en disolventes polares como el agua</li>
+                            <li>Conducen la electricidad en estado fundido o en disolución</li>
+                        </ul>
+                        
+                        <h4>Enlace covalente</h4>
+                        <p>Se forma por compartición de electrones entre no metales. Las características principales son:</p>
+                        <ul>
+                            <li>Pueden formar moléculas discretas o redes covalentes</li>
+                            <li>Las moléculas discretas tienen bajos puntos de fusión y ebullición</li>
+                            <li>Las redes covalentes son duras y tienen altos puntos de fusión</li>
+                            <li>Generalmente no conducen la electricidad</li>
+                        </ul>
+                        
+                        <h4>Enlace metálico</h4>
+                        <p>Se forma entre átomos del mismo metal. Las características principales son:</p>
+                        <ul>
+                            <li>Formación de un "mar de electrones" deslocalizados</li>
+                            <li>Buenos conductores del calor y la electricidad</li>
+                            <li>Brillo metálico característico</li>
+                            <li>Maleables y dúctiles</li>
+                        </ul>
+                        
+                        <h3>3.2 Geometría molecular - Teoría RPECV</h3>
+                        <p>La teoría de Repulsión de Pares de Electrones de la Capa de Valencia (RPECV) permite predecir la geometría de las moléculas.</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Pares de electrones</th>
+                                <th>Geometría</th>
+                                <th>Ejemplo</th>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Lineal</td>
+                                <td>BeCl₂</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Triangular plana</td>
+                                <td>BF₃</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Tetraédrica</td>
+                                <td>CH₄</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Bipirámide trigonal</td>
+                                <td>PCl₅</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Octaédrica</td>
+                                <td>SF₆</td>
+                            </tr>
+                        </table>
+                        
+                        <h3>3.3 Polaridad</h3>
+                        <p>Una molécula es polar cuando tiene un momento dipolar permanente. Depende de:</p>
+                        <ul>
+                            <li>Diferencia de electronegatividad entre los átomos</li>
+                            <li>Geometría molecular</li>
+                        </ul>
+                        
+                        <h3>3.4 Fuerzas intermoleculares</h3>
+                        <p>Las principales fuerzas intermoleculares son:</p>
+                        <ul>
+                            <li><strong>Fuerzas de van der Waals:</strong> Interacciones débiles entre todas las moléculas</li>
+                            <li><strong>Fuerzas dipolo-dipolo:</strong> Entre moléculas polares</li>
+                            <li><strong>Puentes de hidrógeno:</strong> Tipo especial de interacción entre H y átomos muy electronegativos (O, N, F)</li>
+                        </ul>
+                    `;
+                    break;
+                case 4:
+                    resumenHTML = `
+                        <h2>Tema 4: Termodinámica Química</h2>
+                        <h3>4.1 Primer principio</h3>
+                        <p>El Primer Principio de la Termodinámica establece que la energía total del universo se conserva. Matemáticamente se expresa como:</p>
+                        <p>ΔU = Q - W</p>
+                        <p>Donde ΔU es el cambio en la energía interna del sistema, Q es el calor transferido al sistema y W es el trabajo realizado por el sistema.</p>
+                        
+                        <h3>4.2 Entalpía</h3>
+                        <p>La entalpía (H) es una función de estado que representa la cantidad de energía térmica que un sistema puede intercambiar con su entorno.</p>
+                        <p>ΔH = ΔU + pΔV</p>
+                        
+                        <h3>4.3 Ley de Hess</h3>
+                        <p>La Ley de Hess establece que la entalpía de una reacción química es independiente del camino seguido para llevarla a cabo. Matemáticamente se expresa como:</p>
+                        <p>ΔH = ΣΔHf(productos) - ΣΔHf(reactivos)</p>
+                    `;
+                    break;
+                case 5:
+                    resumenHTML = `
+                        <h2>Tema 5: Cinética Química</h2>
+                        <h3>5.1 Velocidad de reacción</h3>
+                        <p>La velocidad de reacción es la rapidez con la que se consumen los reactivos o se forman los productos en una reacción química.</p>
+                        <p>v = -d[A]/dt = d[B]/dt</p>
+                        
+                        <h3>5.2 Energía de activación</h3>
+                        <p>La energía de activación es la energía mínima necesaria para que se produzca una reacción química.</p>
+                        
+                        <h3>5.3 Catalizadores</h3>
+                        <p>Un catalizador es una sustancia que aumenta la velocidad de una reacción química sin consumirse ni formar parte del producto final.</p>
+                    `;
+                    break;
+                case 6:
+                    resumenHTML = `
+                        <h2>Tema 6: Equilibrio Químico</h2>
+                        <h3>6.1 Constante de equilibrio</h3>
+                        <p>La constante de equilibrio (Kc) es una medida de la extensión de una reacción química en la que se alcanza el equilibrio.</p>
+                        <p>Kc = [C]c[D]d / [A]a[B]b</p>
+                        
+                        <h3>6.2 Principio de Le Chatelier</h3>
+                        <p>El Principio de Le Chatelier establece que si un sistema en equilibrio se somete a una perturbación, el sistema se ajustará para contrarrestar la perturbación.</p>
+                        
+                        <h3>6.3 Solubilidad</h3>
+                        <p>La solubilidad es la cantidad máxima de soluto que puede disolverse en una cantidad determinada de disolvente a una temperatura dada.</p>
+                    `;
+                    break;
+                case 7:
+                    resumenHTML = `
+                        <h2>Tema 7: Ácidos y Bases</h2>
+                        <h3>7.1 Teorías ácido-base</h3>
+                        <p>Existen tres teorías principales para explicar el comportamiento de ácidos y bases:</p>
+                        <ul>
+                            <li>Teoría de Arrhenius</li>
+                            <li>Teoría de Brønsted-Lowry</li>
+                            <li>Teoría de Lewis</li>
+                        </ul>
+                        
+                        <h3>7.2 pH</h3>
+                        <p>El pH es una medida de la acidez o basicidad de una disolución acuosa.</p>
+                        <p>pH = -log[H₃O⁺]</p>
+                        
+                        <h3>7.3 Hidrólisis</h3>
+                        <p>La hidrólisis es la reacción de una sustancia con el agua.</p>
+                        
+                        <h3>7.4 Valoraciones</h3>
+                        <p>Una valoración es el proceso de determinar la concentración de una sustancia en una disolución.</p>
+                    `;
+                    break;
+                case 8:
+                    resumenHTML = `
+                        <h2>Tema 8: Reacciones Redox</h2>
+                        <h3>8.1 Número de oxidación</h3>
+                        <p>El número de oxidación es la carga que tendría un átomo si todos los enlaces químicos que forma estuvieran ionizados.</p>
+                        
+                        <h3>8.2 Ajuste redox</h3>
+                        <p>El ajuste redox es el proceso de balancear las ecuaciones de oxidación-reducción.</p>
+                        
+                        <h3>8.3 Potenciales</h3>
+                        <p>El potencial es una medida de la tendencia de una sustancia a ganar o perder electrones.</p>
+                    `;
+                    break;
+                case 9:
+                    resumenHTML = `
+                        <h2>Tema 9: Electroquímica</h2>
+                        <h3>9.1 Pilas galvánicas</h3>
+                        <p>Una pila galvánica es una celda electroquímica que produce energía eléctrica a partir de una reacción redox espontánea.</p>
+                        
+                        <h3>9.2 Electrólisis</h3>
+                        <p>La electrólisis es el proceso de descomposición de una sustancia por la acción de la electricidad.</p>
+                        
+                        <h3>9.3 Leyes de Faraday</h3>
+                        <p>Las Leyes de Faraday establecen la relación entre la cantidad de electricidad que pasa por una celda y la cantidad de sustancia que se deposita o se libera en los electrodos.</p>
+                    `;
+                    break;
+                case 10:
+                    resumenHTML = `
+                        <h2>Tema 10: Química Orgánica</h2>
+                        <h3>10.1 Grupos funcionales</h3>
+                        <p>Los grupos funcionales son átomos o grupos de átomos que confieren propiedades químicas características a las moléculas orgánicas.</p>
+                        
+                        <h3>10.2 Isomería</h3>
+                        <p>La isomería es la existencia de compuestos con la misma fórmula molecular pero diferentes estructuras.</p>
+                        
+                        <h3>10.3 Reactividad</h3>
+                        <p>La reactividad es la capacidad de una sustancia para reaccionar con otras sustancias.</p>
+                        
+                        <h3>10.4 Polímeros</h3>
+                        <p>Un polímero es una molécula formada por la repetición de unidades estructurales idénticas o similares.</p>
+                    `;
+                    break;
+                default:
+                    resumenHTML = `<p>Resumen no disponible. Por favor, selecciona otro tema.</p>`;
+            }
+            
+            contenido.innerHTML = resumenHTML;
+            modal.style.display = 'block';
+            
+            // Deshabilitar la selección de texto
+            document.body.style.userSelect = 'none';
+        }
+        
+        // Función para cerrar el modal
+        function cerrarModal() {
+            document.getElementById('resumenModal').style.display = 'none';
+            document.body.style.userSelect = '';
+        }
+        
+        // Cerrar el modal si se hace clic fuera del contenido
+        window.onclick = function(event) {
+            const modal = document.getElementById('resumenModal');
+            if (event.target == modal) {
+                cerrarModal();
+            }
+        }
+        
+        // Prevenir teclas que podrían permitir la descarga
+        document.addEventListener('keydown', function(e) {
+            // Prevenir Ctrl+S, Ctrl+P, Ctrl+Shift+I, F12
+            if ((e.ctrlKey && (e.key === 's' || e.key === 'p')) || 
+                (e.ctrlKey && e.shiftKey && e.key === 'i') ||
+                e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html> 

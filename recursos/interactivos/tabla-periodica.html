@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Periódica Interactiva - EstudioPAU</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --secondary-color: #3498db;
+            --alkali-color: #ff5733;
+            --alkaline-earth-color: #ffbd33;
+            --transition-metal-color: #33a6ff;
+            --post-transition-color: #33ffa6;
+            --metalloid-color: #c233ff;
+            --nonmetal-color: #33ff57;
+            --noble-gas-color: #ff33a6;
+            --lanthanide-color: #a6ff33;
+            --actinide-color: #33ffa1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 300px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .group-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .toggle-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            margin: 0 5px;
+        }
+        
+        .alkali { background-color: var(--alkali-color); }
+        .alkaline-earth { background-color: var(--alkaline-earth-color); }
+        .transition-metal { background-color: var(--transition-metal-color); }
+        .post-transition { background-color: var(--post-transition-color); }
+        .metalloid { background-color: var(--metalloid-color); }
+        .nonmetal { background-color: var(--nonmetal-color); }
+        .noble-gas { background-color: var(--noble-gas-color); }
+        .lanthanide { background-color: var(--lanthanide-color); }
+        .actinide { background-color: var(--actinide-color); }
+        
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            grid-template-rows: repeat(10, 60px);
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+        
+        .element {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            padding: 5px;
+        }
+        
+        .element:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        
+        .element-number {
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            font-size: 10px;
+        }
+        
+        .element-symbol {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .element-name {
+            font-size: 8px;
+            text-align: center;
+        }
+        
+        .element-details {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            padding: 20px;
+            z-index: 100;
+        }
+        
+        .backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 90;
+        }
+        
+        .element-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .element-detail-symbol {
+            font-size: 40px;
+            font-weight: bold;
+            margin-right: 15px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .element-info {
+            flex: 1;
+        }
+        
+        .element-detail-name {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .element-properties {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .property {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .property-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .empty {
+            background-color: transparent;
+            box-shadow: none;
+            cursor: default;
+        }
+        
+        .empty:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .lanthanide-row, .actinide-row {
+            grid-column: 3 / span 15;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #777;
+        }
+        
+        @media (max-width: 1000px) {
+            .periodic-table {
+                grid-template-rows: repeat(10, 50px);
+            }
+            .element-symbol {
+                font-size: 14px;
+            }
+            .element-name {
+                font-size: 6px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .periodic-table {
+                grid-template-rows: repeat(10, 40px);
+                gap: 2px;
+            }
+            .element-number {
+                font-size: 8px;
+            }
+            .element-symbol {
+                font-size: 12px;
+            }
+            .element-name {
+                display: none;
+            }
+            .toolbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .search-container {
+                max-width: 100%;
+            }
+        }
+        
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tabla Periódica Interactiva</h1>
+        <p>Haz clic en cualquier elemento para ver sus detalles</p>
+    </header>
+    
+    <div class="container">
+        <div class="toolbar">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar elemento...">
+            </div>
+            
+            <div class="group-toggles">
+                <button class="toggle-btn alkali" data-group="alkali">Alcalinos</button>
+                <button class="toggle-btn alkaline-earth" data-group="alkaline-earth">Alcalinotérreos</button>
+                <button class="toggle-btn transition-metal" data-group="transition-metal">Transición</button>
+                <button class="toggle-btn nonmetal" data-group="nonmetal">No metales</button>
+                <button class="toggle-btn noble-gas" data-group="noble-gas">Gases nobles</button>
+            </div>
+        </div>
+        
+        <div class="periodic-table" id="periodic-table">
+            <!-- Se generará dinámicamente con JavaScript -->
+        </div>
+        
+        <a href="/" class="home-link">Volver al inicio</a>
+    </div>
+    
+    <div class="backdrop" id="backdrop"></div>
+    <div class="element-details" id="element-details">
+        <button class="close-btn" id="close-details">&times;</button>
+        <div class="element-header">
+            <div class="element-detail-symbol" id="detail-symbol">H</div>
+            <div class="element-info">
+                <h2 class="element-detail-name" id="detail-name">Hidrógeno</h2>
+                <p id="detail-category">No metal</p>
+            </div>
+        </div>
+        
+        <div class="element-properties">
+            <div class="property">
+                <div class="property-name">Número atómico</div>
+                <div id="detail-number">1</div>
+            </div>
+            <div class="property">
+                <div class="property-name">Masa atómica</div>
+                <div id="detail-mass">1.008 u</div>
+            </div>
+            <div class="property">
+                <div class="property-name">Período / Grupo</div>
+                <div id="detail-position">1 / 1</div>
+            </div>
+            <div class="property">
+                <div class="property-name">Configuración electrónica</div>
+                <div id="detail-config">1s¹</div>
+            </div>
+            <div class="property">
+                <div class="property-name">Estado físico</div>
+                <div id="detail-state">Gas</div>
+            </div>
+            <div class="property">
+                <div class="property-name">Descubierto por</div>
+                <div id="detail-discovered">Henry Cavendish (1766)</div>
+            </div>
+        </div>
+        
+        <div id="detail-description">
+            El hidrógeno es el elemento químico más ligero y abundante del universo. Es un gas incoloro, inodoro e insípido. Es el componente principal del agua y todas las moléculas orgánicas.
+        </div>
+    </div>
+    
+    <script>
+        // Datos de elementos (información resumida para ejemplo)
+        const elements = [
+            { number: 1, symbol: 'H', name: 'Hidrógeno', category: 'nonmetal', group: 1, period: 1 },
+            { number: 2, symbol: 'He', name: 'Helio', category: 'noble-gas', group: 18, period: 1 },
+            { number: 3, symbol: 'Li', name: 'Litio', category: 'alkali', group: 1, period: 2 },
+            { number: 4, symbol: 'Be', name: 'Berilio', category: 'alkaline-earth', group: 2, period: 2 },
+            { number: 5, symbol: 'B', name: 'Boro', category: 'metalloid', group: 13, period: 2 },
+            { number: 6, symbol: 'C', name: 'Carbono', category: 'nonmetal', group: 14, period: 2 },
+            { number: 7, symbol: 'N', name: 'Nitrógeno', category: 'nonmetal', group: 15, period: 2 },
+            { number: 8, symbol: 'O', name: 'Oxígeno', category: 'nonmetal', group: 16, period: 2 },
+            { number: 9, symbol: 'F', name: 'Flúor', category: 'nonmetal', group: 17, period: 2 },
+            { number: 10, symbol: 'Ne', name: 'Neón', category: 'noble-gas', group: 18, period: 2 },
+            { number: 11, symbol: 'Na', name: 'Sodio', category: 'alkali', group: 1, period: 3 },
+            { number: 12, symbol: 'Mg', name: 'Magnesio', category: 'alkaline-earth', group: 2, period: 3 },
+            { number: 13, symbol: 'Al', name: 'Aluminio', category: 'post-transition', group: 13, period: 3 },
+            { number: 14, symbol: 'Si', name: 'Silicio', category: 'metalloid', group: 14, period: 3 },
+            { number: 15, symbol: 'P', name: 'Fósforo', category: 'nonmetal', group: 15, period: 3 },
+            { number: 16, symbol: 'S', name: 'Azufre', category: 'nonmetal', group: 16, period: 3 },
+            { number: 17, symbol: 'Cl', name: 'Cloro', category: 'nonmetal', group: 17, period: 3 },
+            { number: 18, symbol: 'Ar', name: 'Argón', category: 'noble-gas', group: 18, period: 3 },
+            { number: 19, symbol: 'K', name: 'Potasio', category: 'alkali', group: 1, period: 4 },
+            { number: 20, symbol: 'Ca', name: 'Calcio', category: 'alkaline-earth', group: 2, period: 4 }
+            // Este es un ejemplo con solo 20 elementos para simplificar
+        ];
+        
+        // Elementos adicionales para mostrar los detalles
+        const elementDetails = {
+            1: {
+                config: '1s¹',
+                mass: '1.008 u',
+                state: 'Gas',
+                discovered: 'Henry Cavendish (1766)',
+                description: 'El hidrógeno es el elemento químico más ligero y abundante del universo. Es un gas incoloro, inodoro e insípido. Es el componente principal del agua y todas las moléculas orgánicas.'
+            },
+            6: {
+                config: '1s² 2s² 2p²',
+                mass: '12.011 u',
+                state: 'Sólido',
+                discovered: 'Conocido desde la antigüedad',
+                description: 'El carbono es la base de la química orgánica. Puede formar enlaces covalentes con otros átomos de carbono, creando cadenas y anillos que forman la columna vertebral de las biomoléculas.'
+            },
+            8: {
+                config: '1s² 2s² 2p⁴',
+                mass: '15.999 u',
+                state: 'Gas',
+                discovered: 'Joseph Priestley (1774)',
+                description: 'El oxígeno es esencial para la respiración de la mayoría de los seres vivos. Es un gas muy reactivo y participa en la combustión.'
+            }
+            // Sólo unos pocos para este ejemplo
+        };
+        
+        // Generar la tabla periódica
+        const periodicTable = document.getElementById('periodic-table');
+        
+        // Crear elementos vacíos para la estructura de la tabla
+        for (let period = 1; period <= 7; period++) {
+            for (let group = 1; group <= 18; group++) {
+                const element = elements.find(e => e.period === period && e.group === group);
+                
+                const elementDiv = document.createElement('div');
+                elementDiv.style.gridRow = period;
+                elementDiv.style.gridColumn = group;
+                
+                if (element) {
+                    elementDiv.className = `element ${element.category}`;
+                    elementDiv.setAttribute('data-number', element.number);
+                    elementDiv.innerHTML = `
+                        <span class="element-number">${element.number}</span>
+                        <span class="element-symbol">${element.symbol}</span>
+                        <span class="element-name">${element.name}</span>
+                    `;
+                    
+                    elementDiv.addEventListener('click', () => showElementDetails(element.number));
+                } else {
+                    elementDiv.className = 'element empty';
+                }
+                
+                periodicTable.appendChild(elementDiv);
+            }
+        }
+        
+        // Mostrar detalles del elemento
+        const backdrop = document.getElementById('backdrop');
+        const elementDetailsDiv = document.getElementById('element-details');
+        const closeDetails = document.getElementById('close-details');
+        
+        function showElementDetails(number) {
+            const element = elements.find(e => e.number === number);
+            if (!element) return;
+            
+            const detail = elementDetails[number] || {
+                config: 'No disponible',
+                mass: 'No disponible',
+                state: 'No disponible',
+                discovered: 'No disponible',
+                description: 'Información detallada no disponible para este elemento.'
+            };
+            
+            document.getElementById('detail-symbol').textContent = element.symbol;
+            document.getElementById('detail-symbol').className = `element-detail-symbol ${element.category}`;
+            document.getElementById('detail-name').textContent = element.name;
+            
+            let categoryName = '';
+            switch(element.category) {
+                case 'alkali': categoryName = 'Metal alcalino'; break;
+                case 'alkaline-earth': categoryName = 'Metal alcalinotérreo'; break;
+                case 'transition-metal': categoryName = 'Metal de transición'; break;
+                case 'post-transition': categoryName = 'Metal del bloque p'; break;
+                case 'metalloid': categoryName = 'Metaloide'; break;
+                case 'nonmetal': categoryName = 'No metal'; break;
+                case 'noble-gas': categoryName = 'Gas noble'; break;
+                case 'lanthanide': categoryName = 'Lantánido'; break;
+                case 'actinide': categoryName = 'Actínido'; break;
+                default: categoryName = 'Categoría desconocida';
+            }
+            
+            document.getElementById('detail-category').textContent = categoryName;
+            document.getElementById('detail-number').textContent = element.number;
+            document.getElementById('detail-mass').textContent = detail.mass;
+            document.getElementById('detail-position').textContent = `${element.period} / ${element.group}`;
+            document.getElementById('detail-config').textContent = detail.config;
+            document.getElementById('detail-state').textContent = detail.state;
+            document.getElementById('detail-discovered').textContent = detail.discovered;
+            document.getElementById('detail-description').textContent = detail.description;
+            
+            backdrop.style.display = 'block';
+            elementDetailsDiv.style.display = 'block';
+        }
+        
+        closeDetails.addEventListener('click', () => {
+            backdrop.style.display = 'none';
+            elementDetailsDiv.style.display = 'none';
+        });
+        
+        backdrop.addEventListener('click', () => {
+            backdrop.style.display = 'none';
+            elementDetailsDiv.style.display = 'none';
+        });
+        
+        // Filtrar elementos
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', filterElements);
+        
+        function filterElements() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const elementDivs = document.querySelectorAll('.element:not(.empty)');
+            
+            elementDivs.forEach(div => {
+                const number = parseInt(div.getAttribute('data-number'));
+                const element = elements.find(e => e.number === number);
+                
+                if (!element) return;
+                
+                const isMatch = element.name.toLowerCase().includes(searchTerm) ||
+                               element.symbol.toLowerCase().includes(searchTerm) ||
+                               element.number.toString().includes(searchTerm);
+                
+                div.style.opacity = isMatch ? '1' : '0.3';
+            });
+        }
+        
+        // Filtrar por grupo
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const group = btn.getAttribute('data-group');
+                filterByGroup(group);
+            });
+        });
+        
+        function filterByGroup(groupName) {
+            const elementDivs = document.querySelectorAll('.element:not(.empty)');
+            
+            elementDivs.forEach(div => {
+                const number = parseInt(div.getAttribute('data-number'));
+                const element = elements.find(e => e.number === number);
+                
+                if (!element) return;
+                
+                div.style.opacity = element.category === groupName ? '1' : '0.3';
+            });
+            
+            // Reset después de 3 segundos
+            setTimeout(() => {
+                elementDivs.forEach(div => {
+                    div.style.opacity = '1';
+                });
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

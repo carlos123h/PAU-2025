@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Examen PAU Química</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--surface);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border-radius: 12px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--text-light);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .back-button:hover {
+            background: var(--text);
+            transform: translateY(-2px);
+        }
+        
+        .exam-container {
+            margin-top: 20px;
+        }
+        
+        .exam-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .exercise {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        
+        .exercise-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .exercise-content {
+            margin-bottom: 15px;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .optional-questions {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .optional-question {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        
+        .answer-area {
+            width: 100%;
+            min-height: 150px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .feedback.success {
+            background-color: rgba(34, 197, 94, 0.2);
+            border: 1px solid var(--success);
+        }
+        
+        .exam-selector {
+            margin-bottom: 20px;
+        }
+        
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+        
+        .formula-table, .periodic-table {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .formula-table h3, .periodic-table h3 {
+            margin-top: 0;
+        }
+        
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .correction {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            display: none;
+        }
+        
+        .score {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        @media print {
+            .controls, .timer, .exam-selector, .nav-buttons {
+                display: none;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador de Examen PAU - Química</h1>
+            <p class="subtitle">Formato oficial Comunidad Valenciana 2025</p>
+        </header>
+        
+        <main>
+            <div class="nav-buttons">
+                <a href="../../../index-completo.html" class="back-button">Volver al menú principal</a>
+                <a href="javascript:history.back()" class="back-button">Volver atrás</a>
+            </div>
+            
+            <div class="exam-selector">
+                <label for="exam-model">Selecciona un modelo de examen:</label>
+                <select id="exam-model">
+                    <option value="">-- Selecciona un modelo --</option>
+                    <option value="1">Modelo 1 - Junio 2025 (Simulación)</option>
+                    <option value="2">Modelo 2 - Julio 2025 (Simulación)</option>
+                    <option value="3">Modelo 3 - Química Orgánica y Ácido-Base</option>
+                    <option value="4">Modelo 4 - Redox y Termoquímica</option>
+                    <option value="5">Modelo 5 - Equilibrio y Cinética</option>
+                    <option value="6">Modelo 6 - Estructura Atómica y Enlace</option>
+                    <option value="7">Modelo 7 - Disoluciones y Estequiometría</option>
+                    <option value="8">Modelo 8 - Equilibrio y Orgánica</option>
+                    <option value="9">Modelo 9 - Ácido-Base y Redox</option>
+                    <option value="10">Modelo 10 - Termoquímica y Estructura</option>
+                    <option value="11">Modelo 11 - Cinética y Equilibrio</option>
+                    <option value="12">Modelo 12 - Química Orgánica</option>
+                    <option value="13">Modelo 13 - Electroquímica</option>
+                    <option value="14">Modelo 14 - Química Nuclear</option>
+                    <option value="15">Modelo 15 - Química Industrial</option>
+                </select>
+                <button class="btn btn-primary" id="load-exam">Cargar Examen</button>
+            </div>
+            
+            <div class="timer">
+                Tiempo restante: <span id="time">03:00:00</span>
+            </div>
+            
+            <div class="exam-container" id="exam-content">
+                <div class="exam-header">
+                    <h2>PRUEBAS DE ACCESO A LA UNIVERSIDAD</h2>
+                    <h3>QUÍMICA - CURSO 2024/2025</h3>
+                    <p>Tiempo máximo: 3 horas</p>
+                </div>
+                
+                <div class="formula-table">
+                    <h3>Formulario</h3>
+                    <p>Constante de Avogadro: \(N_A = 6,022 \times 10^{23} mol^{-1}\)</p>
+                    <p>Constante de los gases: \(R = 0,082 \frac{atm \cdot L}{mol \cdot K} = 8,31 \frac{J}{mol \cdot K}\)</p>
+                    <p>Ley de Nernst: \(E = E^0 - \frac{0,059}{n} \log Q\) (a 25°C)</p>
+                    <p>Constante de equilibrio: \(K_p = K_c \cdot (RT)^{\Delta n}\)</p>
+                </div>
+                
+                <div id="exam-exercises">
+                    <!-- Los ejercicios se cargarán aquí dinámicamente -->
+                    <p class="select-message">Selecciona un modelo de examen y haz clic en "Cargar Examen"</p>
+                </div>
+                
+                <div class="controls">
+                    <button class="btn btn-secondary" id="print-exam">Imprimir</button>
+                    <button class="btn btn-primary" id="check-exam">Corregir Examen</button>
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="models.js"></script>
+    <script>
+        // Elementos DOM
+        const examModel = document.getElementById('exam-model');
+        const loadExamBtn = document.getElementById('load-exam');
+        const examContent = document.getElementById('exam-exercises');
+        const timeDisplay = document.getElementById('time');
+        const printBtn = document.getElementById('print-exam');
+        const checkBtn = document.getElementById('check-exam');
+        const feedback = document.getElementById('feedback');
+        
+        // Variables globales
+        let currentExam = null;
+        let timeLeft = 3 * 60 * 60; // 3 horas en segundos
+        let timer;
+        
+        // Cargar examen
+        loadExamBtn.addEventListener('click', function() {
+            const modelId = examModel.value;
+            if (!modelId) {
+                alert('Por favor, selecciona un modelo de examen');
+                return;
+            }
+            
+            currentExam = examModels[modelId];
+            if (!currentExam) {
+                alert('Modelo no encontrado');
+                return;
+            }
+            
+            renderExam(currentExam);
+            startTimer();
+        });
+        
+        // Renderizar examen
+        function renderExam(exam) {
+            let html = '';
+            
+            exam.exercises.forEach((exercise, index) => {
+                html += `
+                    <div class="exercise">
+                        <div class="exercise-header">${exercise.header}</div>
+                        <div class="exercise-content">${exercise.content}</div>
+                `;
+                
+                exercise.questions.forEach((question, qIndex) => {
+                    html += `
+                        <div class="question">
+                            <div class="question-text">${question.text}</div>
+                            <textarea class="answer-area" id="answer-${index}-${qIndex}" placeholder="Escribe tu respuesta aquí..."></textarea>
+                        </div>
+                    `;
+                });
+                
+                if (exercise.hasOptional) {
+                    html += `<div class="optional-questions">`;
+                    exercise.optionalQuestions.forEach((optQuestion, oIndex) => {
+                        html += `
+                            <div class="optional-question">
+                                <div class="question-text">${optQuestion.text}</div>
+                                <textarea class="answer-area" id="opt-answer-${index}-${oIndex}" placeholder="Respuesta opcional..."></textarea>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+                
+                html += `</div>`;
+            });
+            
+            examContent.innerHTML = html;
+        }
+        
+        // Iniciar temporizador
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 3 * 60 * 60;
+            updateTimeDisplay();
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimeDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    alert('¡Tiempo agotado! El examen ha finalizado.');
+                }
+            }, 1000);
+        }
+        
+        // Actualizar display del tiempo
+        function updateTimeDisplay() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            timeDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Imprimir examen
+        printBtn.addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Revisar examen
+        checkBtn.addEventListener('click', function() {
+            if (!currentExam) {
+                alert('No hay ningún examen cargado para revisar');
+                return;
+            }
+            
+            feedback.innerHTML = '<h3>Soluciones del examen</h3>';
+            feedback.innerHTML += '<p>A continuación se muestran las soluciones para que puedas comparar con tus respuestas:</p>';
+            
+            currentExam.exercises.forEach((exercise, index) => {
+                feedback.innerHTML += `<h4>${exercise.header}</h4>`;
+                
+                exercise.questions.forEach((question, qIndex) => {
+                    feedback.innerHTML += `
+                        <div class="solution">
+                            <p><strong>${question.text}</strong></p>
+                            <p>Solución: ${question.solution || 'No disponible'}</p>
+                        </div>
+                    `;
+                });
+                
+                if (exercise.hasOptional) {
+                    exercise.optionalQuestions.forEach((optQuestion) => {
+                        feedback.innerHTML += `
+                            <div class="solution">
+                                <p><strong>${optQuestion.text}</strong></p>
+                                <p>Solución: ${optQuestion.solution || 'No disponible'}</p>
+                            </div>
+                        `;
+                    });
+                }
+            });
+            
+            feedback.className = 'feedback success';
+            feedback.style.display = 'block';
+            
+            // Scroll al feedback
+            feedback.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html> 

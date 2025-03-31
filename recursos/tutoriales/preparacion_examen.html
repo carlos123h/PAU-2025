@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparación para el Examen PAU - EstudioPAU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .intro {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin: 30px 0 15px;
+            color: #2980b9;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .tip-card {
+            background-color: #fff;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .tip-card.important {
+            border-left-color: #e74c3c;
+        }
+        
+        .tip-card.success {
+            border-left-color: #27ae60;
+        }
+        
+        .tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .tip-content {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .tip-content ul, .tip-content ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .tip-content li {
+            margin-bottom: 8px;
+        }
+        
+        .timeline {
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #3498db;
+        }
+        
+        .timeline-item {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 80px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 46px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background-color: #3498db;
+            border-radius: 50%;
+            transform: translateY(50%);
+        }
+        
+        .timeline-content {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .back-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+        
+        .quote {
+            font-style: italic;
+            border-left: 3px solid #ddd;
+            padding-left: 15px;
+            margin: 20px 0;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                padding-left: 60px;
+            }
+            
+            .timeline-dot {
+                left: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Guía de Preparación para el Examen PAU</h1>
+            <h2>Consejos y estrategias para Química - Comunidad Valenciana 2025</h2>
+        </header>
+        
+        <div class="intro">
+            <p>La Prueba de Acceso a la Universidad (PAU) es un momento crucial en tu trayectoria académica. En esta guía encontrarás consejos prácticos para prepararte adecuadamente para el examen de Química, desde semanas antes hasta el mismo día de la prueba. Sigue estas recomendaciones para maximizar tus posibilidades de éxito.</p>
+        </div>
+        
+        <a href="../../index.html" class="back-button">Volver a la página principal</a>
+        
+        <h3 class="section-title">Meses antes del examen</h3>
+        
+        <div class="tip-card">
+            <div class="tip-title">Organiza tu material de estudio</div>
+            <div class="tip-content">
+                <p>Es fundamental tener todo el contenido organizado y accesible:</p>
+                <ul>
+                    <li>Crea un índice de todos los temas del temario oficial 2025.</li>
+                    <li>Prepara fichas de fórmulas y conceptos clave para cada tema.</li>
+                    <li>Recopila modelos de exámenes de años anteriores (2023-2024).</li>
+                    <li>Organiza tus apuntes con un código de colores para destacar fórmulas, definiciones y ejemplos.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tip-card">
+            <div class="tip-title">Elabora un plan de estudio realista</div>
+            <div class="tip-content">
+                <p>Distribuye el tiempo disponible entre todos los temas, priorizando los que tienen más peso en el examen:</p>
+                <ul>
+                    <li>Dedica más tiempo a Equilibrio Químico, Ácido-Base y Redox, que suelen tener mayor presencia en los exámenes.</li>
+                    <li>Reserva tiempo específico para practicar problemas numéricos.</li>
+                    <li>Incluye sesiones de repaso periódicas de lo ya estudiado.</li>
+                    <li>Alterna temas teóricos con prácticos para mantener la motivación.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tip-card important">
+            <div class="tip-title">Identificar tus puntos débiles</div>
+            <div class="tip-content">
+                <p>Es crucial ser honesto contigo mismo sobre qué temas te cuestan más:</p>
+                <ul>
+                    <li>Realiza un diagnóstico sincero de tus conocimientos en cada tema.</li>
+                    <li>Dedica más tiempo a reforzar los temas donde encuentras dificultades.</li>
+                    <li>Busca explicaciones alternativas o tutoriales para conceptos difíciles.</li>
+                    <li>No evites los temas complicados; enfrentarlos te hará más fuerte.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h3 class="section-title">Semanas antes del examen</h3>
+        
+        <div class="tip-card">
+            <div class="tip-title">Practica con modelos de examen</div>
+            <div class="tip-content">
+                <p>La práctica con exámenes reales es una de las mejores formas de preparación:</p>
+                <ul>
+                    <li>Realiza al menos un examen completo por semana, simulando las condiciones reales (tiempo, sin ayudas, etc.).</li>
+                    <li>Alterna entre exámenes de convocatorias ordinarias y extraordinarias de años anteriores.</li>
+                    <li>Corrige minuciosamente tus exámenes practicados, identificando errores recurrentes.</li>
+                    <li>Utiliza nuestro <a href="../examenes/simulador_examen.html">simulador de examen</a> para practicar en condiciones similares a las reales.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tip-card">
+            <div class="tip-title">Técnicas de memorización activa</div>
+            <div class="tip-content">
+                <p>Para retener mejor la información, utiliza técnicas de aprendizaje activo:</p>
+                <ul>
+                    <li>Explica los conceptos en voz alta como si estuvieras enseñando a alguien.</li>
+                    <li>Crea mapas mentales que conecten conceptos relacionados.</li>
+                    <li>Asocia fórmulas a situaciones o ejemplos concretos para recordarlas mejor.</li>
+                    <li>Practica la escritura de ecuaciones y mecanismos de reacción regularmente.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tip-card success">
+            <div class="tip-title">Forma grupos de estudio</div>
+            <div class="tip-content">
+                <p>Estudiar con compañeros puede ser muy beneficioso:</p>
+                <ul>
+                    <li>Organiza sesiones para resolver problemas complejos en grupo.</li>
+                    <li>Explica conceptos a tus compañeros; enseñar es una excelente forma de aprender.</li>
+                    <li>Comparar métodos de resolución puede ayudarte a descubrir formas más eficientes.</li>
+                    <li>La motivación grupal ayuda a mantener el ritmo de estudio.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h3 class="section-title">La semana del examen</h3>
+        
+        <div class="tip-card important">
+            <div class="tip-title">Repaso estratégico</div>
+            <div class="tip-content">
+                <p>En los días previos, centra tu repaso en aspectos clave:</p>
+                <ul>
+                    <li>Revisa fórmulas y ecuaciones fundamentales, pero sin intentar aprender conceptos nuevos.</li>
+                    <li>Repasa tus fichas de resumen y esquemas.</li>
+                    <li>Revisa los errores más comunes que has cometido en tus simulacros.</li>
+                    <li>Practica mentalmente la resolución de problemas tipo, visualizando los pasos.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tip-card">
+            <div class="tip-title">Cuidado físico y mental</div>
+            <div class="tip-content">
+                <p>Tu estado físico y mental es tan importante como tu preparación académica:</p>
+                <ul>
+                    <li>Mantén un horario regular de sueño, durmiendo al menos 8 horas diarias.</li>
+                    <li>Realiza actividad física moderada para reducir el estrés.</li>
+                    <li>Incluye alimentos ricos en omega-3 y antioxidantes en tu dieta.</li>
+                    <li>Practica técnicas de respiración o meditación breve si sientes ansiedad.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tip-card">
+            <div class="tip-title">Preparación logística</div>
+            <div class="tip-content">
+                <p>Tener todo organizado te dará tranquilidad:</p>
+                <ul>
+                    <li>Prepara el material necesario: calculadora permitida, bolígrafos, lápiz, goma, regla.</li>
+                    <li>Verifica la ubicación del aula y planifica tu ruta y horario para llegar con tiempo.</li>
+                    <li>Prepara tu documentación (DNI o pasaporte) y comprueba que esté vigente.</li>
+                    <li>Familiarízate con las normas específicas de la prueba en la Comunidad Valenciana.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h3 class="section-title">El día del examen</h3>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Antes de salir de casa</div>
+                    <ul>
+                        <li>Desayuna adecuadamente, incluyendo proteínas y carbohidratos de absorción lenta.</li>
+                        <li>Revisa que llevas todo el material necesario.</li>
+                        <li>Lleva agua y algún snack saludable (frutos secos, plátano).</li>
+                        <li>Sal con tiempo suficiente para llegar al menos 30 minutos antes.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">En la sala de espera</div>
+                    <ul>
+                        <li>Evita discusiones sobre el contenido con otros estudiantes; puede generarte dudas innecesarias.</li>
+                        <li>Realiza respiraciones profundas si sientes nerviosismo.</li>
+                        <li>Repasa mentalmente las fórmulas más importantes, pero sin apuntes.</li>
+                        <li>Bebe agua para mantenerte hidratado.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Durante el examen</div>
+                    <ul>
+                        <li>Lee atentamente todas las preguntas antes de empezar a contestar.</li>
+                        <li>Planifica tu tiempo: asigna minutos a cada pregunta según su valor.</li>
+                        <li>Comienza por las preguntas que domines mejor para ganar confianza.</li>
+                        <li>En problemas numéricos, escribe claramente todos los pasos y fórmulas.</li>
+                        <li>Si te bloqueas en una pregunta, pasa a la siguiente y vuelve después.</li>
+                        <li>Reserva 5-10 minutos finales para revisar.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Al finalizar</div>
+                    <ul>
+                        <li>Revisa que has contestado todas las preguntas.</li>
+                        <li>Comprueba que has incluido las unidades en todos los resultados numéricos.</li>
+                        <li>Verifica que has identificado correctamente tu examen con tu nombre y datos.</li>
+                        <li>Entrega tranquilamente, sin precipitarte en los últimos minutos.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quote">
+            "El éxito en la PAU no solo depende de cuánto sabes, sino de cómo gestionas tus conocimientos y emociones durante la preparación y el examen."
+        </div>
+        
+        <div class="tip-card success">
+            <div class="tip-title">Después del examen</div>
+            <div class="tip-content">
+                <p>Una vez finalizado el examen:</p>
+                <ul>
+                    <li>Evita revisar inmediatamente las respuestas con otros compañeros. Lo hecho, hecho está.</li>
+                    <li>Tómate un descanso antes de preparar el siguiente examen.</li>
+                    <li>Si tienes más exámenes, centra tu atención en el siguiente sin darle vueltas al anterior.</li>
+                    <li>Recuerda que un examen no define tu valía como estudiante ni como persona.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>EstudioPAU Valencia 2025 - Guía de Preparación</p>
+            <p>Material actualizado según las directrices PAU 2025</p>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tema 5: Cinética Química - EstudioPAU CV</title>
+    <style>
+        .btn-solucion {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .btn-solucion:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="tema-detalle" id="detalle-quimica-5">
+        <div class="tema-header" style="background-color: #e74c3c">
+            <h3>Tema 5: Cinética Química</h3>
+        </div>
+        
+        <div class="tema-section">
+            <h4>1. Velocidad de las reacciones químicas</h4>
+            <p>La cinética química estudia la velocidad a la que ocurren las reacciones químicas y los factores que la afectan, así como el mecanismo por el cual se produce la transformación de reactivos en productos.</p>
+            
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Concepto de velocidad de reacción</h5>
+                <p>La velocidad de una reacción química se define como la variación de la concentración de un reactivo o producto por unidad de tiempo:</p>
+                <p style="text-align: center;">v = -Δ[R]/Δt = Δ[P]/Δt</p>
+                <p>Donde:</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• [R] y [P] son las concentraciones de reactivos y productos, respectivamente (mol/L).</li>
+                    <li style="margin-bottom: 5px;">• Δt es el intervalo de tiempo (s).</li>
+                    <li style="margin-bottom: 5px;">• El signo negativo en -Δ[R]/Δt indica que la concentración de los reactivos disminuye con el tiempo.</li>
+                </ul>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Unidades de la velocidad de reacción:</h5>
+            <p>La velocidad de reacción se expresa generalmente en mol·L<sup>-1</sup>·s<sup>-1</sup>, aunque pueden usarse otras unidades de concentración y tiempo según convenga.</p>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Velocidad media e instantánea:</h5>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• <strong>Velocidad media</strong>: Es el promedio de la velocidad en un intervalo de tiempo determinado.</li>
+                <li style="margin-bottom: 5px;">• <strong>Velocidad instantánea</strong>: Es la velocidad en un instante preciso, y se determina calculando la pendiente de la tangente a la curva concentración-tiempo en ese punto.</li>
+            </ul>
+        </div>
+        
+        <div class="tema-section">
+            <h4>2. Ecuación de velocidad</h4>
+            <p>La ecuación de velocidad o ley de velocidad es una expresión matemática que relaciona la velocidad de una reacción con las concentraciones de los reactivos.</p>
+            
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Expresión de la ecuación de velocidad</h5>
+                <p>Para una reacción general: aA + bB → cC + dD</p>
+                <p>La ecuación de velocidad tiene la forma:</p>
+                <p style="text-align: center;">v = k·[A]<sup>α</sup>·[B]<sup>β</sup></p>
+                <p>Donde:</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• k es la constante de velocidad, específica para cada reacción a una temperatura dada.</li>
+                    <li style="margin-bottom: 5px;">• [A] y [B] son las concentraciones molares de los reactivos.</li>
+                    <li style="margin-bottom: 5px;">• α y β son los órdenes de reacción respecto a cada reactivo, que deben determinarse experimentalmente.</li>
+                </ul>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Orden de reacción:</h5>
+            <p>El orden de reacción global es la suma de los órdenes parciales: n = α + β + ...</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• <strong>Reacción de orden cero</strong>: v = k (la velocidad no depende de la concentración)</li>
+                <li style="margin-bottom: 5px;">• <strong>Reacción de primer orden</strong>: v = k·[A] (la velocidad es proporcional a la concentración)</li>
+                <li style="margin-bottom: 5px;">• <strong>Reacción de segundo orden</strong>: v = k·[A]² o v = k·[A]·[B] (la velocidad es proporcional al cuadrado de la concentración o al producto de concentraciones)</li>
+            </ul>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Unidades de la constante de velocidad:</h5>
+            <p>Las unidades de k dependen del orden global de la reacción:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• Orden cero: mol·L<sup>-1</sup>·s<sup>-1</sup></li>
+                <li style="margin-bottom: 5px;">• Primer orden: s<sup>-1</sup></li>
+                <li style="margin-bottom: 5px;">• Segundo orden: L·mol<sup>-1</sup>·s<sup>-1</sup></li>
+            </ul>
+        </div>
+        
+        <div class="tema-section">
+            <h4>3. Factores que afectan a la velocidad de reacción</h4>
+            <p>La velocidad de una reacción química puede verse afectada por diversos factores, que se explican mediante la teoría de colisiones y la teoría del estado de transición.</p>
+            
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Teoría de colisiones</h5>
+                <p>Esta teoría propone que para que una reacción ocurra, las moléculas de los reactivos deben:</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• Chocar entre sí con suficiente energía (superior a la energía de activación).</li>
+                    <li style="margin-bottom: 5px;">• Hacerlo con una orientación adecuada que permita la formación de nuevos enlaces.</li>
+                </ul>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Principales factores que afectan a la velocidad:</h5>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #c0392b; text-align: center;">Naturaleza de los reactivos</h5>
+                    <p>• Tipo de enlaces que deben romperse</p>
+                    <p>• Estado físico de los reactivos</p>
+                    <p>• Complejidad molecular</p>
+                </div>
+                
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #c0392b; text-align: center;">Concentración</h5>
+                    <p>• Mayor concentración = más colisiones</p>
+                    <p>• Aumenta la probabilidad de choques efectivos</p>
+                    <p>• Relación expresada en la ecuación de velocidad</p>
+                </div>
+                
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #c0392b; text-align: center;">Temperatura</h5>
+                    <p>• Aumenta la energía cinética de las partículas</p>
+                    <p>• Incrementa la frecuencia de colisiones</p>
+                    <p>• Más partículas superan la energía de activación</p>
+                </div>
+                
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #c0392b; text-align: center;">Catalizadores</h5>
+                    <p>• Ofrecen un camino alternativo con menor energía de activación</p>
+                    <p>• No se consumen en la reacción</p>
+                    <p>• No alteran el equilibrio, solo la velocidad</p>
+                </div>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Efecto de la temperatura: Ecuación de Arrhenius</h5>
+            <p>La ecuación de Arrhenius relaciona la constante de velocidad con la temperatura:</p>
+            <p style="text-align: center;">k = A·e<sup>-E<sub>a</sub>/RT</sup></p>
+            <p>Donde:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• k es la constante de velocidad</li>
+                <li style="margin-bottom: 5px;">• A es el factor de frecuencia o factor preexponencial</li>
+                <li style="margin-bottom: 5px;">• E<sub>a</sub> es la energía de activación (J/mol)</li>
+                <li style="margin-bottom: 5px;">• R es la constante de los gases (8,314 J·mol<sup>-1</sup>·K<sup>-1</sup>)</li>
+                <li style="margin-bottom: 5px;">• T es la temperatura absoluta (K)</li>
+            </ul>
+            
+            <p>En la PAU de la Comunidad Valenciana, solo se requiere interpretar esta ecuación cualitativamente, sin necesidad de integrar las ecuaciones de velocidad.</p>
+        </div>
+        
+        <div class="tema-section">
+            <h4>4. Mecanismos de reacción</h4>
+            <p>Las reacciones químicas rara vez ocurren en un solo paso. Por lo general, implican una serie de pasos elementales o etapas que constituyen el mecanismo de reacción.</p>
+            
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Concepto de mecanismo de reacción</h5>
+                <p>Un mecanismo de reacción es la secuencia de reacciones elementales (etapas) por las que transcurre una reacción química.</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• <strong>Reacción elemental</strong>: Ocurre en un solo paso, tal como describe la ecuación química.</li>
+                    <li style="margin-bottom: 5px;">• <strong>Molecularidad</strong>: Número de moléculas que intervienen en una etapa elemental (unimolecular, bimolecular, trimolecular).</li>
+                    <li style="margin-bottom: 5px;">• <strong>Intermedios de reacción</strong>: Especies químicas que se forman y consumen durante la reacción.</li>
+                </ul>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Etapa determinante de la velocidad:</h5>
+            <p>La etapa más lenta del mecanismo es la que determina la velocidad global de la reacción. La ecuación de velocidad experimental puede proporcionar información sobre el mecanismo de reacción.</p>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Ejemplo de mecanismo de reacción:</h5>
+            <p>Para la reacción: NO<sub>2</sub> + CO → NO + CO<sub>2</sub></p>
+            <p>Un posible mecanismo en dos etapas sería:</p>
+            <ol style="padding-left: 20px;">
+                <li>NO<sub>2</sub> + NO<sub>2</sub> → NO<sub>3</sub> + NO (lenta, determinante)</li>
+                <li>NO<sub>3</sub> + CO → NO<sub>2</sub> + CO<sub>2</sub> (rápida)</li>
+            </ol>
+            <p>La ecuación de velocidad correspondiente a este mecanismo sería: v = k·[NO<sub>2</sub>]<sup>2</sup></p>
+        </div>
+        
+        <div class="tema-section">
+            <h4>5. Catálisis</h4>
+            <p>Los catalizadores son sustancias que modifican la velocidad de una reacción química sin consumirse en el proceso global.</p>
+            
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Tipos de catálisis</h5>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px;">• <strong>Catálisis homogénea</strong>: El catalizador está en la misma fase que los reactivos. Ejemplo: Descomposición de agua oxigenada catalizada por iones I<sup>-</sup> en disolución.</li>
+                    <li style="margin-bottom: 10px;">• <strong>Catálisis heterogénea</strong>: El catalizador está en una fase diferente a los reactivos, generalmente un sólido en contacto con reactivos líquidos o gaseosos. Ejemplo: Síntesis del amoníaco con hierro como catalizador.</li>
+                    <li style="margin-bottom: 10px;">• <strong>Catálisis enzimática</strong>: Utiliza enzimas (proteínas) como catalizadores de reacciones biológicas. Ejemplo: Digestión de almidón por la amilasa salival.</li>
+                </ul>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Características de los catalizadores:</h5>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• No se consumen en la reacción global, aunque participan en ella.</li>
+                <li style="margin-bottom: 5px;">• Disminuyen la energía de activación, proporcionando un camino alternativo para la reacción.</li>
+                <li style="margin-bottom: 5px;">• No modifican la variación de entalpía de la reacción ni la posición de equilibrio.</li>
+                <li style="margin-bottom: 5px;">• Son específicos, actuando sobre determinadas reacciones.</li>
+                <li style="margin-bottom: 5px;">• Pueden ser inhibidos por ciertas sustancias (venenos catalíticos).</li>
+            </ul>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Importancia de los catalizadores:</h5>
+            <p>Los catalizadores tienen una enorme importancia industrial, económica y ambiental:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• <strong>En la industria</strong>: Permiten realizar procesos a menor temperatura y presión, ahorrando energía (síntesis de NH<sub>3</sub>, ácido sulfúrico, polímeros).</li>
+                <li style="margin-bottom: 5px;">• <strong>En medio ambiente</strong>: Los convertidores catalíticos de los automóviles reducen emisiones contaminantes.</li>
+                <li style="margin-bottom: 5px;">• <strong>En biología</strong>: Las enzimas catalizan prácticamente todas las reacciones bioquímicas en los seres vivos.</li>
+            </ul>
+        </div>
+        
+        <div class="tema-section">
+            <h4>6. Ejercicios tipo PAU CV</h4>
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Ejemplo de pregunta tipo 2 (2 puntos)</h5>
+                <p>La velocidad de la reacción 2A + B → C viene dada por la ecuación v = k·[A]²·[B]. Cuando las concentraciones iniciales son [A]₀ = 0,2 M y [B]₀ = 0,1 M, la velocidad inicial es 4,0·10⁻³ mol·L⁻¹·s⁻¹.</p>
+                <p>a) Calcula el valor de la constante de velocidad k e indica sus unidades. (1 punto)</p>
+                <p>b) ¿Cómo se modificará la velocidad de reacción si se duplica la concentración inicial de B manteniendo constante la de A? (1 punto)</p>
+                <button onclick="mostrarSolucion('solucion3')" class="btn-solucion">Ver solución</button>
+                <div id="solucion3" style="display: none;">
+                    <p><strong>Solución:</strong></p>
+                    <p>a) A partir de la ecuación de velocidad:</p>
+                    <p>4,0·10⁻³ = k·(0,2)²·(0,1)</p>
+                    <p>k = 4,0·10⁻³ / (0,04·0,1) = 1,0 L²·mol⁻²·s⁻¹</p>
+                    <p>b) Si [B]₀ = 0,2 M (el doble):</p>
+                    <p>v₂ = k·[A]²·[B]₂ = 1,0·(0,2)²·(0,2)</p>
+                    <p>v₂ = 8,0·10⁻³ mol·L⁻¹·s⁻¹</p>
+                    <p>La velocidad se duplica al duplicar [B] porque el orden respecto a B es 1.</p>
+                </div>
+            </div>
+            
+            <div style="background-color: #fdedec; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                <h5 style="color: #c0392b; margin-bottom: 8px;">Ejemplo de pregunta tipo 5 (2.5 puntos)</h5>
+                <p><strong>Texto:</strong> La descomposición del N₂O₅ sigue una cinética de primer orden. A 25°C, la constante de velocidad vale 3,0·10⁻⁵ s⁻¹. En un recipiente cerrado se introduce N₂O₅ a una presión inicial de 0,1 atm.</p>
+                <p>a) Escribe y ajusta la ecuación de descomposición del N₂O₅. (0,5 puntos)</p>
+                <p>b) Explica el significado de que la reacción sea de primer orden. (1 punto)</p>
+                <p>c) Calcula el tiempo necesario para que la presión de N₂O₅ se reduzca a la mitad. (1 punto)</p>
+                <button onclick="mostrarSolucion('solucion4')" class="btn-solucion">Ver solución</button>
+                <div id="solucion4" style="display: none;">
+                    <p><strong>Solución:</strong></p>
+                    <p>a) 2N₂O₅(g) → 4NO₂(g) + O₂(g)</p>
+                    <p>b) En una reacción de primer orden:</p>
+                    <p>- La velocidad es directamente proporcional a la concentración del reactivo: v = k·[N₂O₅]</p>
+                    <p>- La constante k tiene unidades de s⁻¹</p>
+                    <p>- El tiempo de vida media no depende de la concentración inicial</p>
+                    <p>c) Para una reacción de primer orden:</p>
+                    <p>t₁/₂ = ln(2)/k = 0,693/k</p>
+                    <p>t₁/₂ = 0,693/(3,0·10⁻⁵) = 23100 s = 6,42 horas</p>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+    <script>
+        function mostrarSolucion(id) {
+            const solucion = document.getElementById(id);
+            if (solucion.style.display === "none") {
+                solucion.style.display = "block";
+            } else {
+                solucion.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html> 

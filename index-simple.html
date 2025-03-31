@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Servidor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2ecc71;
+        }
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prueba de Servidor EstudioPAU</h1>
+    
+    <p>Esta página es una prueba simple para verificar que el servidor está funcionando correctamente.</p>
+    
+    <button onclick="probarServidor()">Probar conexión al servidor</button>
+    
+    <div id="status"></div>
+    
+    <h2>Enlaces de prueba:</h2>
+    <ul>
+        <li><a href="/">Página principal</a></li>
+        <li><a href="/index-completo.html">Versión completa</a></li>
+        <li><a href="/contenido/biologia/tema1.html">Tema 1 de Biología (directo)</a></li>
+        <li><a href="/contenido/quimica/tema1.html">Tema 1 de Química (directo)</a></li>
+    </ul>
+
+    <h2>Simuladores de Exámenes:</h2>
+    <ul>
+        <li><a href="/recursos/simuladores/biologia/examen_pau.html">Simulador de Biología</a></li>
+        <li><a href="/recursos/simuladores/quimica/examen_pau.html">Simulador de Química</a></li>
+        <li><a href="/recursos/simuladores/geologia/examen_pau.html">Simulador de Geología</a></li>
+        <li><a href="/recursos/simuladores/geologia/test.html">Test de Geología (prueba)</a></li>
+    </ul>
+    
+    <script>
+        function probarServidor() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = "Conectando con el servidor...";
+            statusDiv.className = "";
+            
+            fetch('/ping')
+                .then(response => {
+                    if (response.ok) {
+                        statusDiv.innerHTML = "¡Conexión exitosa! El servidor está respondiendo.";
+                        statusDiv.className = "success";
+                    } else {
+                        statusDiv.innerHTML = `Error de conexión: ${response.status} ${response.statusText}`;
+                        statusDiv.className = "error";
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = `Error de conexión: ${error.message}`;
+                    statusDiv.className = "error";
+                });
+        }
+        
+        // Ejecutar al cargar la página
+        window.onload = function() {
+            console.log("Página de prueba cargada correctamente");
+        };
+    </script>
+</body>
+</html> 

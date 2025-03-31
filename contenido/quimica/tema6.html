@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tema 6: Equilibrio Químico - EstudioPAU CV</title>
+    <style>
+        .btn-solucion {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .btn-solucion:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="tema-detalle" id="detalle-quimica-6">
+        <div class="tema-header" style="background-color: #3498db">
+            <h3>Tema 6: Equilibrio Químico</h3>
+            <p style="color: white; font-style: italic;">Actualizado para PAU CV 2025</p>
+        </div>
+        
+        <div class="tema-section">
+            <h4>1. Concepto de equilibrio químico</h4>
+            <p>El equilibrio químico es el estado de un sistema químico en el que las velocidades de la reacción directa e inversa se igualan, y las concentraciones de reactivos y productos permanecen constantes en el tiempo.</p>
+            
+            <div style="background-color: #eaf2f8; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h5 style="color: #2980b9; margin-bottom: 8px;">Características del equilibrio químico</h5>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• Es <strong>dinámico</strong>: tanto la reacción directa como la inversa continúan produciéndose.</li>
+                    <li style="margin-bottom: 5px;">• Es <strong>reversible</strong>: la reacción puede ocurrir en ambos sentidos.</li>
+                    <li style="margin-bottom: 5px;">• Las <strong>concentraciones</strong> de reactivos y productos permanecen constantes, pero no necesariamente iguales.</li>
+                    <li style="margin-bottom: 5px;">• Se puede alcanzar desde cualquier dirección (partiendo de reactivos o de productos).</li>
+                </ul>
+            </div>
+            
+            <p>Una reacción química en equilibrio se representa mediante una ecuación con una doble flecha:</p>
+            <p style="text-align: center;">aA + bB ⇌ cC + dD</p>
+            <p>Donde A y B son los reactivos, C y D son los productos, y a, b, c, d son los coeficientes estequiométricos.</p>
+        </div>
+        
+        <div class="tema-section">
+            <h4>2. Constante de equilibrio</h4>
+            <p>La constante de equilibrio (K) es un valor que relaciona las concentraciones de reactivos y productos en el equilibrio a una temperatura determinada.</p>
+            
+            <div style="background-color: #eaf2f8; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h5 style="color: #2980b9; margin-bottom: 8px;">Expresión de la constante de equilibrio</h5>
+                <p>Para la reacción general: aA + bB ⇌ cC + dD</p>
+                <p>La constante de equilibrio en función de las concentraciones (K<sub>c</sub>) es:</p>
+                <p style="text-align: center;">K<sub>c</sub> = [C]<sup>c</sup>·[D]<sup>d</sup> / [A]<sup>a</sup>·[B]<sup>b</sup></p>
+                <p>Y en función de las presiones parciales (K<sub>p</sub>) es:</p>
+                <p style="text-align: center;">K<sub>p</sub> = (P<sub>C</sub>)<sup>c</sup>·(P<sub>D</sub>)<sup>d</sup> / (P<sub>A</sub>)<sup>a</sup>·(P<sub>B</sub>)<sup>b</sup></p>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Relación entre K<sub>c</sub> y K<sub>p</sub>:</h5>
+            <p>Para reacciones en fase gaseosa, K<sub>p</sub> y K<sub>c</sub> están relacionadas por la expresión:</p>
+            <p style="text-align: center;">K<sub>p</sub> = K<sub>c</sub>·(RT)<sup>Δn</sup></p>
+            <p>Donde:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• R es la constante de los gases (0,082 atm·L·mol<sup>-1</sup>·K<sup>-1</sup>)</li>
+                <li style="margin-bottom: 5px;">• T es la temperatura en Kelvin</li>
+                <li style="margin-bottom: 5px;">• Δn = (c + d) - (a + b) = moles de productos gaseosos - moles de reactivos gaseosos</li>
+            </ul>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Interpretación del valor de la constante:</h5>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #2980b9; text-align: center;">K > 1</h5>
+                    <p>• El equilibrio favorece a los productos</p>
+                    <p>• La reacción directa predomina</p>
+                    <p>• [Productos] > [Reactivos]</p>
+                </div>
+                
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #2980b9; text-align: center;">K = 1</h5>
+                    <p>• Equilibrio balanceado</p>
+                    <p>• Reacciones directa e inversa igual de favorables</p>
+                    <p>• [Productos] ≈ [Reactivos]</p>
+                </div>
+                
+                <div style="flex: 1; min-width: 200px; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h5 style="color: #2980b9; text-align: center;">K < 1</h5>
+                    <p>• El equilibrio favorece a los reactivos</p>
+                    <p>• La reacción inversa predomina</p>
+                    <p>• [Productos] < [Reactivos]</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tema-section">
+            <h4>3. Cociente de reacción y grado de disociación</h4>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Cociente de reacción (Q):</h5>
+            <p>El cociente de reacción es una expresión similar a la constante de equilibrio, pero calculada con las concentraciones en cualquier momento de la reacción, no necesariamente en el equilibrio.</p>
+            <p style="text-align: center;">Q = [C]<sup>c</sup>·[D]<sup>d</sup> / [A]<sup>a</sup>·[B]<sup>b</sup></p>
+            
+            <div style="background-color: #eaf2f8; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h5 style="color: #2980b9; margin-bottom: 8px;">Comparación entre Q y K</h5>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• Si Q < K: la reacción avanzará hacia la derecha (formación de productos).</li>
+                    <li style="margin-bottom: 5px;">• Si Q = K: el sistema está en equilibrio.</li>
+                    <li style="margin-bottom: 5px;">• Si Q > K: la reacción avanzará hacia la izquierda (formación de reactivos).</li>
+                </ul>
+            </div>
+            
+            <h5 style="margin-top: 15px; margin-bottom: 8px;">Grado de disociación (α):</h5>
+            <p>El grado de disociación es la fracción de la cantidad inicial de un reactivo que se ha transformado en productos al alcanzar el equilibrio.</p>
+            <p style="text-align: center;">α = cantidad disociada / cantidad inicial</p>
+            
+            <p>El grado de disociación siempre está comprendido entre 0 y 1 (0% y 100%):</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 5px;">• α = 0: no hay disociación.</li>
+                <li style="margin-bottom: 5px;">• α = 1: disociación completa.</li>
+            </ul>
+        </div>
+        
+        <div class="tema-section">
+            <h4>4. Factores que afectan al equilibrio (PAU CV 2025)</h4>
+            <p>Para la PAU CV 2025, nos centraremos en los dos factores principales que afectan al equilibrio químico:</p>
+            
+            <div style="background-color: #eaf2f8; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h5 style="color: #2980b9; margin-bottom: 8px;">1. Cambio en la concentración</h5>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• Al añadir un reactivo → el equilibrio se desplaza hacia los productos.</li>
+                    <li style="margin-bottom: 5px;">• Al añadir un producto → el equilibrio se desplaza hacia los reactivos.</li>
+                    <li style="margin-bottom: 5px;">• Al eliminar un reactivo → el equilibrio se desplaza hacia los reactivos.</li>
+                    <li style="margin-bottom: 5px;">• Al eliminar un producto → el equilibrio se desplaza hacia los productos.</li>
+                </ul>
+                
+                <h5 style="color: #2980b9; margin-top: 15px; margin-bottom: 8px;">2. Cambio en la temperatura</h5>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 5px;">• Reacción exotérmica (ΔH < 0):</li>
+                    <ul style="padding-left: 20px;">
+                        <li>Al aumentar T → el equilibrio se desplaza hacia los reactivos</li>
+                        <li>Al disminuir T → el equilibrio se desplaza hacia los productos</li>
+                </ul>
+                    <li style="margin-bottom: 5px;">• Reacción endotérmica (ΔH > 0):</li>
+                    <ul style="padding-left: 20px;">
+                        <li>Al aumentar T → el equilibrio se desplaza hacia los productos</li>
+                        <li>Al disminuir T → el equilibrio se desplaza hacia los reactivos</li>
+                </ul>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tema-section">
+            <h4>5. Ejercicios tipo PAU CV</h4>
+            
+            <div style="background-color: #eaf2f8; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h5 style="color: #2980b9; margin-bottom: 8px;">Ejemplo de pregunta tipo 2 (2 puntos)</h5>
+                <p>Considera el siguiente equilibrio:</p>
+                <p style="text-align: center;">2SO₂(g) + O₂(g) ⇌ 2SO₃(g)     ΔH = -198 kJ/mol</p>
+                <p>a) Si aumentamos la temperatura, ¿hacia dónde se desplazará el equilibrio? Justifica la respuesta. (1 punto)</p>
+                <p>b) Si añadimos más O₂ al sistema, ¿cómo afectará a la concentración de SO₃ en el equilibrio? Razona la respuesta. (1 punto)</p>
+                <button onclick="mostrarSolucion('solucion1')" class="btn-solucion">Ver solución</button>
+                <div id="solucion1" style="display: none;">
+                    <p><strong>Solución:</strong></p>
+                    <p>a) Al ser una reacción exotérmica (ΔH < 0), un aumento de temperatura favorece el proceso endotérmico (sentido inverso). Por tanto, el equilibrio se desplazará hacia los reactivos (SO₂ y O₂), disminuyendo la concentración de SO₃.</p>
+                    <p>b) Según el principio de Le Chatelier, al añadir más O₂ (reactivo), el sistema reaccionará para contrarrestar esta perturbación, desplazándose hacia los productos. Por tanto, aumentará la concentración de SO₃ en el equilibrio.</p>
+                </div>
+            </div>
+            
+            <div style="background-color: #eaf2f8; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db;">
+                <h5 style="color: #2980b9; margin-bottom: 8px;">Ejemplo de pregunta tipo 5 (2.5 puntos)</h5>
+                <p><strong>Texto:</strong> El amoniaco se obtiene mediante el proceso Haber-Bosch según la reacción:</p>
+                <p style="text-align: center;">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)     ΔH = -92 kJ/mol</p>
+                <p>En un recipiente cerrado a temperatura constante, se establece el equilibrio anterior. Responde razonadamente a las siguientes cuestiones:</p>
+                <p>a) Escribe la expresión de la constante de equilibrio Kc. (0,5 puntos)</p>
+                <p>b) Explica cómo afectará a la concentración de NH₃ la adición de más H₂ al sistema. (1 punto)</p>
+                <p>c) Justifica cómo afectará a la cantidad de NH₃ una disminución de la temperatura. (1 punto)</p>
+                <button onclick="mostrarSolucion('solucion2')" class="btn-solucion">Ver solución</button>
+                <div id="solucion2" style="display: none;">
+                    <p><strong>Solución:</strong></p>
+                    <p>a) Kc = [NH₃]²/([N₂]·[H₂]³)</p>
+                    <p>b) Al añadir más H₂ (reactivo), según el principio de Le Chatelier, el equilibrio se desplazará hacia los productos para contrarrestar el aumento de concentración. Por tanto, aumentará la concentración de NH₃.</p>
+                    <p>c) La reacción es exotérmica (ΔH < 0), por lo que al disminuir la temperatura, el equilibrio se desplazará favoreciendo el proceso que libera calor (sentido directo). Por tanto, aumentará la cantidad de NH₃.</p>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+    <script>
+        function mostrarSolucion(id) {
+            const solucion = document.getElementById(id);
+            if (solucion.style.display === "none") {
+                solucion.style.display = "block";
+            } else {
+                solucion.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html> 

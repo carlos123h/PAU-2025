@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstudioPAU Valencia 2025 - CORREGIDO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .instrucciones {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .tema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .tema-card {
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .tema-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tema-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .detalle-container {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .detalle-header {
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+        }
+        
+        .detalle-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #eee;
+            border-top: none;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #27ae60;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EstudioPAU Valencia 2025 - CORREGIDO</h1>
+            <h2>Temas de Biología</h2>
+        </header>
+        
+        <div class="instrucciones">
+            <p>Esta es una versión simplificada y corregida para acceder a los temas de biología. 
+            Haga clic en cualquier tema para ver su contenido. Se cargará automáticamente desde el archivo correspondiente.</p>
+        </div>
+        
+        <div class="tema-grid">
+            <div class="tema-card" onclick="cargarTema(1)">
+                <h3>Tema 1</h3>
+                <p>Bioelementos y Biomoléculas</p>
+            </div>
+            
+            <div class="tema-card" onclick="cargarTema(2)">
+                <h3>Tema 2</h3>
+                <p>La Célula</p>
+            </div>
+            
+            <div class="tema-card" onclick="cargarTema(3)">
+                <h3>Tema 3</h3>
+                <p>Membrana y Transporte</p>
+            </div>
+            
+            <div class="tema-card" onclick="cargarTema(4)">
+                <h3>Tema 4</h3>
+                <p>Metabolismo Celular</p>
+            </div>
+            
+            <div class="tema-card" onclick="cargarTema(5)">
+                <h3>Tema 5</h3>
+                <p>Fotosíntesis</p>
+            </div>
+            
+            <div class="tema-card" onclick="cargarTema(9)">
+                <h3>Tema 9</h3>
+                <p>Microbiología</p>
+            </div>
+        </div>
+        
+        <div id="detalle-container" class="detalle-container">
+            <div id="detalle-header" class="detalle-header">
+                <h3 id="tema-titulo">Seleccione un tema</h3>
+            </div>
+            
+            <div id="detalle-content" class="detalle-content">
+                <p>Haga clic en un tema para ver su contenido.</p>
+            </div>
+            
+            <div class="navigation">
+                <button onclick="navegarTema('anterior')">Tema anterior</button>
+                <button onclick="volverALista()">Volver a la lista</button>
+                <button onclick="navegarTema('siguiente')">Tema siguiente</button>
+            </div>
+        </div>
+        
+        <!-- Divs vacíos para contener temporalmente el contenido de los temas -->
+        <div id="detalle-biologia-1" class="hidden"></div>
+        <div id="detalle-biologia-2" class="hidden"></div>
+        <div id="detalle-biologia-3" class="hidden"></div>
+        <div id="detalle-biologia-4" class="hidden"></div>
+        <div id="detalle-biologia-5" class="hidden"></div>
+        <div id="detalle-biologia-9" class="hidden"></div>
+    </div>
+    
+    <script>
+        // Tema actual seleccionado
+        let temaActual = 0;
+        
+        // Lista de temas disponibles
+        const temasDisponibles = [1, 2, 3, 4, 5, 9];
+        
+        // Función para mostrar/ocultar soluciones de ejercicios
+        function mostrarSolucion(id) {
+            const solucion = document.getElementById(id);
+            if (solucion) {
+                solucion.style.display = solucion.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        // Función para cargar un tema específico
+        function cargarTema(temaId) {
+            console.log(`Cargando tema ${temaId}`);
+            temaActual = temaId;
+            
+            // Mostrar el contenedor de detalle
+            document.getElementById('detalle-container').style.display = 'block';
+            
+            // Actualizar el título
+            document.getElementById('tema-titulo').textContent = `Tema ${temaId}: Cargando...`;
+            
+            // Cargar el contenido desde el archivo HTML
+            const ruta = `contenido/biologia/tema${temaId}.html`;
+            console.log(`Intentando cargar ${ruta}`);
+            
+            fetch(ruta)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    console.log(`Contenido recibido de ${ruta}, longitud: ${html.length} caracteres`);
+                    
+                    // Crear un div temporal para parsear el HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    
+                    // Extraer el contenido relevante
+                    const contenidoTema = tempDiv.querySelector('.tema-detalle');
+                    if (contenidoTema) {
+                        // Actualizar el título
+                        const tituloElement = contenidoTema.querySelector('.tema-header h3');
+                        if (tituloElement) {
+                            document.getElementById('tema-titulo').textContent = tituloElement.textContent;
+                        } else {
+                            document.getElementById('tema-titulo').textContent = `Tema ${temaId}`;
+                        }
+                        
+                        // Actualizar el contenido
+                        const detalleContent = document.getElementById('detalle-content');
+                        detalleContent.innerHTML = '';
+                        
+                        // Obtener todas las secciones del tema
+                        const secciones = contenidoTema.querySelectorAll('.tema-section');
+                        secciones.forEach(seccion => {
+                            detalleContent.appendChild(seccion.cloneNode(true));
+                        });
+                        
+                        console.log(`Tema ${temaId} cargado correctamente`);
+                    } else {
+                        console.error(`No se encontró el contenido del tema en ${ruta}`);
+                        document.getElementById('tema-titulo').textContent = `Tema ${temaId}`;
+                        document.getElementById('detalle-content').innerHTML = `<p>No se pudo cargar el contenido del tema ${temaId}.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error(`Error al cargar el tema ${temaId}: ${error.message}`);
+                    document.getElementById('tema-titulo').textContent = `Tema ${temaId}`;
+                    document.getElementById('detalle-content').innerHTML = `<p>Error al cargar el tema: ${error.message}</p>`;
+                });
+        }
+        
+        // Función para volver a la lista de temas
+        function volverALista() {
+            document.getElementById('detalle-container').style.display = 'none';
+        }
+        
+        // Función para navegar entre temas
+        function navegarTema(direccion) {
+            // Encontrar el índice actual en el array de temas disponibles
+            const indiceActual = temasDisponibles.indexOf(temaActual);
+            if (indiceActual === -1) return;
+            
+            // Calcular el nuevo índice según la dirección
+            let nuevoIndice;
+            if (direccion === 'anterior') {
+                nuevoIndice = (indiceActual - 1 + temasDisponibles.length) % temasDisponibles.length;
+            } else {
+                nuevoIndice = (indiceActual + 1) % temasDisponibles.length;
+            }
+            
+            // Cargar el nuevo tema
+            cargarTema(temasDisponibles[nuevoIndice]);
+        }
+    </script>
+</body>
+</html> 

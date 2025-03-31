@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Práctica - PAU Valencia 2025</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .quiz-container {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--background);
+            border-radius: 8px;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid var(--text-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            background: var(--background);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: var(--error);
+            background: var(--error);
+            color: white;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--background);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .summary {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--background);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .summary.show {
+            display: block;
+        }
+
+        .progress {
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz de Práctica</h1>
+        
+        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <a href="../../index-completo.html" style="display: inline-block; padding: 8px 16px; background: var(--text-light); color: white; text-decoration: none; border-radius: 6px; transition: all 0.2s;">Volver al menú principal</a>
+            <a href="javascript:history.back()" style="display: inline-block; padding: 8px 16px; background: var(--text-light); color: white; text-decoration: none; border-radius: 6px; transition: all 0.2s;">Volver atrás</a>
+        </div>
+        
+        <div class="progress">
+            Pregunta <span id="current-question">1</span> de <span id="total-questions">10</span>
+        </div>
+
+        <div class="quiz-container">
+            <div class="question">
+                <h2 id="question-text"></h2>
+                <div class="options" id="options-container"></div>
+                <div class="explanation" id="explanation"></div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prev-btn" disabled>Anterior</button>
+            <button id="next-btn">Siguiente</button>
+        </div>
+
+        <div class="summary" id="summary">
+            <h2>¡Quiz Completado!</h2>
+            <p>Tu puntuación: <span id="score">0</span>/<span id="total">0</span></p>
+            <button onclick="restartQuiz()">Reiniciar Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Cuál es el elemento más abundante en el universo?",
+                options: ["Helio", "Hidrógeno", "Oxígeno", "Carbono"],
+                correct: 1,
+                explanation: "El hidrógeno es el elemento más abundante en el universo, representando aproximadamente el 75% de toda la materia visible."
+            },
+            {
+                question: "¿Qué tipo de enlace se forma entre el sodio y el cloro en el NaCl?",
+                options: ["Covalente", "Iónico", "Metálico", "Van der Waals"],
+                correct: 1,
+                explanation: "El enlace entre sodio y cloro es iónico, ya que el sodio cede un electrón al cloro, formando iones Na+ y Cl-."
+            },
+            {
+                question: "¿Cuál es el pH de una solución neutra a 25°C?",
+                options: ["0", "7", "14", "1"],
+                correct: 1,
+                explanation: "Una solución neutra tiene un pH de 7, donde la concentración de iones H+ es igual a la de iones OH-."
+            }
+            // Más preguntas aquí
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanation = document.getElementById('explanation');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const summary = document.getElementById('summary');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const scoreSpan = document.getElementById('score');
+        const totalSpan = document.getElementById('total');
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            explanation.innerHTML = question.explanation;
+            explanation.classList.remove('show');
+            selectedOption = null;
+
+            question.options.forEach((option, index) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = option;
+                div.onclick = () => selectOption(index);
+                optionsContainer.appendChild(div);
+            });
+
+            updateNavigation();
+            updateProgress();
+        }
+
+        function selectOption(index) {
+            if (selectedOption !== null) return;
+            
+            selectedOption = index;
+            const options = optionsContainer.children;
+            
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected', 'correct', 'incorrect');
+                if (i === index) {
+                    options[i].classList.add('selected');
+                }
+            }
+
+            if (index === questions[currentQuestion].correct) {
+                options[index].classList.add('correct');
+                score++;
+            } else {
+                options[index].classList.add('incorrect');
+                options[questions[currentQuestion].correct].classList.add('correct');
+            }
+
+            explanation.classList.add('show');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Finalizar' : 'Siguiente';
+        }
+
+        function updateProgress() {
+            currentQuestionSpan.textContent = currentQuestion + 1;
+            totalQuestionsSpan.textContent = questions.length;
+        }
+
+        function showSummary() {
+            scoreSpan.textContent = score;
+            totalSpan.textContent = questions.length;
+            summary.classList.add('show');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            summary.classList.remove('show');
+            loadQuestion();
+        }
+
+        prevBtn.onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showSummary();
+            }
+        };
+
+        // Iniciar el quiz
+        loadQuestion();
+    </script>
+</body>
+</html> 

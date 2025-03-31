@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Periódica Interactiva - PAU Valencia 2025</title>
+    <style>
+        :root {
+            --alkali: #ff6b6b;
+            --alkaline-earth: #ffd93d;
+            --transition: #6c5ce7;
+            --post-transition: #a8e6cf;
+            --metalloid: #ff8b94;
+            --nonmetal: #95e1d3;
+            --halogen: #b8e986;
+            --noble-gas: #ffd3a5;
+            --lanthanide: #ff9f43;
+            --actinide: #ff6b6b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text);
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #search {
+            padding: 10px;
+            width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .groups {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .group-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .group-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 2px;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .element {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-align: center;
+            color: white;
+        }
+
+        .element:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .element-number {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .element-symbol {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .element-name {
+            font-size: 0.6rem;
+            margin-top: 2px;
+        }
+
+        .empty {
+            background: transparent;
+        }
+
+        .details {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .details.active {
+            display: block;
+        }
+
+        .details h2 {
+            margin-top: 0;
+            color: var(--text);
+        }
+
+        .details p {
+            margin: 10px 0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        @media (max-width: 768px) {
+            .periodic-table {
+                grid-template-columns: repeat(9, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tabla Periódica Interactiva</h1>
+        
+        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <a href="../../index-completo.html" style="display: inline-block; padding: 8px 16px; background: #1e293b; color: white; text-decoration: none; border-radius: 6px; transition: all 0.2s;">Volver al menú principal</a>
+            <a href="javascript:history.back()" style="display: inline-block; padding: 8px 16px; background: #1e293b; color: white; text-decoration: none; border-radius: 6px; transition: all 0.2s;">Volver atrás</a>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Buscar elemento...">
+        </div>
+
+        <div class="groups">
+            <button class="group-btn" data-group="alkali">Alcalinos</button>
+            <button class="group-btn" data-group="alkaline-earth">Alcalinotérreos</button>
+            <button class="group-btn" data-group="transition">Metales de Transición</button>
+            <button class="group-btn" data-group="post-transition">Post-Transición</button>
+            <button class="group-btn" data-group="metalloid">Metaloides</button>
+            <button class="group-btn" data-group="nonmetal">No Metales</button>
+            <button class="group-btn" data-group="halogen">Halógenos</button>
+            <button class="group-btn" data-group="noble-gas">Gases Nobles</button>
+            <button class="group-btn" data-group="lanthanide">Lantánidos</button>
+            <button class="group-btn" data-group="actinide">Actínidos</button>
+        </div>
+
+        <div class="periodic-table" id="periodic-table">
+            <!-- Los elementos se generarán dinámicamente con JavaScript -->
+        </div>
+    </div>
+
+    <div class="details" id="element-details">
+        <button class="close-btn">&times;</button>
+        <h2 id="element-title"></h2>
+        <p id="element-info"></p>
+    </div>
+
+    <script>
+        const elements = [
+            { number: 1, symbol: 'H', name: 'Hidrógeno', group: 'nonmetal', mass: '1.008' },
+            { number: 2, symbol: 'He', name: 'Helio', group: 'noble-gas', mass: '4.003' },
+            { number: 3, symbol: 'Li', name: 'Litio', group: 'alkali', mass: '6.941' },
+            // ... más elementos aquí
+        ];
+
+        const periodicTable = document.getElementById('periodic-table');
+        const searchInput = document.getElementById('search');
+        const groupButtons = document.querySelectorAll('.group-btn');
+        const details = document.getElementById('element-details');
+        const closeBtn = document.querySelector('.close-btn');
+
+        function createElement(element) {
+            const div = document.createElement('div');
+            div.className = `element ${element.group}`;
+            div.innerHTML = `
+                <div class="element-number">${element.number}</div>
+                <div class="element-symbol">${element.symbol}</div>
+                <div class="element-name">${element.name}</div>
+            `;
+            div.onclick = () => showDetails(element);
+            return div;
+        }
+
+        function showDetails(element) {
+            const title = document.getElementById('element-title');
+            const info = document.getElementById('element-info');
+            
+            title.textContent = `${element.name} (${element.symbol})`;
+            info.innerHTML = `
+                <p><strong>Número atómico:</strong> ${element.number}</p>
+                <p><strong>Masa atómica:</strong> ${element.mass} u</p>
+                <p><strong>Grupo:</strong> ${element.group}</p>
+            `;
+            
+            details.classList.add('active');
+        }
+
+        function filterElements(searchTerm = '', group = '') {
+            periodicTable.innerHTML = '';
+            
+            elements.forEach(element => {
+                const matchesSearch = element.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    element.symbol.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesGroup = !group || element.group === group;
+                
+                if (matchesSearch && matchesGroup) {
+                    periodicTable.appendChild(createElement(element));
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            filterElements(e.target.value);
+        });
+
+        groupButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const group = button.dataset.group;
+                filterElements('', group);
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            details.classList.remove('active');
+        });
+
+        // Inicializar la tabla
+        filterElements();
+    </script>
+</body>
+</html> 

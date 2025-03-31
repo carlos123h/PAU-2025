@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Examen PAU - EstudioPAU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .instrucciones {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .controles {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        
+        .temporizador {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        
+        .start-button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .start-button:hover {
+            background-color: #219653;
+        }
+        
+        .preguntas-container {
+            margin-top: 30px;
+        }
+        
+        .pregunta {
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: white;
+        }
+        
+        .pregunta-titulo {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .opciones {
+            margin-left: 20px;
+        }
+        
+        .opcion {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .opcion:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .opcion input {
+            margin-right: 10px;
+        }
+        
+        .problema {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: white;
+        }
+        
+        .problema-titulo {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .problema-enunciado {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .problema-respuesta textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        .finish-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        
+        .finish-button:hover {
+            background-color: #c0392b;
+        }
+        
+        .resultados {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .resultado-titulo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .puntuacion {
+            font-size: 36px;
+            text-align: center;
+            margin: 20px 0;
+            color: #27ae60;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+        }
+        
+        .retry-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        
+        .retry-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador de Examen PAU - Química</h1>
+            <h2>Práctica para la PAU 2025 - Comunidad Valenciana</h2>
+        </header>
+        
+        <div class="instrucciones">
+            <p>Este simulador replica las condiciones del examen de Química de la PAU. Contiene preguntas tipo test y problemas basados en exámenes anteriores. Tienes 90 minutos para completarlo. ¡Buena suerte!</p>
+        </div>
+        
+        <a href="../../index.html" class="back-button">Volver a la página principal</a>
+        
+        <div class="controles">
+            <div class="temporizador" id="timer">90:00</div>
+            <button class="start-button" id="startButton">Comenzar examen</button>
+        </div>
+        
+        <div class="preguntas-container hidden" id="examenContainer">
+            <!-- Parte 1: Preguntas tipo test -->
+            <h3>Parte 1: Test (4 puntos)</h3>
+            
+            <div class="pregunta" id="pregunta1">
+                <div class="pregunta-titulo">1. ¿Cuál de las siguientes moléculas presenta geometría angular?</div>
+                <div class="opciones">
+                    <div class="opcion">
+                        <input type="radio" name="pregunta1" id="p1a" value="a">
+                        <label for="p1a">a) CO₂</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta1" id="p1b" value="b">
+                        <label for="p1b">b) H₂O</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta1" id="p1c" value="c">
+                        <label for="p1c">c) BeCl₂</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta1" id="p1d" value="d">
+                        <label for="p1d">d) CH₄</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pregunta" id="pregunta2">
+                <div class="pregunta-titulo">2. La reacción 2 NO₂(g) ⇌ N₂O₄(g) es exotérmica. El equilibrio se desplazará hacia la derecha si:</div>
+                <div class="opciones">
+                    <div class="opcion">
+                        <input type="radio" name="pregunta2" id="p2a" value="a">
+                        <label for="p2a">a) Aumentamos la temperatura</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta2" id="p2b" value="b">
+                        <label for="p2b">b) Aumentamos la presión</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta2" id="p2c" value="c">
+                        <label for="p2c">c) Añadimos un catalizador</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta2" id="p2d" value="d">
+                        <label for="p2d">d) Añadimos un gas inerte a volumen constante</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pregunta" id="pregunta3">
+                <div class="pregunta-titulo">3. En una valoración ácido-base, el punto de equivalencia se alcanza cuando:</div>
+                <div class="opciones">
+                    <div class="opcion">
+                        <input type="radio" name="pregunta3" id="p3a" value="a">
+                        <label for="p3a">a) pH = 7</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta3" id="p3b" value="b">
+                        <label for="p3b">b) Se han añadido moles de base igual a los moles de ácido iniciales</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta3" id="p3c" value="c">
+                        <label for="p3c">c) El indicador cambia de color</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta3" id="p3d" value="d">
+                        <label for="p3d">d) Se ha consumido todo el indicador</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pregunta" id="pregunta4">
+                <div class="pregunta-titulo">4. ¿Cuáles de los siguientes compuestos orgánicos pueden experimentar reacciones de adición?</div>
+                <div class="opciones">
+                    <div class="opcion">
+                        <input type="radio" name="pregunta4" id="p4a" value="a">
+                        <label for="p4a">a) Butano</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta4" id="p4b" value="b">
+                        <label for="p4b">b) Propeno</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta4" id="p4c" value="c">
+                        <label for="p4c">c) Etanol</label>
+                    </div>
+                    <div class="opcion">
+                        <input type="radio" name="pregunta4" id="p4d" value="d">
+                        <label for="p4d">d) Ácido acético</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Parte 2: Problemas -->
+            <h3>Parte 2: Problemas (6 puntos)</h3>
+            
+            <div class="problema" id="problema1">
+                <div class="problema-titulo">Problema 1 (3 puntos)</div>
+                <div class="problema-enunciado">
+                    <p>El clorato de potasio (KClO₃) se descompone según la siguiente reacción:</p>
+                    <p style="text-align: center; margin: 10px 0;">2 KClO₃(s) → 2 KCl(s) + 3 O₂(g)</p>
+                    <p>a) Calcule la masa de oxígeno (en gramos) que se obtiene a partir de 25,0 g de clorato de potasio si el rendimiento de la reacción es del 80%.</p>
+                    <p>b) ¿Qué volumen ocupará el oxígeno obtenido medido a 25 °C y 1,2 atm?</p>
+                    <p>c) Calcule la entalpía estándar de la reacción, a partir de las siguientes entalpías de formación estándar:</p>
+                    <p style="margin-left: 20px;">ΔH°f [KClO₃(s)] = -391,2 kJ/mol; ΔH°f [KCl(s)] = -435,9 kJ/mol; ΔH°f [O₂(g)] = 0 kJ/mol</p>
+                    <p><em>Datos: Masas atómicas: K = 39,1; Cl = 35,5; O = 16,0. R = 0,082 atm·L/(mol·K)</em></p>
+                </div>
+                <div class="problema-respuesta">
+                    <label for="respuesta1">Resolución:</label>
+                    <textarea id="respuesta1" placeholder="Escribe aquí tu respuesta..."></textarea>
+                </div>
+            </div>
+            
+            <div class="problema" id="problema2">
+                <div class="problema-titulo">Problema 2 (3 puntos)</div>
+                <div class="problema-enunciado">
+                    <p>Para la reacción en equilibrio a 700 K:</p>
+                    <p style="text-align: center; margin: 10px 0;">H₂(g) + CO₂(g) ⇌ H₂O(g) + CO(g)</p>
+                    <p>Se ha determinado que K<sub>c</sub> = 4,40.</p>
+                    <p>a) Si en un recipiente de 2,0 litros se introducen 1,0 mol de H₂ y 2,0 moles de CO₂, calcule las concentraciones de todas las especies en el equilibrio.</p>
+                    <p>b) Calcule la presión total en el recipiente cuando se alcance el equilibrio.</p>
+                    <p>c) Si se añade más H₂ al sistema en equilibrio, ¿hacia dónde se desplazará el equilibrio? Justifique la respuesta.</p>
+                    <p><em>Datos: R = 0,082 atm·L/(mol·K)</em></p>
+                </div>
+                <div class="problema-respuesta">
+                    <label for="respuesta2">Resolución:</label>
+                    <textarea id="respuesta2" placeholder="Escribe aquí tu respuesta..."></textarea>
+                </div>
+            </div>
+            
+            <button class="finish-button" id="finishButton">Finalizar y evaluar</button>
+        </div>
+        
+        <div class="resultados hidden" id="resultadosContainer">
+            <div class="resultado-titulo">Resultados de tu examen</div>
+            <div class="puntuacion" id="puntuacion">0 / 10</div>
+            
+            <div class="feedback" id="feedback">
+                <!-- El feedback se generará dinámicamente con JavaScript -->
+            </div>
+            
+            <button class="retry-button" id="retryButton">Volver a intentar</button>
+        </div>
+        
+        <div class="footer">
+            <p>EstudioPAU Valencia 2025 - Simulador de Examen</p>
+            <p>Material adaptado según el temario oficial PAU 2025</p>
+        </div>
+    </div>
+    
+    <script>
+        // Variables del temporizador
+        let tiempoRestante = 90 * 60; // 90 minutos en segundos
+        let temporizador;
+        
+        // Botones y contenedores
+        const startButton = document.getElementById('startButton');
+        const finishButton = document.getElementById('finishButton');
+        const retryButton = document.getElementById('retryButton');
+        const timerElement = document.getElementById('timer');
+        const examenContainer = document.getElementById('examenContainer');
+        const resultadosContainer = document.getElementById('resultadosContainer');
+        
+        // Respuestas correctas
+        const respuestasTest = {
+            pregunta1: 'b', // H₂O tiene geometría angular
+            pregunta2: 'b', // Aumentar presión favorece menos moles gaseosos
+            pregunta3: 'b', // Punto de equivalencia es cuando moles base = moles ácido
+            pregunta4: 'b'  // Propeno (alqueno) puede experimentar adición
+        };
+        
+        // Iniciar examen
+        startButton.addEventListener('click', function() {
+            examenContainer.classList.remove('hidden');
+            startButton.disabled = true;
+            
+            // Iniciar temporizador
+            temporizador = setInterval(actualizarTemporizador, 1000);
+        });
+        
+        // Finalizar examen
+        finishButton.addEventListener('click', function() {
+            clearInterval(temporizador);
+            evaluarExamen();
+            examenContainer.classList.add('hidden');
+            resultadosContainer.classList.remove('hidden');
+        });
+        
+        // Reintentar examen
+        retryButton.addEventListener('click', function() {
+            resultadosContainer.classList.add('hidden');
+            // Resetear formulario
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.value = '';
+            });
+            
+            // Reiniciar tiempo
+            tiempoRestante = 90 * 60;
+            actualizarVisualizacionTemporizador();
+            
+            // Volver al inicio
+            startButton.disabled = false;
+        });
+        
+        // Actualizar temporizador
+        function actualizarTemporizador() {
+            tiempoRestante--;
+            
+            if (tiempoRestante <= 0) {
+                clearInterval(temporizador);
+                alert('¡Tiempo agotado! Tu examen será evaluado automáticamente.');
+                evaluarExamen();
+                examenContainer.classList.add('hidden');
+                resultadosContainer.classList.remove('hidden');
+            }
+            
+            actualizarVisualizacionTemporizador();
+        }
+        
+        // Actualizar visualización del temporizador
+        function actualizarVisualizacionTemporizador() {
+            const minutos = Math.floor(tiempoRestante / 60);
+            const segundos = tiempoRestante % 60;
+            timerElement.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            
+            // Cambiar color cuando quede poco tiempo
+            if (tiempoRestante < 300) { // menos de 5 minutos
+                timerElement.style.color = '#e74c3c';
+            }
+        }
+        
+        // Evaluar examen
+        function evaluarExamen() {
+            let puntuacionTotal = 0;
+            let feedback = '';
+            
+            // Evaluar preguntas tipo test (1 punto cada una)
+            for (let i = 1; i <= 4; i++) {
+                const preguntaId = `pregunta${i}`;
+                const seleccionada = document.querySelector(`input[name="${preguntaId}"]:checked`)?.value;
+                
+                if (seleccionada === respuestasTest[preguntaId]) {
+                    puntuacionTotal += 1;
+                    feedback += `<p>Pregunta ${i}: ✅ Correcta</p>`;
+                } else {
+                    feedback += `<p>Pregunta ${i}: ❌ Incorrecta. La respuesta correcta es la opción ${respuestasTest[preguntaId]}</p>`;
+                }
+            }
+            
+            // Evaluar problemas (los problemas requieren revisión manual en un examen real)
+            // Aquí simplemente verificamos si han respondido algo
+            const respuesta1 = document.getElementById('respuesta1').value.trim();
+            const respuesta2 = document.getElementById('respuesta2').value.trim();
+            
+            if (respuesta1.length > 50) {
+                // Simulamos que tiene al menos algo de contenido
+                puntuacionTotal += 3;
+                feedback += '<p>Problema 1: Pendiente de revisión manual</p>';
+            } else {
+                feedback += '<p>Problema 1: Sin respuesta o respuesta muy breve</p>';
+            }
+            
+            if (respuesta2.length > 50) {
+                puntuacionTotal += 3;
+                feedback += '<p>Problema 2: Pendiente de revisión manual</p>';
+            } else {
+                feedback += '<p>Problema 2: Sin respuesta o respuesta muy breve</p>';
+            }
+            
+            // Mostrar resultados
+            document.getElementById('puntuacion').textContent = `${puntuacionTotal} / 10`;
+            document.getElementById('feedback').innerHTML = feedback;
+            
+            // Cambiar color según puntuación
+            const puntuacionElement = document.getElementById('puntuacion');
+            if (puntuacionTotal >= 7) {
+                puntuacionElement.style.color = '#27ae60'; // verde para aprobado alto
+            } else if (puntuacionTotal >= 5) {
+                puntuacionElement.style.color = '#f39c12'; // naranja para aprobado
+            } else {
+                puntuacionElement.style.color = '#e74c3c'; // rojo para suspenso
+            }
+        }
+    </script>
+</body>
+</html> 

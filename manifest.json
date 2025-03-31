@@ -1,0 +1,16 @@
+{
+    "name": "EstudioPAU Valencia",
+    "short_name": "EstudioPAU",
+    "description": "Plataforma de estudio para Biología y Química PAU Valencia 2025",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f5f5f7",
+    "theme_color": "#2ecc71",
+    "icons": [
+        {
+            "src": "recursos/icons/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ]
+} 
