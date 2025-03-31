@@ -29,6 +29,31 @@
                 --text: #f1f5f9;
                 --text-light: #94a3b8;
             }
+            
+            /* Reglas para asegurar que el texto sea visible en modo oscuro */
+            .tema-detalle div[style*="background-color: #eafaf1"],
+            .tema-detalle div[style*="background-color: #f9f9f9"] {
+                background-color: rgba(30, 41, 59, 0.7) !important;
+                color: var(--text) !important;
+            }
+            
+            .tema-detalle h5[style*="color: #27ae60"] {
+                color: #4ade80 !important;
+            }
+            
+            .tema-detalle p, 
+            .tema-detalle li,
+            .tema-detalle ul {
+                color: var(--text) !important;
+            }
+            
+            .tema-detalle strong {
+                color: #4ade80 !important;
+            }
+            
+            .navigation-top {
+                background-color: rgba(30, 41, 59, 0.9);
+            }
         }
 
         * {
@@ -188,12 +213,6 @@
         
         .btn-top:hover {
             opacity: 1;
-        }
-        
-        @media (prefers-color-scheme: dark) {
-            .navigation-top {
-                background-color: rgba(30, 41, 59, 0.9);
-            }
         }
         
         @media (max-width: 768px) {
